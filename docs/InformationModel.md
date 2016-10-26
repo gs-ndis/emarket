@@ -6,6 +6,8 @@
 
 ### Support Items
 
+Examples of home assistance with variants by period and intensity.  Locations are postcode regex expressions indicating any location in NSW, VIC or QLD
+
 ```
 {"SupportItem":{
    "ItemID":"104",
@@ -21,8 +23,8 @@
       "Unit":"hour",
       "PriceCap":97.68,
       "ValidFrom":"2016-07-01",
+      "Locations":["2...","3...","4..."],
       "Attributes":{
-         "Locations":["NSW","VIC","QLD","TAS"],
          "Period":"Public Holidays",
          "Intensity":"High"}
       },
@@ -31,13 +33,15 @@
       "Unit":"hour",
       "PriceCap":62.66,
       "ValidFrom":"2016-07-01",
+      "Locations":["2...","3...","4..."],
       "Attributes":{
-         "Locations":["NSW","VIC","QLD","TAS"],
          "Period":"Saturdays",
          "Intensity":"High"}
    }
 }
 ```
+
+Examples of shared accomodation assistance with variants by number of sharers and level of need.  Locations are postcode regex expressions indicating any locations in the Sydney area
 
 ```
 {"SupportItem":{
@@ -54,8 +58,8 @@
       "Unit":"week",
       "PriceCap":4807.14,
       "ValidFrom":"2016-07-01",
+      "Locations":["20..","21.."],
       "Attributes":{
-         "Locations":["NSW","VIC"]
          "Persons":2,
          "Needs":"Complex"}
       },
@@ -64,13 +68,14 @@
       "Unit":"hour",
       "PriceCap":2374.71,
       "ValidFrom":"2016-07-01",
+      "Locations":["20..","21.."],
       "Attributes":{
-         "Locations":["NSW","VIC"],
          "Persons":"4",
          "Needs":"Standard"}
    }
 }
 ```
+Examples of non priced quotable items (wheelchairs) with variants by type, size, and customisation.  Locations regex mathces any postcode - meaning the variant item is not location sensitive.
 
 ```
 {"SupportItem":{
@@ -86,6 +91,7 @@
       "VariantID":"05_122203108_0105_1_2",
       "Unit":"each",
       "ValidFrom":"2016-07-01",
+      "Locations":["...."],
       "Attributes":{
          "Custom":True,
          "Type":"Folding",
@@ -95,6 +101,7 @@
       "VariantID":"05_122203114_0105_1_2",
       "Unit":"each",
       "ValidFrom":"2016-07-01",
+      "Locations":["...."],
       "Attributes":{
          "Custom":True,
          "Type":"Rigid",
