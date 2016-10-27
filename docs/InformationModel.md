@@ -4,4 +4,4 @@
 
 ## Denormalised JSON model samples
 
-* [Support Items](docs/SupportItemsAndVariants.md)
+* [Support Items](SupportItemsAndVariants.md)
