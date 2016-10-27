@@ -9,14 +9,14 @@ Master documentation repository for e-marketplace prototype work
 * [API specifications](docs/APIspecification.md)
 
 ## Componenent Details
-* [User Roles & Permissions](UserRolesAndPermissions.md)
-* [Support items & Variants](SupportItemsAndVariants.md)
-* [Planning & Budgeting](PlanningAndBudgeting.md)
-* [Catalogs & Search](CatalogsAndSearch.md)
-* [Reviews & Community](ReviewsAndCommunity.md)
-* [Orders & Acquittals](OrdersAndAcquittals.md)
-* [Payments & Accounting](PaymentsAndAccounting.md)
+* [User Roles & Permissions](docs/UserRolesAndPermissions.md)
+* [Support items & Variants](docs/SupportItemsAndVariants.md)
+* [Planning & Budgeting](docs/PlanningAndBudgeting.md)
+* [Catalogs & Search](docs/CatalogsAndSearch.md)
+* [Reviews & Community](docs/ReviewsAndCommunity.md)
+* [Orders & Acquittals](docs/OrdersAndAcquittals.md)
+* [Payments & Accounting](docs/PaymentsAndAccounting.md)
 
 ## Development & Operations
-* [Devops](Devops.md)
-* [Testing](Testing.md)
+* [Devops](docs/Devops.md)
+* [Testing](docs/Testing.md)
