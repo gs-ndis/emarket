@@ -22,9 +22,11 @@ The next piece of work is to actually do the transformation of the current 2400 
 
 ## Source Data and Mapping
 
+please refer to this [support item spreadsheet](docs/201617-VIC-NSW-QLD-TAS-Price-Guide-New%20structure.csv).  it is a modified version of the public ones - basically the old support items are now "variants" and there is a new, less granular, "support item" column.   To populate the new support item database:
+* Start with this sheet to create the new support items and vairants.  
+* Then use the other three sheets at https://www.ndis.gov.au/providers/pricing-and-payment.html to add extra variants to the existing items (basically these are just different price caps for different locations)
 
-
-## Support Items Examples
+## Support Items Examples - Target state
 
 Examples of home assistance with variants by period and intensity.  Locations are postcode regex expressions indicating any location in NSW, VIC or QLD
 
