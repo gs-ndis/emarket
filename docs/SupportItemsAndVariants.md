@@ -6,12 +6,14 @@ The current support item lists at https://www.ndis.gov.au/providers/pricing-and-
 * Are very hard to navigate and understand, even for provider - never mind participants.
 
 I think that a better model for the support item list looks like this:
-* Separate out support categories - against which participant plan budgets are made.
 * Collapse all lines that are really the same thing into a single support item (eg a wheelchair) with any number of "variants" that can have different attributes and price caps.
 * Allow for the attributes that drive the variants to be configurable by support item (for example home care variants depend on location, day of the week, level of care - whilst wheelchair variants depend on size, type, power source, etc)
+* Allow for support items to be related to other support items - possibly from different schemes (eg aged care, child care, veterans affairs).
 * In order to facilitate easy migration from current to future state, we should attach the current support item ID (eg "05_122203108_0105_1_2" for a customised adult folding wheelchair) to the variant. 
 
-The ERD is shown on the botttom part of the [logical data model](docs/InformationModel.md).  Key entities are SupportCategory, SupportItem, Variant, Attribute.
+The ERD is shown below. Key entities are SupportItem, Related Item, VariantConfiguration, Variant, Attribute.
+
+![Support Item Model](SupportItemList.png)
 
 This will mean that the to-be catalog will
 * Reduce the number of support items from about 2400 to about 100 - making it much easier to navigate for the "what supports can I have?" use case
