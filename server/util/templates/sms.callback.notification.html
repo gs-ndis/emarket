@@ -1,0 +1,25 @@
+<div style="font-family: Calibri; font-size: 14px;">
+
+  Dear Admin,<br/><br/>
+
+  We have received a reply on our SMS Blast Number from ${phone}
+  <br/>
+  <br/>
+  Contact Details:<br/>
+  <% if (contact) { %>
+  ${contact.firstName} ${contact.lastName} <br/>
+  ${contact.email} <br/>
+  ${contact.company}<br/>
+  ${contact.type}<br/>
+  <% } else { %>
+  Unknown Phone Number<br/>
+  <% }  %>
+  <br/>
+  Message:<br/>
+  ${message}
+  <br/>
+  <br/>
+
+  <br/>All the best,<br/>
+  The 1-888-CASH-OFFER Team<br/><br/>
+</div>

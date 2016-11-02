@@ -1,0 +1,72 @@
+.sidebar-collapse {
+  background-color: #545457;
+}
+
+.navbar-static-side {
+  min-height: 100%;
+  background-color: inherit;
+  color: #fff;
+  .nav > li > a {
+    display: block;
+    padding: 5px 15px;
+    position: relative;
+    color: #fff;
+    &:hover, &:focus, &:active {
+      background-color: #747479;
+      color: #fff;
+    }
+  }
+  .nav > li.active > a {
+    background-color: #747479;
+  }
+  .nav.nav-second-level > li > a {
+    padding-left: 30px;
+  }
+  .task-list {
+    .list-group-item {
+      background-color: #747479;
+      a {
+        color: #fff;
+        text-decoration: underline;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  .list-group-item {
+    border: none;
+  }
+  .list-group-item-primary {
+    background-color: #747479;
+  }
+  .divider {
+    height: 1px;
+    background-color: #9a9a9a;
+    margin: 5px 0;
+  }
+}
+
+.navbar-nav li a:hover{
+  background-color: none!important; 
+}
+
+.icon-collapse {
+  outline: none;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  padding: 8px 10px 7px 10px;
+}
+
+.navbar-static-side .nav > li > a {
+  padding: 7px 15px;
+}
+
+.navbar-static-side {
+  background-color: #545457;
+}
+
+.glyphicon {
+  top: 2px;
+}

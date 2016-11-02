@@ -1,0 +1,41 @@
+<style>
+  .tasks a{
+    text-decoration: none;
+  }
+  .tasks a:hover, .tasks a:focus, .tasks a:active {
+    text-decoration: underline;
+  }
+</style>
+<div style="font-family: Calibri; font-size: 14px;">
+
+  Hi {{FNAME}},<br/><br/>
+
+  Here is a summary of your current tasks and goals.<br/>
+
+  {{#if tasks}}
+  <h4>Tasks</h4>
+  {{#tasks}}
+  <div class="tasks">
+    <a href="{{leadDetailsLink}}">
+      {{description}}
+      {{#if leadFormattedAddress}} | {{leadFormattedAddress}}{{/if}}
+      {{#if fancyDateRange}} | {{fancyDateRange}}{{/if}}
+      {{#if alertSummary}} | {{alertSummary}}{{/if}}
+    </a>
+  </div>
+  {{/tasks}}
+  {{/if}}
+
+  {{#if goals}}
+  <h4>Goals</h4>
+  {{#goals}}
+  <div class="tasks">
+    {{action}} ({{count}})
+  </div>
+  {{/goals}}
+  {{/if}}
+
+  <br/><br/>Sincerely,<br/>
+  The 1-888-CASH-OFFER Team<br/><br/>
+</div>
+

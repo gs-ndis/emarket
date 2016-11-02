@@ -1,0 +1,136 @@
+.navbar-brand {
+
+  @media (max-width: $screen-md-min) {
+    background: url(/assets/images/logo/logo-ico.svg);
+    -webkit-background-size: 100%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: 5px;
+    max-height:50px;
+    min-width: 50px;
+  }
+
+  /* Large devices (large desktops, 1200px and up) */
+  @media (min-width: $screen-md-min) {
+    background: url(/assets/images/logo/logo.svg);
+    -webkit-background-size: 100%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: 3px;
+    max-height:50px;
+    min-width: 185px;
+  }
+
+}
+.new-lead-btn:after {
+  @media (max-width: $screen-md-min) {
+    content: "Lead";
+  }
+  @media (min-width: $screen-md-min) {
+    content: "New Lead";
+  }
+}
+
+.import-leads-btn:after {
+  @media (max-width: $screen-md-min) {
+    content: "Import";
+  }
+  @media (min-width: $screen-md-min) {
+    content: "Import Leads";
+  }
+}
+
+.lead-buttons {
+  margin-right: 5px;
+}
+
+
+@media (max-width: $grid-float-breakpoint-max) {
+  #page-wrapper {
+    margin: 0px!important;
+  } 
+  .sidebar-toggle {
+    display: none!important;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: $grid-float-breakpoint){
+ .navbar-menu {
+    position: absolute;
+    margin-left: 0px;
+    margin-right: 0px;
+    .navbar-form {
+      margin: 0px -20px -3px -20px;
+      border: none;
+      box-shadow: none;
+      .form-control {
+        width: 200px;
+      }
+    }
+
+    .navbar-nav {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      li {
+        a {
+          color: #FFFFFF!important;
+        }
+
+        span {
+          color: #FFFFFF!important;
+        }
+      }
+    }
+  }
+
+  .navbar-static-side {
+    top: 50px;
+    padding-top: 186px;
+  }
+
+  .user-name {
+    margin-left: 10px;
+  }
+
+  .user-item {
+    margin-bottom: 3px;
+  }
+}
+
+.navbar-avatar {
+  margin: 5px 0;
+}
+
+
+  
+.user-settings {
+  display: inline!important;
+}
+
+.btn-settings {
+  margin-left: 15px;
+}
+
+
+
+.navbar-header {
+  margin-right: 12px!important;
+}
+
+.navbar-toggle {
+  margin-right: 0px;
+  display: block!important;
+}
+
+.sidebar-toggle {
+  margin-right: 5px;
+  display: block;
+}
+
+.displayed {
+  display: block;
+}
+
+@media (max-width: $screen-xs-min) {
+  .modal-xs { width: $modal-sm; }
+}
