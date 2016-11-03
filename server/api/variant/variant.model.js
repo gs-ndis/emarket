@@ -5,10 +5,11 @@ var Schema = mongoose.Schema;
 
 var VariantSchema = new Schema({
   variantId: String,
+  description: String,
   unit: String,
   validFrom: Date,
   locations: [],
-  attributes: [],
+  attributes: [{}],
   _supportItem: {type: Schema.Types.ObjectId, ref: 'SupportItem'}
 });
 
