@@ -14,6 +14,7 @@ module.exports = function(app) {
 
   // Insert routes below
   app.use('/api/users', require('./api/user'));
+  app.use('/api/supportItems', require('./api/supportItem'));
 
   app.use('/auth', require('./auth'));
   app.use(function(err, req, res, next) {

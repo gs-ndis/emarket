@@ -1,7 +1,7 @@
 .navbar-brand {
 
   @media (max-width: $screen-md-min) {
-    background: url(/assets/images/logo/logo-ico.svg);
+    /*background: url(/assets/images/logo/logo-ico.svg);*/
     -webkit-background-size: 100%;
     background-size: 100%;
     background-repeat: no-repeat;
@@ -12,7 +12,7 @@
 
   /* Large devices (large desktops, 1200px and up) */
   @media (min-width: $screen-md-min) {
-    background: url(/assets/images/logo/logo.svg);
+    /*background: url(/assets/images/logo/logo.svg);*/
     -webkit-background-size: 100%;
     background-size: 100%;
     background-repeat: no-repeat;
@@ -20,30 +20,7 @@
     max-height:50px;
     min-width: 185px;
   }
-
 }
-.new-lead-btn:after {
-  @media (max-width: $screen-md-min) {
-    content: "Lead";
-  }
-  @media (min-width: $screen-md-min) {
-    content: "New Lead";
-  }
-}
-
-.import-leads-btn:after {
-  @media (max-width: $screen-md-min) {
-    content: "Import";
-  }
-  @media (min-width: $screen-md-min) {
-    content: "Import Leads";
-  }
-}
-
-.lead-buttons {
-  margin-right: 5px;
-}
-
 
 @media (max-width: $grid-float-breakpoint-max) {
   #page-wrapper {

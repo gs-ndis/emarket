@@ -13,7 +13,7 @@ var config = require('./config/environment');
 //var importLeads = require('./util/importLeads');
 var dbMigrate = require('db-migrate');
 var path = require('path');
-var Promise = require('bluebird');
+global.Promise = require('bluebird');
 var MongoClient = require('mongodb').MongoClient;
 //var migrateConfig = require('./config/migrate');
 

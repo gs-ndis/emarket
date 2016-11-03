@@ -516,33 +516,6 @@ li.sortable-ghost{
   }
 }
 
-@media (min-width: 1000px) {
-  .logo {
-    background: url('/assets/images/logo/logo.svg') no-repeat center center #fff;
-    height: 126px;
-    text-align: center;
-    .betatesting {
-      height: 126px;
-      margin-top: -10px;
-    }
-  }
-}
-
-@media (max-width: 1000px) {
-  .logo {
-    background: url('/assets/images/logo/logo.svg') no-repeat left center #fff;
-    height: 57px;
-    text-align: right;
-    .betatesting {
-      height: 57px;
-    }
-  }
-}
-
-/*.btn-group {
-  margin-left: 4px;
-}*/
-
 .form-control-static.link {
   margin-bottom: 0;
   min-height: 34px;

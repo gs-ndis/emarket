@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emarket').controller('AdminUserListCtrl', function($scope, User, dialogs, $cookieStore, $state, Upload, $timeout, Role, $filter) {
+angular.module('emarket').controller('AdminUserListCtrl', function($scope, User, dialogs, $cookieStore, $state, Upload, $timeout, $filter) {
   $scope.stTable = {};
   $scope.stTable.itemsPerPage = $cookieStore.get('itemsPerPage') || 10;
   $scope.paginationNumbers = [10, 25, 50, 100, 500, 1000];
@@ -18,14 +18,6 @@ angular.module('emarket').controller('AdminUserListCtrl', function($scope, User,
     {key: 'false', value: 'No'}
   ];
   $scope.sendType = 'email';
-  Role.query(function(roles) {
-    $scope.rolePermissionOptions = [];
-    _.each(roles, function(role) {
-      $scope.rolePermissionOptions.push({key: role._id, value: role.name});
-    });
-    $scope.rolePermissionOptions.push({key: 'default', value: 'Default'});
-    console.log(roles, $scope.rolePermissionOptions);
-  });
 
   $scope.$watch('users', function() {
     $scope.selectedCount = _.chain($scope.users).filter('selected').size().value();

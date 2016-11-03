@@ -29,9 +29,10 @@
           <span class="glyphicon icon-collapse" ng-class="{'glyphicon-chevron-right':itemsCollapse.admin, 'glyphicon-chevron-down':!itemsCollapse.admin}"></span>
         </a>
 
-        <ul class="nav nav-second-level" style="white-space: nowrap;" uib-collapse="itemsCollapse.admin">
+        <ul class="nav nav-second-level" style="white-space: nowrap;">
           <!--<li ng-class="{active: $state.includes('admin.settings')}"><a ui-sref="admin.settings"><i class="fa fa-gear"></i> Settings</a></li>-->
           <li ng-class="{active: $state.includes('admin.users')}"><a ui-sref="admin.users.list"><i class="fa fa-user"></i> Users</a></li>
+          <li ng-class="{active: $state.includes('admin.supportItem')}"><a ui-sref="admin.supportItem.list"><i class="fa fa-folder-open"></i> Support Items</a></li>
           <!--<li ng-class="{active: $state.includes('admin.import')}"><a ui-sref="admin.import"><i class="fa fa-file-text"></i> Import</a></li>-->
           <!--<li ng-class="{active: $state.includes('admin.role')}"><a ui-sref="admin.role.list"><i class="fa fa-unlock-alt"></i> Roles</a></li>-->
         </ul>
