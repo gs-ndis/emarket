@@ -137,17 +137,15 @@ Examples of non priced quotable items (wheelchairs) with variants by type, size,
 ## Vairant configuration examples
 
 ```
-{"VariantConfiguration":{
+{"VariantConfiguration":[{
    "AttributeName":"Custom",
    "AttributeType":"boolean",
    "Description":"Indicates whether the wheelchair is a stock item or is specifically customised for the disabled person",
-   "IsRequired":"true"}
-}
-
-{"VariantConfiguration":{
+   "IsRequired":"true"},
+   {
    "AttributeName":"Size",
-   "AttributeType":"string",
+   "AttributeType":"code",
    "Description":"Indicates whether the wheelchair is for a child or an adult",
    "ValueList":["Adult", "Child"],
-   "IsRequired":"true"}
+   "IsRequired":"true"}]
 }
