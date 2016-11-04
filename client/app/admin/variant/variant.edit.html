@@ -1,0 +1,52 @@
+<div class="clearfix">
+  <h3 class="page-header">Admin: {{supportItem._id? 'Edit' : 'Create'}} Variant</h3>
+
+  <form class="form" name="variantForm" novalidate ng-submit="save()">
+    <div class="clearfix" style="padding: 20px;">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Variant ID</label>
+          <input class="form-control" name="variantId" type="text" ng-model="variant.variantId">
+          <div ng-messages="variantForm.variantId.$error">
+            <div ng-messages-include="components/partials/validationMessages.html"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input class="form-control" name="description" type="text" ng-model="variant.description">
+          <div ng-messages="variantForm.description.$error">
+            <div ng-messages-include="components/partials/validationMessages.html"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Unit</label>
+          <input class="form-control" name="unit" type="text" ng-model="variant.unit">
+          <div ng-messages="variantForm.unit.$error">
+            <div ng-messages-include="components/partials/validationMessages.html"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Valid From</label>
+          <input class="form-control" name="validFrom" type="text" ng-model="variant.validFrom">
+          <div ng-messages="variantForm.validFrom.$error">
+            <div ng-messages-include="components/partials/validationMessages.html"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Locations</label>
+        </div>
+        <div class="form-group">
+          <label>Attributes</label>
+        </div>
+        <div class="form-group">
+          <label>Support Item</label>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin: 20px 30px;">
+      <button type="submit" class="btn btn-primary" ng-disabled="!variantForm.$valid">Save</button>
+      <a href="javascript:void(0);" class="btn btn-primary" ui-sref="admin.variant.list">Cancel</a>
+    </div>
+  </form>
+</div>

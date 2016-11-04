@@ -5,18 +5,51 @@
     <div class="clearfix" style="padding: 20px;">
       <div class="col-md-6">
         <div class="form-group">
-          <label>Name</label>
-          <input class="form-control" name="name" type="text" ng-model="user.name" required>
-          <div ng-messages="supportItemForm.name.$error">
+          <label>Description</label>
+          <input class="form-control" name="description" type="text" ng-model="supportItem.description">
+          <div ng-messages="supportItemForm.description.$error">
             <div ng-messages-include="components/partials/validationMessages.html"></div>
           </div>
         </div>
         <div class="form-group">
-          <label>Description</label>
-          <input class="form-control" name="description" type="text" ng-model="user.description" required>
-          <div ng-messages="supportItemForm.description.$error">
+          <label>Registration Group</label>
+          <input class="form-control" name="registrationGroup" type="text" ng-model="supportItem.registrationGroup">
+          <div ng-messages="supportItemForm.registrationGroup.$error">
             <div ng-messages-include="components/partials/validationMessages.html"></div>
           </div>
+        </div>
+        <div class="form-group">
+          <label>Price Controlled</label>
+          <input class="form-control" type="checkbox" ng-model="supportItem.priceControlled" bs-switch switch-on-text="Yes" switch-off-text="No">
+          {{supportItem.priceControlled}}
+        </div>
+        <div class="form-group">
+          <label>Quote Needed</label>
+          <input class="form-control" type="checkbox" ng-model="supportItem.quoteNeeded" bs-switch switch-on-text="Yes" switch-off-text="No">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <input class="form-control" name="category" type="text" ng-model="supportItem.category">
+          <div ng-messages="supportItemForm.category.$error">
+            <div ng-messages-include="components/partials/validationMessages.html"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Outcome</label>
+          <input class="form-control" name="outcome" type="text" ng-model="supportItem.outcome">
+          <div ng-messages="supportItemForm.outcome.$error">
+            <div ng-messages-include="components/partials/validationMessages.html"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Purpose</label>
+          <input class="form-control" name="purpose" type="text" ng-model="supportItem.purpose">
+          <div ng-messages="supportItemForm.purpose.$error">
+            <div ng-messages-include="components/partials/validationMessages.html"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Variants</label>
         </div>
       </div>
     </div>

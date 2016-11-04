@@ -97,6 +97,9 @@ exports.statusError = function(status, message) {
       case 404:
         error.message = 'Not found';
         break;
+      case 422:
+        error.message = 'Unprocessable Entity';
+        break;
       case 403:
         error.message = 'Access denied';
         break;

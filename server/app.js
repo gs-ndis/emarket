@@ -14,6 +14,7 @@ var config = require('./config/environment');
 var dbMigrate = require('db-migrate');
 var path = require('path');
 global.Promise = require('bluebird');
+global._ = require('lodash');
 var MongoClient = require('mongodb').MongoClient;
 //var migrateConfig = require('./config/migrate');
 

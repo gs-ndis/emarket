@@ -1,0 +1,53 @@
+<div class="clearfix">
+  <h3 class="page-header">Admin: Manage Variants <a href="javascript:void(0);" ui-sref="admin.variant.edit" class="btn btn-xs btn-primary">Add Variant</a></h3>
+</div>
+
+<table class="table table-striped table-hover" st-pipe="tableUpdate" st-table="variants">
+  <thead>
+    <tr>
+      <th>Variant ID</th>
+      <th>Description</th>
+      <th>Unit</th>
+      <th>Valid From</th>
+      <th>Locations</th>
+      <th>Attributes</th>
+      <th>Support Item</th>
+      <th>Actions</th>
+    </tr>
+    <tr>
+      <th>
+        <input st-search="variantId" placeholder="Variant ID" class="input-sm form-control" type="search"/>
+      </th>
+      <th>
+        <input st-search="description" placeholder="Description" class="input-sm form-control" type="search"/>
+      </th>
+      <th>
+        <input st-search="unit" placeholder="Unit" class="input-sm form-control" type="search"/>
+      </th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="variant in variants">
+      <td>{{variant.variantId}}</td>
+      <td>{{variant.description}}</td>
+      <td>{{variant.unit}}</td>
+      <td>{{variant.validFrom}}</td>
+      <td>{{variant.locations}}</td>
+      <td>{{variant.attributes}}</td>
+      <td>{{variant._supportItem}}</td>
+      <td class="actions" style="text-align: right">
+        <a href="javascript:void(0);" ui-sref="admin.supportItem.edit({id: supportItem._id})"><i class="fa fa-edit"></i></a>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td class="text-center" colspan="8" st-template="components/partials/pagination.html" st-pagination="" st-items-by-page="stTable.itemsPerPage" st-displayed-pages="9"></td>
+    </tr>
+  </tfoot>
+</table>

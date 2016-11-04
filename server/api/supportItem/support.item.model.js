@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var SupportItemSchema = new Schema({
   description: String,
   registrationGroup: String,
-  priceController: Boolean,
+  priceControlled: Boolean,
   quoteNeeded: Boolean,
   category: String,
   outcome: String,

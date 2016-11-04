@@ -2,32 +2,55 @@
   <h3 class="page-header">Admin: Manage Support Items <a href="javascript:void(0);" ui-sref="admin.supportItem.edit" class="btn btn-xs btn-primary">Add Support Item</a></h3>
 </div>
 
-<table class="table table-striped table-hover" st-pipe="tableUpdate" style="max-width: 800px;" st-table="displayed" st-safe-src="supportItems" st-set-filter="customFilter">
+<table class="table table-striped table-hover" st-pipe="tableUpdate" st-table="supportItems">
   <thead>
     <tr>
-      <th>Name</th>
       <th>Description</th>
-      <th>Is Active</th>
+      <th>Registration Group</th>
+      <th>Price Controlled</th>
+      <th>Quote Needed</th>
+      <th>Category</th>
+      <th>Outcome</th>
+      <th>Purpose</th>
+      <th>Variants</th>
       <th>Actions</th>
     </tr>
     <tr>
       <th>
-        <input st-search="name" placeholder="Name" class="input-sm form-control" type="search"/>
-      </th>
-      <th>
         <input st-search="description" placeholder="Description" class="input-sm form-control" type="search"/>
       </th>
       <th>
-        <st-select-multiple choices="activeOptions" predicate="active"></st-select-multiple>
+        <input st-search="registrationGroup" placeholder="Registration Group" class="input-sm form-control" type="search"/>
       </th>
+      <th>
+        <st-select-multiple choices="yesNoOptions" predicate="priceControlled"></st-select-multiple>
+      </th>
+      <th>
+        <st-select-multiple choices="yesNoOptions" predicate="quoteNeeded"></st-select-multiple>
+      </th>
+      <th>
+        <input st-search="category" placeholder="Category" class="input-sm form-control" type="search"/>
+      </th>
+      <th>
+        <input st-search="outcome" placeholder="Outcome" class="input-sm form-control" type="search"/>
+      </th>
+      <th>
+        <input st-search="purpose" placeholder="Purpose" class="input-sm form-control" type="search"/>
+      </th>
+      <th></th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="supportItem in displayed">
-      <td>{{supportItem.name}}</td>
+    <tr ng-repeat="supportItem in supportItems">
       <td>{{supportItem.description}}</td>
-      <td>{{supportItem.active==='true'? 'Yes': 'No'}}</td>
+      <td>{{supportItem.registrationGroup}}</td>
+      <td>{{supportItem.priceControlled | yesNo}}</td>
+      <td>{{supportItem.quoteNeeded | yesNo}}</td>
+      <td>{{supportItem.category}}</td>
+      <td>{{supportItem.outcome}}</td>
+      <td>{{supportItem.purpose}}</td>
+      <td>{{supportItem.variants}}</td>
       <td class="actions" style="text-align: right">
         <a href="javascript:void(0);" ui-sref="admin.supportItem.edit({id: supportItem._id})"><i class="fa fa-edit"></i></a>
       </td>
@@ -35,7 +58,7 @@
   </tbody>
   <tfoot>
     <tr>
-      <td class="text-center" colspan="5" st-template="components/partials/pagination.html" st-pagination="" st-items-by-page="stTable.itemsPerPage" st-displayed-pages="9"></td>
+      <td class="text-center" colspan="9" st-template="components/partials/pagination.html" st-pagination="" st-items-by-page="stTable.itemsPerPage" st-displayed-pages="9"></td>
     </tr>
   </tfoot>
 </table>

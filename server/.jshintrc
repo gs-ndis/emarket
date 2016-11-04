@@ -13,6 +13,7 @@
   "asi": true,
   "debug": true,
   "globals": {
-    "Promise": true
+    "Promise": true,
+    "_": true
   }
 }

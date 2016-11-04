@@ -4,18 +4,22 @@ angular.module('emarket').controller('AdminSupportItemEditCtrl', function($scope
   $scope.supportItem = {};
 
   if ($stateParams.id) {
-    $scope.supportItem = SupportItem.get({_id: $stateParams.id});
+    $scope.supportItem = SupportItem.get({_id: $stateParams.id}, function() {
+      $scope.supportItem.priceControlled = Boolean($scope.supportItem.priceControlled);
+      $scope.supportItem.quoteNeeded = Boolean($scope.supportItem.quoteNeeded);
+    });
   } else {
     $scope.supportItem = new SupportItem();
+    $scope.supportItem.priceControlled = Boolean($scope.supportItem.priceControlled);
+    $scope.supportItem.quoteNeeded = Boolean($scope.supportItem.quoteNeeded);
   }
-  console.log($scope.supportItem);
 
   $scope.save = function() {
-    console.log('save...');
     swal('Processing...');
     swal.disableButtons();
     $scope.supportItem.$save().then(function() {
       swal('Success', 'Support items successfully saved!', 'success');
+      $state.go('admin.supportItem.list');
     }).catch(function(err) {
       console.error(err);
       swal('', 'Something went wrong. Please try again later', 'warning');

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emarket').controller('AdminSupportItemListCtrl', function($scope, SupportItem, dialogs, $cookieStore, $state, $stateParams) {
+angular.module('emarket').controller('AdminVariantListCtrl', function($scope, Variant, dialogs, $cookieStore, $state, $stateParams) {
   $scope.stTable = {};
   $scope.stTable.itemsPerPage = $cookieStore.get('itemsPerPage') || 10;
   $scope.paginationNumbers = [10, 25, 50, 100, 500, 1000];
@@ -21,9 +21,9 @@ angular.module('emarket').controller('AdminSupportItemListCtrl', function($scope
       query.search = $stateParams.search;
     }
     _.extend(query, $scope.tableState.pagination, {filterSearch: $scope.tableState.search});
-    SupportItem.query(query, function(result) {
+    Variant.query(query, function(result) {
       $scope.loading = false;
-      $scope.supportItems = result.data;
+      $scope.variants = result.data;
       $scope.tableState.pagination.numberOfPages = Math.ceil(result.count / $scope.tableState.pagination.number);
     });
   }
