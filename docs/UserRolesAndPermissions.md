@@ -34,17 +34,17 @@ The allowed actions that each role can perform on each resource. Actions are exp
 * D : Delete (DELETE)
 * - : No permission
 
-| Role / Resource | Anonymous | Participant | Carer | Provider | SupportWorker | Planner | PlanManager | Administrator |
+| Role / Resource | Anon | Participant | Carer | Provider | Support Worker | Planner | Plan Manager | Admin |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| SupportItem | R | R |  |  |  |  |  |  |
-| Plan | - | R |  |  |  |  |  |  |
-| Participent | - | CRUD |  |  |  |  |  |  |
-| ProviderOrg | - | - |  |  |  |  |  |  |
-| Service | R | R |  |  |  |  |  |  |
-| ServiceRequest | - | CRUD |  |  |  |  |  |  |
-| Acquittal | - | CRU |  |  |  |  |  |  |
-| Payment | - | CR |  |  |  |  |  |  |
-| Account | - | R |  |  |  |  |  |  |
+| SupportItem | R | R | R | R | R | R | R | CRUD |
+| Plan | - | R | R | - | - | CRUD | R | R |
+| Participent | - | CRUD | CRUD | - | - | R | R | R |
+| ProviderOrg | - | - | - | CRUD | R | R | - | CRUD |
+| Service | R | R | R | CRUD | R | R | R | CRUD |
+| ServiceRequest | - | CRUD | CRUD | RU | R | R | R | RUD |
+| Acquittal | - | CRUD | CRUD | RU | RU | R | RU | CRUD |
+| Payment | - | CR | CR | R | R | R | CR | CR |
+| Account | - | R | R | - | - | R | R | R |
 
 # Scope Rules
 
@@ -60,6 +60,12 @@ The scope of resources over which the role permission applies.
 
 
 
-# Authentiation Model
+# Authentication Model
 
+All users will be authenticated from an external OIDC or SAML provider.
+* In the prototype system, use Google OIDC.
+* In production:
+   * Government staff (admin & planner) will authenticate using [VANguard SAML FAS](http://vanguard.business.gov.au/ourservices/Pages/Federated-Authentication-Service-(FAS).aspx)
+   * Business staff (provider, plan manager) will authenticate using [VANguard OIDC UAS](http://vanguard.business.gov.au/ourservices/Pages/User-Authentication-Service-(UAS).aspx)
+   * Individuals (participents, carers) will authenticate using [myGov OIDC](https://www.humanservices.gov.au/customer/subjects/about-mygov)
 
