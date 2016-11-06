@@ -27,17 +27,39 @@ The protected resources in the system over which users may have some permissions
 
 # Permissions
 
-The allowed actions that each role can perform on each resource.
+The allowed actions that each role can perform on each resource. Actions are expressed as CRUD (REST) Verbs.
+* C : Create (POST)
+* R : Read (GET)
+* U : Update (PUT)
+* D : Delete (DELETE)
+* - : No permission
 
 | Role / Resource | Anonymous | Participant | Carer | Provider | SupportWorker | Planner | PlanManager | Administrator |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| SupportItem |  |  |  |  |  |  |  |  |
-| Plan |  |  |  |  |  |  |  |  |
-| Participent |  |  |  |  |  |  |  |  |
-| ProviderOrg |  |  |  |  |  |  |  |  |
-| Service |  |  |  |  |  |  |  |  |
-| ServiceRequest |  |  |  |  |  |  |  |  |
-| Acquittal |  |  |  |  |  |  |  |  |
-| Payment |  |  |  |  |  |  |  |  |
-| Account |  |  |  |  |  |  |  |  |
+| SupportItem | R | R |  |  |  |  |  |  |
+| Plan | - | R |  |  |  |  |  |  |
+| Participent | - | CRUD |  |  |  |  |  |  |
+| ProviderOrg | - | - |  |  |  |  |  |  |
+| Service | R | R |  |  |  |  |  |  |
+| ServiceRequest | - | CRUD |  |  |  |  |  |  |
+| Acquittal | - | CRU |  |  |  |  |  |  |
+| Payment | - | CR |  |  |  |  |  |  |
+| Account | - | R |  |  |  |  |  |  |
+
+# Scope Rules
+
+The scope of resources over which the role permission applies.
+
+* Participants can only see their own profile, plan, account, and transactions.
+* Carers can see all resources related to participents for which they are the registered carer.
+* Providers can only see their own profile, services, account, and transactions.
+* SupportWorkers can only see ServiceRequests and acquittals in which they are the subject.
+* Planners can see any participant plan
+* PlanManagers can only see plans, accounts, and transactions for participents for which they are the registered plan manager
+* Administrators can see all resources.
+
+
+
+# Authentiation Model
+
 
