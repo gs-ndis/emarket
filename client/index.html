@@ -37,14 +37,101 @@
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div id="wrapper">
-      <div ng-include="'components/navbar/navbar.html'"></div>
-      <div ng-include="'components/sidebar/sidebar.html'" class="noprint sidebar" id="sidebar"></div>
-      <div id="page-wrapper" ng-class="{'page-collapsed-wrapper':sideBarCollapsed }" class="gray-bg">
-        <div growl></div> 
-        <div ui-view="" class="clearfix"></div>
+    <div class="clearfix nav-top-menu">
+      <div class="container">
+        <ul class="nav-links pull-left">
+          <li><a href="">Skip to main content</a></li>
+          <li><a href="">Skip to navigation</a></li>
+          <li><a href="">Skip to footer</a></li>
+        </ul>
+        <ul class="offright pull-right">
+          <li><a href="https://myplace.ndis.gov.au/ndisstorefront" class="portal-participant"></a></li>
+          <li><a href="https://myplace.ndis.gov.au/supplier" class="portal-provider"></a></li>
+        </ul>
       </div>
     </div>
+    <header role="banner">
+      <div id="header-wrapper">
+        <div id="logo-link">
+          <div class="simple-banner-component">
+            <a href="/index.html"><img title="" alt="" src="/assets/images/logo.png"></a>
+          </div>
+        </div>
+
+        <div class="ndis-region" id="ndis-search">
+          <div id="block-search-form" class="block block-search">
+            <div class="content">
+              <form role="search" action="/search" method="GET" id="search-block-form" accept-charset="UTF-8">
+                <div>
+                  <div class="container-inline">
+                    <h2 class="element-invisible">Search form</h2>
+                    <div class="form-item form-type-textfield form-item-search-block-form">
+                      <label for="edit-search-block-form--2">Search </label>
+                      <input title="Enter the terms you wish to search for." placeholder="Search for one or more keywords" id="searchText" name="searchText" value="" size="15" maxlength="128" class="form-text" onkeypress="return handleKeyType(event)" type="text">
+                    </div>
+                    <div class="form-actions form-wrapper" id="edit-actions">
+                      <button id="submitFormButton" name="op" value="Search" class="form-submit" onclick="submitContentSearch(this.form)" type="button"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div id="block-block-51" class="block block-block">
+            <div class="content">
+              <div class="contact-us">
+                <span><i class="fa fa-phone helpline-phone-icon"></i></span>
+                <span class="helpline-phone">1800 800 110</span>
+                <a href="/about-us/contact-us.html" class="contact-us-button">Contact Us</a>
+                <a href="/about-us/locations.html" class="contact-us-button">Our Locations</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="nav-menu clearfix">
+      <div class="container">
+        <ul class="nav-links">
+          <li><a href="">Home</a></li>
+          <li><a href="">People with disability</a></li>
+          <li><a href="">Families and carers</a></li>
+          <li><a href="">Participants</a></li>
+          <li><a href="">Providers</a></li>
+          <li><a href="">Community</a></li>
+          <li><a href="">News</a></li>
+          <li><a href="">About us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="home-container">
+      <div class="home-search-container">
+        <div class="home-banner-overlay"></div>
+        <div class="home-banner"></div>
+        <div class="container form-inline">
+          <h3>Support Item Catalog</h3>
+          <h4>Search(Leave blank to see all items)</h4>
+          <div class="form-group">
+            <div class="input-group">
+              <a href class="input-group-addon"><i class="fa fa-search"></i></a>
+              <input type="text" class="search-input form-control" placeholder="Wheel chair">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">Content...</div>
+      <!--      <div style="width: 1600px; height: 396px; margin: 0 auto; background: url('/assets/images/home_logo.png')">
+            </div>-->
+    </div>
+
+    <!--    <div id="wrapper">
+          <div ng-include="'components/navbar/navbar.html'"></div>
+          <div ng-include="'components/sidebar/sidebar.html'" class="noprint sidebar" id="sidebar"></div>
+          <div id="page-wrapper" ng-class="{'page-collapsed-wrapper':sideBarCollapsed }" class="gray-bg">
+            <div growl></div>
+            <div ui-view="" class="clearfix"></div>
+          </div>
+        </div>-->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
