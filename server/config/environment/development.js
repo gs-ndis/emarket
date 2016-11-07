@@ -7,6 +7,6 @@ module.exports = {
   mongo: {
     uri: 'mongodb://localhost/emarket-dev'
   },
-  domain: 'dev.emarket.com:9000',
+  domain: 'localhost:9000',
   seedDB: true
 };
