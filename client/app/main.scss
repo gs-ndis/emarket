@@ -24,11 +24,11 @@ a {
 }
 
 body {
-  background-color: #fff;
+  background-color: #f8f8f8;
   font: Verdana,Arial,Helvetica,sans-serif;
-  /*color: #6d6d6d;*/
+  color: #3b3b3b;
 }
-.container {
+.wrapper {
   margin: 0 auto;
   position: relative;
   width: 1028px;
@@ -641,4 +641,18 @@ md-input-container {
   height: 1px;
   overflow: hidden;
   position: absolute !important;
+}
+
+h1, h2 {
+  color: #1f70ae;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+h3 {
+  font-weight: bold;
+}
+p {
+  font-size: 16px;
+  padding-bottom: 20px;
 }
