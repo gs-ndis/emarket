@@ -5,6 +5,6 @@ angular.module('emarket').config(function($stateProvider) {
     url: '/',
     templateUrl: 'app/dashboard/dashboard.html',
     controller: 'DashboardCtrl',
-    authenticate: true
+    authenticate: false
   });
 });
