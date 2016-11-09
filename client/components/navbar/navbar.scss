@@ -250,7 +250,7 @@ header {
       top: 0;
       bottom: 0;
       /*width: 100%;*/
-      background: url('/assets/images/home_banner.png') no-repeat top center;
+      background: url('/assets/images/home_banner.jpg') no-repeat top center;
       background-size: cover;
       opacity: 0.2;
       /*height: 543px;*/
@@ -361,12 +361,12 @@ header {
 
 .left-sidebar {
   width: 250px;
-  /*float: left;*/
-  display: inline-block;
+  float: left;
+  /*display: inline-block;*/
 }
 .main-content {
-  display: inline-block;
-  /*float: left;*/
+  /*display: inline-block;*/
+  float: left;
   width: 778px;
   padding-left: 40px;
   vertical-align: top;

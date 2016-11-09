@@ -1,43 +1,23 @@
-<nav class="navbar-default navbar-static-side" ng-show="!sideBarCollapsed" role="navigation" ng-controller="SidebarCtrl">
-  <div class="sidebar-collapse">
-    <ul side-navigation class="nav" id="side-menu">
-      <li class="nav-header">
-        <div class="dropdown profile-element" ng-show="loggedUser" dropdown>
-          <a class="dropdown-toggle" dropdown-toggle>
-            <span class="clear">
-              <span class="block m-t-xs">
-                <strong class="font-bold">{{loggedUser.givenName}} {{loggedUser.familyName}}</strong>
-              </span>
-              <span class="text-muted text-xs block">{{loggedUser.role}} <b class="caret"></b></span>
-            </span>
-          </a>
-          <ul class="dropdown-menu m-t-xs">
-            <li><a href ui-sref="member.view({userId: loggedUser.userId})">Profile</a></li>
-            <li class="divider"></li>
-            <li><a href="javascript:void(0);" ng-click="logout()">Logout</a></li>
-          </ul>
-        </div>
-      </li>
-
-
-      <li ui-sref-active="active" ng-show="permissions.pages.dashboard.view">
-        <a ui-sref="dashboard"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a>
-      </li>
-      <li ng-if="currentUser.role === 'admin'">
-        <a ng-click="toggleMenu('admin')" href="javascript:void(0);">
-          Admin
-          <span class="glyphicon icon-collapse" ng-class="{'glyphicon-chevron-right':itemsCollapse.admin, 'glyphicon-chevron-down':!itemsCollapse.admin}"></span>
-        </a>
-
-        <ul class="nav nav-second-level" style="white-space: nowrap;">
-          <!--<li ng-class="{active: $state.includes('admin.settings')}"><a ui-sref="admin.settings"><i class="fa fa-gear"></i> Settings</a></li>-->
-          <li ng-class="{active: $state.includes('admin.users')}"><a ui-sref="admin.users.list"><i class="fa fa-user"></i> Users</a></li>
-          <li ng-class="{active: $state.includes('admin.supportItem')}"><a ui-sref="admin.supportItem.list"><i class="fa fa-folder-open"></i> Support Items</a></li>
-          <li ng-class="{active: $state.includes('admin.variant')}"><a ui-sref="admin.variant.list"><i class="fa fa-folder-open"></i> Variants</a></li>
-          <!--<li ng-class="{active: $state.includes('admin.import')}"><a ui-sref="admin.import"><i class="fa fa-file-text"></i> Import</a></li>-->
-          <!--<li ng-class="{active: $state.includes('admin.role')}"><a ui-sref="admin.role.list"><i class="fa fa-unlock-alt"></i> Roles</a></li>-->
-        </ul>
-      </li>
-    </ul>
+<div class="left-sidebar">
+  <div class="panel panel-default">
+    <div class="panel-heading">More information</div>
+    <div class="panel-body">
+      <ul class="sidenav-links">
+        <li><a href="">About the catalog</a></li>
+        <li><a href="">For Participants</a></li>
+        <li><a href="">For Providers</a></li>
+        <li><a href="">For Administrators</a></li>
+      </ul>
+    </div>
   </div>
-</nav>
+  <div class="panel panel-default" ng-if="currentUser.role === 'admin'">
+    <div class="panel-heading">Admin panel</div>
+    <div class="panel-body">
+      <ul class="sidenav-links">
+        <li ng-class="{active: $state.includes('admin.users')}"><a ui-sref="admin.users.list"><i class="fa fa-user"></i> Users</a></li>
+        <li ng-class="{active: $state.includes('admin.supportItem')}"><a ui-sref="admin.supportItem.list"><i class="fa fa-folder-open"></i> Support Items</a></li>
+        <li ng-class="{active: $state.includes('admin.variant')}"><a ui-sref="admin.variant.list"><i class="fa fa-folder-open"></i> Variants</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

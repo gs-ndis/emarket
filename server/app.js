@@ -65,11 +65,7 @@ promise
   .finally(function() {
 
 // Connect to database
-    mongoose.connect(config.mongo.uri, config.mongo.options, function(e) {
-      if (e) {
-        console.log('---------------- error', e);
-        console.log(e);
-      }
+    mongoose.connect(config.mongo.uri, config.mongo.options, function() {
       if (config.mongo.debug) {
         mongoose.set('debug', true);
       }
