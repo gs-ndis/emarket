@@ -284,7 +284,7 @@ header {
       border-radius: 5px;
       line-height: 28px;
 
-      > a {
+      & > a {
         padding: 0;
         border: none;
         margin: 0;
@@ -298,7 +298,7 @@ header {
           color: #6a2875;
         }
       }
-      > input[type=text] {
+      & > .form-control {
         padding: 12px 13px;
         padding: 0;
         border: none;

@@ -83,8 +83,6 @@ QueryBuilder.prototype.getQuery = function() {
   if (!q.$and.length) {
     delete q.$and;
   }
-  console.log('-------------------------------');
-  console.log(q);
   return q;
 };
 
