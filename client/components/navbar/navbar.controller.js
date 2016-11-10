@@ -1,6 +1,10 @@
 'use strict';
 
 angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, $location, $state, $stateParams, ipCookie, $timeout, dialogs, Auth, screenSize) {
+
+  $scope.formData = {};
+  $scope.formData.searchQuery = '';
+
   $scope.menu = [{
       'title': 'Home',
       'link': '/'
@@ -11,16 +15,7 @@ angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, 
   $scope.isAdmin = Auth.isAdmin;
   $scope.getCurrentUser = Auth.getCurrentUser;
   $timeout(function() {
-    $scope.search = $stateParams.search;
-    $scope.$watch('search', function(newVal, oldVal) {
-      if (!_.isEmpty(newVal) || !_.isEmpty(oldVal)) {
-        if ($state.current.name === 'lead.list') { //only worked on lead lists
-          $state.go($state.current.name, {search: newVal});
-        } else if (!_.isEmpty(newVal)) {
-          $state.go('lead.search', {search: newVal});
-        }
-      }
-    });
+    $scope.formData.searchQuery = $stateParams.query;
   });
 
   $rootScope.sideBarCollapsed = false;
@@ -42,10 +37,11 @@ angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, 
   $scope.toogleSideBar = function() {
     $rootScope.sideBarCollapsed = !$rootScope.sideBarCollapsed;
   };
+  console.log('navbar:', $stateParams);
 
   $rootScope.$on('$stateChangeSuccess', function() {
-    if (!$stateParams.search) {
-      $scope.search = '';
+    if (!$stateParams.query) {
+      $scope.formData.searchQuery = '';
     }
   });
 

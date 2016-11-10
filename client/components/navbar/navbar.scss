@@ -236,9 +236,6 @@ header {
 }
 
 .home-container {
-  position: relative;
-  height: 396px;
-
   .home-search-container {
     position: relative;
     height: 396px;
@@ -276,6 +273,16 @@ header {
     & > .wrapper {
       padding-top: 115px;
     }
+  }
+
+  .search-results-search-container {
+    position: relative;
+    height: 146px;
+    background-color: #63246d;
+    padding: 47px 0;
+  }
+
+  .home-search-container, .search-results-search-container {
     & .input-group {
       background-color: #fff;
       width: 590px;
@@ -284,7 +291,7 @@ header {
       border-radius: 5px;
       line-height: 28px;
 
-      & > a {
+      & > .input-group-btn {
         padding: 0;
         border: none;
         margin: 0;
@@ -292,10 +299,15 @@ header {
         font-size: 26px;
         width: 28px;
         height: 28px;
-        padding: 12px 13px;
-        background-color: #fff;
-        &:hover {
-          color: #6a2875;
+        > button {
+          padding: 12px 13px;
+          border: none;
+          background-color: #fff;
+          border-radius: 3px;
+          outline: none;
+          &:hover {
+            color: #6a2875;
+          }
         }
       }
       & > .form-control {

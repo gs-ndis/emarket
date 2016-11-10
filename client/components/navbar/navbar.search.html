@@ -1,16 +1,14 @@
 <div class="home-container">
-  <div class="home-search-container">
-    <div class="home-banner-overlay"></div>
-    <div class="home-banner"></div>
+  <div class="search-results-search-container">
     <div class="wrapper form-inline">
-      <h3>Support Item Catalog11111</h3>
-      <h4>Search(Leave blank to see all items)</h4>
-      <div class="form-group">
+      <form ng-submit="$state.go('search', {query: formData.searchQuery})">
         <div class="input-group">
-          <a href class="input-group-addon"><i class="fa fa-search"></i></a>
-          <input type="text" class="search-input form-control" placeholder="Wheel chair">
+          <span class="input-group-btn">
+            <button type="submit"><i class="fa fa-search"></i></button>
+          </span>
+          <input type="text" ng-model="formData.searchQuery" class="search-input form-control" placeholder="Wheel chair">
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>

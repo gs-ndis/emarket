@@ -1,0 +1,51 @@
+.panel.panel-search-result {
+  & > .panel-heading {
+    color: #1f70ae;
+    background-color: #fff;
+    border: none;
+    /*border-color: #ececec;*/
+    font-weight: bold;
+    font-size: 20px;
+    padding: 0;
+    & > a {
+      display: block;
+      color: #1f70ae;
+      padding: 20px 30px 10px 30px;
+    }
+  }
+
+  & > .panel-subheading {
+    padding: 0 30px 10px 30px;
+    color: #ababab;
+    .support-item-tags {
+      &:before {
+        display: inline-block;
+        padding-right: 10px;
+        font-family: 'FontAwesome';
+        content: '\f02c';
+      }
+    }
+    .support-item-date {
+      &:before {
+        display: inline-block;
+        content: '|';
+        padding: 0 10px;
+      }
+    }
+  }
+
+  & > .panel-body {
+    padding: 0 30px 40px 30px;
+    color: #3b3b3b;
+    background-color: #fff;
+    border-color: #ececec;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    font-size: 16px;
+  }
+
+  .panel-heading {
+    color: #1f70ae;
+  }
+}
+
