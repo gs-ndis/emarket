@@ -14,13 +14,13 @@ angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, 
 //    $rootScope.contentfulData = data.items;
     console.log('----------------');
 //    console.log(data);
-    $rootScope.helpBlocks = _.filter($rootScope.contentfulData.items, (item) => {
+    $rootScope.helpBlocks = _.filter($rootScope.contentfulData.items, function(item) {
       return item.sys.contentType.sys.id === 'helpBlock';
     });
-    $rootScope.menu = _.sortBy(_.filter($rootScope.contentfulData.items, (item) => {
+    $rootScope.menu = _.sortBy(_.filter($rootScope.contentfulData.items, function(item) {
       return item.sys.contentType.sys.id === 'page' && item.fields.displayInMenu;
     }), function(item) {
-      return - item.fields.displayPriority;
+      return -item.fields.displayPriority;
     });
   });
 
