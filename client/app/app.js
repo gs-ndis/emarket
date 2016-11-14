@@ -40,7 +40,8 @@ angular.module('emarket', [
   'ui.gravatar',
   'matchMedia',
   'ui.indeterminate',
-  'mgo-angular-wizard'
+  'mgo-angular-wizard',
+  'btford.markdown'
 ]).config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, growlProvider, $provide, $compileProvider) {
   $urlRouterProvider.otherwise('/');
 

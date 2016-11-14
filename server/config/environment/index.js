@@ -31,6 +31,7 @@ var all = {
   env: process.env.NODE_ENV,
   // Root path of server
   root: path.normalize(__dirname + '/../../..'),
+  contentfulFilePath: path.normalize(__dirname + '/../../../tmp/contentful.data.json'),
   //path to mongodb backups folder. for restore backup we can use https://github.com/hex7c0/mongodb-restore-cli
   backupFolder: path.normalize(__dirname + '/../../../mongodb_backups'),
   // Server port
@@ -81,8 +82,12 @@ var all = {
      * Months: 0-11
      * Day of Week: 0-6
      */
+    refreshContentfulCache: '0 0 */1 * * *', // every 60 minutes
   },
-  basicAuth: {user: 'frontend', password: 'zsj0hzfeYjJ'}
+  contentful: {
+    accessToken: '65ea9057d1642391752e0dc304fb58e5ab3f8dccd4c2281a5c3980e70fdf88df',
+    space: 'mt72vq0fhcvu'
+  }
 };
 
 // Export the config object based on the NODE_ENV

@@ -1,14 +1,35 @@
 'use strict';
 
-angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, $location, $state, $stateParams, ipCookie, $timeout, dialogs, Auth, screenSize) {
+angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, Content, $location, $state, $stateParams, ipCookie, $timeout, dialogs, Auth, screenSize) {
 
   $scope.formData = {};
   $scope.formData.searchQuery = '';
+  $rootScope.helpBlocks = [];
+  $rootScope.menu = [];
+  if (!$rootScope.contentfulData || !$rootScope.contentfulData.$promise) {
+    $rootScope.contentfulData = Content.query();
+  }
+  $rootScope.contentfulData.$promise.then(function() {
+//  $rootScope.contentfulData = Content.query(function(data) {
+//    $rootScope.contentfulData = data.items;
+    console.log('----------------');
+//    console.log(data);
+    $rootScope.helpBlocks = _.filter($rootScope.contentfulData.items, (item) => {
+      return item.sys.contentType.sys.id === 'helpBlock';
+    });
+    $rootScope.menu = _.sortBy(_.filter($rootScope.contentfulData.items, (item) => {
+      return item.sys.contentType.sys.id === 'page' && item.fields.displayInMenu;
+    }), function(item) {
+      return - item.fields.displayPriority;
+    });
+  });
 
-  $scope.menu = [{
-      'title': 'Home',
-      'link': '/'
-    }];
+
+
+//  $scope.menu = [{
+//      'title': 'Home',
+//      'link': '/'
+//    }];
 
   $scope.isCollapsed = true;
 //  $scope.isLoggedIn = Auth.isLoggedIn;

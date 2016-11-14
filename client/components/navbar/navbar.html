@@ -55,23 +55,25 @@
   <div class="nav-menu clearfix">
     <div class="wrapper">
       <ul class="nav-links">
-        <li><a href="">Home</a></li>
+        <li ng-repeat="page in menu"><a ui-sref="content({id: page.sys.id})">{{page.fields.title}}</a></li>
+<!--        <li><a href="">Home</a></li>
         <li><a href="">People with disability</a></li>
         <li><a href="">Families and carers</a></li>
         <li><a href="">Participants</a></li>
         <li><a href="">Providers</a></li>
         <li><a href="">Community</a></li>
         <li><a href="">News</a></li>
-        <li><a href="">About us</a></li>
+        <li><a href="">About us</a></li>-->
       </ul>
     </div>
   </div>
-  <div ng-include="'components/navbar/navbar.search.dashboard.html'" ng-if="$state.includes('dashboard')"></div>
+  <div ng-include="'components/navbar/navbar.search.dashboard.html'" ng-if="!$state.includes('search') && !$state.includes('supportItem')"></div>
   <div ng-include="'components/navbar/navbar.search.html'" ng-if="$state.includes('search')"></div>
 
-  <div class="home-navbar">
+  <div class="home-navbar" ng-if="breadcrumbs">
     <div class="wrapper">
       <ol class="breadcrumb">
+        <li ng-repeat="breadcrumb in breadcrumbs"><a ui-sref="breadcrumb.state">{{breadcrumb.title}}</a></li>
         <li><a href="#">Home</a></li>
         <li><a href="#">Providers</a></li>
         <li class="active">Pricing and payment</li>
