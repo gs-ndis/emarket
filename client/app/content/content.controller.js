@@ -3,7 +3,6 @@
 angular.module('emarket').controller('ContentCtrl', function($scope, Content, $stateParams, $rootScope) {
   console.log('ContentCtrl controller');
   if ($stateParams.id) {
-    console.log('_______-----------------------');
     if (!$rootScope.contentfulData || !$rootScope.contentfulData.$promise) {
       $rootScope.contentfulData = Content.query();
     }

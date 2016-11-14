@@ -4,7 +4,7 @@ var CronJob = require('cron').CronJob;
 var Agenda = require('agenda');
 var config = require('../config/environment');
 var Promise = require('bluebird');
-var contentfulClient = require('./contentful.client')
+var contentfulClient = require('./contentful.client');
 
 function initScheduler() {
   var agenda = new Agenda({db: {address: config.mongo.uri}});
