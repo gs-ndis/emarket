@@ -8,8 +8,10 @@ var VariantSchema = new Schema({
   description: String,
   unit: String,
   validFrom: Date,
+  price: Number,
   locations: [],
   attributes: [{}],
+  supportItemId: Number,
   _supportItem: {type: Schema.Types.ObjectId, ref: 'SupportItem'}
 });
 

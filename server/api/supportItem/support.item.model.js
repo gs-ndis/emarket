@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var SupportItemSchema = new Schema({
+  name: String,
   description: String,
   registrationGroup: String,
   priceControlled: Boolean,
@@ -13,7 +14,8 @@ var SupportItemSchema = new Schema({
   purpose: String,
   disability: [],
   variantConfigurations: [{type: Schema.Types.ObjectId, ref: 'VariantConfiguration'}],
-  variants: [{type: Schema.Types.ObjectId, ref: 'Variant'}]
+  variants: [{type: Schema.Types.ObjectId, ref: 'Variant'}],
+  created: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('SupportItem', SupportItemSchema);

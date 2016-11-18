@@ -17,6 +17,7 @@ module.exports = function(app) {
   app.use('/api/supportItems', require('./api/supportItem'));
   app.use('/api/variants', require('./api/variant'));
   app.use('/api/content', require('./api/content'));
+  app.use('/api/import', require('./api/import'));
 
   app.use('/auth', require('./auth'));
   app.use(function(err, req, res, next) {

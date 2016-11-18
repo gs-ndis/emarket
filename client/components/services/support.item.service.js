@@ -7,6 +7,18 @@ angular.module('emarket').factory('SupportItem', function($resource) {
     },
     update: {
       method: 'PUT'
+    },
+    search: {
+      isArray: false,
+      params: {
+        action: 'search'
+      }
+    },
+    relatedItems: {
+      isArray: true,
+      params: {
+        action: 'relatedItems'
+      }
     }
   });
 });

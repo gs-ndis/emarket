@@ -4,6 +4,7 @@ var helper = require('./helper');
 
 function QueryBuilder(params) {
   this._searchData = {};
+  this._baseParams = params;
   this._query = {};
 
   if (params.filterSearch) {
@@ -24,8 +25,12 @@ function QueryBuilder(params) {
   }
 }
 
+QueryBuilder.prototype._get = function(path, defaultValue) {
+  return _.get(this._searchData, path, _.get(this._baseParams, path, defaultValue));
+};
+
 QueryBuilder.prototype.andString = function(path) {
-  var value = _.get(this._searchData, path);
+  var value = this._get(path);
   if (!_.isUndefined(value)) {
     this._query.$and.push(_.set({}, path, helper.wrapRegExp(value)));
   }
@@ -33,7 +38,7 @@ QueryBuilder.prototype.andString = function(path) {
 };
 
 QueryBuilder.prototype.andBoolean = function(path) {
-  var value = _.get(this._searchData, path);
+  var value = this._get(path);
   if (!_.isUndefined(value)) {
     this._query.$and.push(_.set({}, path, Boolean(value)));
   }
@@ -41,7 +46,7 @@ QueryBuilder.prototype.andBoolean = function(path) {
 };
 
 QueryBuilder.prototype.andNumber = function(path) {
-  var value = _.get(this._searchData, path);
+  var value = this._get(path);
   if (!_.isUndefined(value)) {
     this._query.$and.push(_.set({}, path, Number(value)));
   }
@@ -49,8 +54,8 @@ QueryBuilder.prototype.andNumber = function(path) {
 };
 
 QueryBuilder.prototype.andListString = function(path) {
-  var matchAll = _.get(this._searchData, path + '.matchAny.all');
-  var items = _.get(this._searchData, path + '.matchAny.items', []);
+  var matchAll = this._get(path + '.matchAny.all');
+  var items = this._get(path + '.matchAny.items', []);
   if (!matchAll && items.length) {
     this._query.$and.push(_.set({}, path, {$in: items}));
   }
@@ -58,8 +63,8 @@ QueryBuilder.prototype.andListString = function(path) {
 };
 
 QueryBuilder.prototype.andListBoolean = function(path) {
-  var matchAll = Boolean(_.get(this._searchData, path + '.matchAny.all'));
-  var items = _.get(this._searchData, path + '.matchAny.items', []);
+  var matchAll = Boolean(this._get(path + '.matchAny.all'));
+  var items = this._get(path + '.matchAny.items', []);
   if (!matchAll && items.length) {
     var $orPart = [];
     _.each(items, function(item) {

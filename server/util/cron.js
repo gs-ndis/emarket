@@ -24,7 +24,7 @@ function refreshContentfulCache() {
       contentfulClient.refreshCache();
     },
     start: true,
-    runOnInit: true
+    runOnInit: false
   });
 }
 

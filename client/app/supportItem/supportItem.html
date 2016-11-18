@@ -1,7 +1,7 @@
 <div class="wrapper">
   <div class="support-item-details">
     <div class="support-item-details-title clearfix">
-      <h2 class="pull-left">Wheel chair Manual</h2>
+      <h2 class="pull-left">{{supportItem.fields.title['en-US']}}</h2>
       <div class="buttons pull-right">
         <button class="btn btn-white"><i class="fa fa-print"></i>&nbsp;Print PDF</button>
         <button class="btn btn-green"><i class="fa fa-pencil"></i>&nbsp;Edit</button>
@@ -14,28 +14,24 @@
         </div>
       </div>
       <div class="support-item-right-block">
-        <div class="support-item-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+        <div class="support-item-description" btf-markdown="supportItem.fields.description['en-US']"></div>
         <div class="support-item-attributes">
           <table>
             <tr>
               <td>Registration Group</td>
-              <td>Personal Mobility Equipment</td>
+              <td>{{supportItem.fields.registrationGroup['en-US']}}</td>
             </tr>
             <tr>
               <td>Support Category</td>
-              <td>Assistive Technology</td>
+              <td>{{supportItem.fields.category['en-US']}}</td>
             </tr>
             <tr>
               <td>Price Controlled</td>
-              <td>No</td>
+              <td>{{supportItem.fields.priceControlled['en-US']| yesNo}}</td>
             </tr>
             <tr>
               <td>Quote Needed</td>
-              <td>No</td>
-            </tr>
-            <tr>
-              <td>Funding unit</td>
-              <td>Each</td>
+              <td>{{supportItem.fields.quoteNeeded['en-US']| yesNo}}</td>
             </tr>
           </table>
         </div>
@@ -51,87 +47,55 @@
         <button class="btn btn-green"><i class="fa fa-plus-circle"></i>&nbsp;Add variant</button>
       </div>
     </div>
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-show="variants.length">
       <table class="table table-bordered table-hover">
         <tr>
           <th>Description</th>
           <th>Item Code</th>
           <th>Price Cap</th>
           <th>Locations</th>
-          <th>Custom</th>
-          <th>Type</th>
-          <th>Size</th>
+          <!--<th>Custom</th>-->
+          <!--<th>Type</th>-->
+          <!--<th>Size</th>-->
         </tr>
-        <tr>
-          <td>Standard adult wheelchair</td>
-          <td>05_122203105_0104_1_2</td>
-          <td>None</td>
+        <tr ng-repeat="variant in variants">
+          <td>{{variant.description}}</td>
+          <td>{{variant.variantId}}</td>
+          <td>{{variant.price|| None}}</td>
           <td>All</td>
-          <td>None</td>
-          <td>Standard</td>
-          <td>Adult</td>
-        </tr>
-        <tr>
-          <td>Folding adult wheelchair</td>
-          <td>05_122203105_0104_1_2</td>
-          <td>None</td>
-          <td>All</td>
-          <td>None</td>
-          <td>Standard</td>
-          <td>Adult</td>
-        </tr>
-        <tr>
-          <td>Attendant driven adult wheelchair</td>
-          <td>05_122203105_0104_1_2</td>
-          <td>None</td>
-          <td>All</td>
-          <td>None</td>
-          <td>Standard</td>
-          <td>Adult</td>
+          <!--<td>None</td>-->
+          <!--<td>Standard</td>-->
+          <!--<td>Adult</td>-->
         </tr>
       </table>
     </div>
-    <div class="support-item-additional-info-heading clearfix">
-      <h3 class="pull-left">Related Items</h3>
-      <div class="buttons pull-right">
-        <button class="btn btn-green"><i class="fa fa-plus-circle"></i>&nbsp;Add item</button>
+    <div ng-show="supportItem.relatedItems.length">
+      <div class="support-item-additional-info-heading clearfix">
+        <h3 class="pull-left">Related Items</h3>
+        <div class="buttons pull-right">
+          <button class="btn btn-green"><i class="fa fa-plus-circle"></i>&nbsp;Add item</button>
+        </div>
       </div>
-    </div>
-    <div class="panel panel-default">
-      <table class="table table-bordered table-hover">
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Category</th>
-          <th>Relationship</th>
-          <th>Priced</th>
-          <th>Quoted</th>
-        </tr>
-        <tr>
-          <td>Vehicle Modifications</td>
-          <td>Adaptions to vehicles to support ...</td>
-          <td>Assitive technology</td>
-          <td>Complements</td>
-          <td>No</td>
-          <td>Yes</td>
-        </tr>
-        <tr>
-          <td>Cushions and rests</td>
-          <td>Postural supports lorem ipsum...</td>
-          <td>Assitive technology</td>
-          <td>May include</td>
-          <td>All</td>
-          <td>All</td>
-        </tr>
-        <tr>
-          <td>Delivery Setup / Training</td>
-          <td>Deliver, installation and training</td>
-          <td>Assitive technology</td>
-          <td>May include</td>
-          <td>All</td>
-          <td>All</td>
-        </tr>
-      </table>
+      <div class="panel panel-default">
+        <table class="table table-bordered table-hover">
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Registration Group</th>
+            <th>Priced</th>
+            <th>Quoted</th>
+          </tr>
+          <tr ng-repeat="item in supportItem.relatedItems">
+            <td>{{item.fields.title['en-US']}}</td>
+            <td>{{item.fields.description['en-US']| substr:true:50}}</td>
+            <td>{{item.fields.category['en-US']}}</td>
+            <td>{{item.fields.registrationGroup['en-US']}}</td>
+            <td>{{item.fields.priceControlled['en-US']| yesNo}}</td>
+            <td>{{item.fields.quoteNeeded['en-US']| yesNo}}</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </div>

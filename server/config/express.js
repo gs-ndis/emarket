@@ -29,6 +29,7 @@ module.exports = function(app) {
   app.use(compression());
   app.use(bodyParser.urlencoded({extended: false, limit: '32mb'}));
   app.use(bodyParser.json({limit: '32mb'}));
+  app.use(bodyParser.json({type: 'application/*+json'}));
   app.use(multer({dest: config.root + '/uploads/'}));
   app.use(methodOverride());
   app.use(cookieParser());

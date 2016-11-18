@@ -4,8 +4,12 @@ var _ = require('lodash');
 var SupportItem = require('./support.item.model');
 var errorSender = require('../../util/errorSender');
 var QueryBuilder = require('../../util/query.builder');
+var helper = require('../../util/helper');
+var Content = require('../content/content.model');
+var Variant = require('../variant/variant.model');
 
 exports.index = function(req, res) {
+  console.log('test');
   var queryBuilder = new QueryBuilder(req.query);
 
   queryBuilder.andString('description')
@@ -26,17 +30,47 @@ exports.index = function(req, res) {
     }).bind(res).catch(errorSender.handlePromiseError);
 };
 
+exports.search = function(req, res) {
+  var searchStr = req.query.query || '';
+  var query = {};
+  query['sys.contentType.sys.id'] = 'supportItem';
+  var $or = [];
+  $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
+  query.$or = $or;
+
+  var request = Content.find(query)
+//    .skip(queryBuilder.skip)
+//    .limit(queryBuilder.limit)
+    .exec();
+  return Promise.props({data: request, count: Content.count(query)})
+    .then(function(data) {
+      return res.json(data);
+    }).bind(res).catch(errorSender.handlePromiseError);
+};
+
 exports.show = function(req, res) {
   if (!req.params.id) {
     throw errorSender.statusError(422);
   }
-  SupportItem.findById(req.params.id)
-    .then(function(supportItem) {
-      if (!supportItem) {
-        throw errorSender.statusError(404);
-      }
-      return res.json(supportItem);
-    }).bind(res).catch(errorSender.handlePromiseError);
+  Content.findOne({'sys.id': req.params.id}).then(function(supportItem) {
+    if (!supportItem) {
+      throw errorSender.statusError(404);
+    }
+    supportItem = supportItem.toObject();
+    var ids = _.chain(_.get(supportItem, 'fields.relatedItems["en-US"]', [])).map('sys.id').compact().uniq().value();
+    if (!ids.length) {
+      supportItem.relatedItems = [];
+      return supportItem;
+    }
+    return Content.find({'sys.id': {$in: ids}}).then(function(relatedItems) {
+      supportItem.relatedItems = relatedItems;
+      return supportItem;
+    });
+  }).then(function(supportItem) {
+    return res.json(supportItem);
+  }).bind(res).catch(errorSender.handlePromiseError);
 };
 
 exports.create = function(req, res) {
