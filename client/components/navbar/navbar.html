@@ -55,7 +55,7 @@
   <div class="nav-menu clearfix">
     <div class="wrapper">
       <ul class="nav-links">
-        <li ng-repeat="page in menu"><a ui-sref="content({id: page.sys.id})">{{page.fields.title}}</a></li>
+        <li ng-repeat="page in menu"><a ui-sref="content({id: page.sys.id})">{{page.fields.title['en-US']}}</a></li>
 <!--        <li><a href="">Home</a></li>
         <li><a href="">People with disability</a></li>
         <li><a href="">Families and carers</a></li>

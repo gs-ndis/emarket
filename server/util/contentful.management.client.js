@@ -6,7 +6,8 @@ var _ = require('lodash');
 var Promise = require('bluebird');
 
 var client = contentful.createClient({
-  accessToken: 'e5e9d13b410f65dd347aed496ad31bc3da695b7c19aa827c8dfe2450490dc595'
+  accessToken: 'e5e9d13b410f65dd347aed496ad31bc3da695b7c19aa827c8dfe2450490dc595',
+  locale: 'en-US'
 });
 
 
@@ -32,7 +33,25 @@ function print(json) {
 }
 
 
-console.log('...');
+//console.log('...');
+//
+//var id = 'iZG4tZCe1Gag6ogsweM6Q';
+//
+//client.getSpace(config.contentful.space).then(function(space) {
+//  space.getEntry(id).then(function(data) {
+//    print(data.toPlainObject());
+//  });
+//  var query = {};
+//  query['content_type'] = 'supportItem';
+//  space.getEntries(query).then(function(data) {
+//    console.log(data);
+////    print(data);
+//  });
+////  space.getEntry(id).then(function(data) {
+////    print(data.toPlainObject());
+////  });
+//});
+
 //client.getSpace(config.contentful.space).then(function(space) {
 //  console.log('test');
 //  return space.getContentType('supportItem').then(function(supportItem) {

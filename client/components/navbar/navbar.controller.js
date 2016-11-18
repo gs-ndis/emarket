@@ -6,23 +6,25 @@ angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, 
   $scope.formData.searchQuery = '';
   $rootScope.helpBlocks = [];
   $rootScope.menu = [];
-  if (!$rootScope.contentfulData || !$rootScope.contentfulData.$promise) {
-    $rootScope.contentfulData = Content.query();
-  }
-  $rootScope.contentfulData.$promise.then(function() {
-//  $rootScope.contentfulData = Content.query(function(data) {
-//    $rootScope.contentfulData = data.items;
-    console.log('----------------');
-//    console.log(data);
-    $rootScope.helpBlocks = _.filter($rootScope.contentfulData.items, function(item) {
-      return item.sys.contentType.sys.id === 'helpBlock';
-    });
-    $rootScope.menu = _.sortBy(_.filter($rootScope.contentfulData.items, function(item) {
-      return item.sys.contentType.sys.id === 'page' && item.fields.displayInMenu;
-    }), function(item) {
-      return -item.fields.displayPriority;
-    });
-  });
+  $rootScope.helpBlocks = Content.query({'sys.contentType.sys.id': 'helpBlock', includeRelated: 'links', fields: ['title']});
+  $rootScope.menu = Content.query({'sys.contentType.sys.id': 'page'});
+//  if (!$rootScope.contentfulData || !$rootScope.contentfulData.$promise) {
+//    $rootScope.contentfulData = Content.query();
+//  }
+//  $rootScope.contentfulData.$promise.then(function() {
+////  $rootScope.contentfulData = Content.query(function(data) {
+////    $rootScope.contentfulData = data.items;
+//    console.log('----------------');
+////    console.log(data);
+//    $rootScope.helpBlocks = _.filter($rootScope.contentfulData.items, function(item) {
+//      return item.sys.contentType.sys.id === 'helpBlock';
+//    });
+//    $rootScope.menu = _.sortBy(_.filter($rootScope.contentfulData.items, function(item) {
+//      return item.sys.contentType.sys.id === 'page' && item.fields.displayInMenu;
+//    }), function(item) {
+//      return -item.fields.displayPriority;
+//    });
+//  });
 
 
 

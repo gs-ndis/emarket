@@ -3,13 +3,45 @@
 var config = require('../../config/environment');
 var errorSender = require('../../util/errorSender');
 var contentfulClient = require('../../util/contentful.client');
+var contentfulManagementClient = require('../../util/contentful.management.client');
+
 var Content = require('./content.model');
 var fs = require('fs');
 
 exports.index = function(req, res) {
-  fs.readFile(config.contentfulFilePath, 'utf-8', function(err, data) {
-    res.json(200, JSON.parse(data) || {});
-  });
+  var query = {};
+  if (req.query['sys.contentType.sys.id']) {
+    query['sys.contentType.sys.id'] = req.query['sys.contentType.sys.id'];
+  }
+
+  Content.find(query).then(function(results) {
+    if (req.query.includeRelated) {
+      return Promise.map(results, function(content) {
+        content = content.toObject();
+        var ids = _.chain(_.get(content, 'fields.' + req.query.includeRelated + '["en-US"]', [])).map('sys.id').compact().uniq().value();
+        if (!ids.length) {
+          content[req.query.includeRelated] = [];
+          return content;
+        }
+        var displayFields = {};
+        if (req.query.fields) {
+          console.log(req.query.fields, typeof req.query.fields);
+          _.each(_.flatten([req.query.fields]), function(field) {
+            displayFields['fields.' + field + '.en-US'] = 1;
+          });
+          displayFields['sys.id'] = 1;
+        }
+
+        return Content.find({'sys.id': {$in: ids}}, displayFields).then(function(relatedItems) {
+          content[req.query.includeRelated] = relatedItems;
+          return content;
+        });
+      });
+    }
+    return results;
+  }).then(function(results) {
+    res.json(results);
+  }).bind(res).catch(errorSender.handlePromiseError);
 };
 
 var actions = {
@@ -69,7 +101,6 @@ exports.show = function(req, res) {
       var ids = _.chain(_.get(content, 'fields.' + req.query.includeRelated + '["en-US"]', [])).map('sys.id').compact().uniq().value();
       if (!ids.length) {
         content[req.query.includeRelated] = [];
-//        content.relatedItems = [];
         return content;
       }
       var displayFields = {};
@@ -78,7 +109,7 @@ exports.show = function(req, res) {
           displayFields['fields.' + field + '.en-US'] = 1;
         });
       }
-      
+
       return Content.find({'sys.id': {$in: ids}}, displayFields).then(function(relatedItems) {
         content[req.query.includeRelated] = relatedItems;
         return content;
@@ -88,29 +119,22 @@ exports.show = function(req, res) {
     return res.json(content);
   }).bind(res).catch(errorSender.handlePromiseError);
 };
-//
-//exports.getRelatedItems = function(req, res) {
-//  if (!req.params.id) {
-//    throw errorSender.statusError(422);
-//  }
-//  var field = req.params.field;
-//  if (!field) {
-//    throw errorSender.statusError(422);
-//  }
-//  Content.findOne({'sys.id': req.params.id}).then(function(content) {
-//    if (!content) {
-//      throw errorSender.statusError(404);
-//    }
-//    var ids = _.chain(content.fields.relatedItems['en-US']).map('id').compact().uniq().value();
-//    return Content.find({'sys.id': {$in: ids}});
-//  }).then(function(relatedItems) {
-//    res.json(relatedItems);
-//  }).bind(res).catch(errorSender.handlePromiseError);
-//};
 
-
-exports.initData = function() {
-
+exports.initData = function(req, res) {
+  Content.remove({}).then(function() {
+    return contentfulManagementClient.getSpace(config.contentful.space).then(function(space) {
+      return space.getEntries();
+    });
+//    return contentfulClient.getEntries({resolveLinks: false});
+  }).then(function(data) {
+    return Promise.each(data.items, function(entry) {
+      return new Content(entry).save();
+    });
+  }).then(function() {
+    if (res) {
+      res.send(200);
+    }
+  }).bind(res).catch(errorSender.handlePromiseError);
 };
 
 

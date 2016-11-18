@@ -12,10 +12,10 @@
   </div>-->
 
   <div class="panel panel-default" ng-repeat="helpBlock in helpBlocks">
-    <div class="panel-heading">{{helpBlock.fields.title}}</div>
+    <div class="panel-heading">{{helpBlock.fields.title['en-US']}}</div>
     <div class="panel-body">
       <ul class="sidenav-links">
-        <li ng-repeat="link in helpBlock.fields.links"><a ui-sref="content({id: link.sys.id})">{{link.fields.title}}</a></li>
+        <li ng-repeat="link in helpBlock.links"><a ui-sref="content({id: link.sys.id})">{{link.fields.title['en-US']}}</a></li>
       </ul>
     </div>
   </div>
