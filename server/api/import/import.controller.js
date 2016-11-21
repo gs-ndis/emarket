@@ -52,25 +52,26 @@ exports.index = function(req, res) {
   console.log('---------------------');
   console.log(supportCategories);
   Promise.resolve().then(function() {
-    return updateSupportItemType(supportCategories, registrationGroups);
-  }).then(function() {
-    console.log('next...');
-    return Promise.each(_.keys(supportItemsGroups), function(key) {
-      if (!key.length) {
-        return;
-      }
-      var item = _.head(supportItemsGroups[key]);
-      var newSupportItem = {
-        fields: {
-          supportItemId: {'en-US': Number(item['Support Item ID'])},
-          title: {'en-US': _.trim(key)},
-          category: {'en-US': _.trim(item['Support Categories'])},
-          registrationGroup: {'en-US': _.trim(item['Registration Group'])},
-          description: {'en-US': _.trim(item['Support Item Description'])}
-        }
-      };
-      return createSupportItemEntry(newSupportItem);
-    });
+//    return updateSupportItemType(supportCategories, registrationGroups);
+//  }).then(function() {
+//    console.log('next...');
+//    return Promise.each(_.keys(supportItemsGroups), function(key) {
+//      if (!key.length) {
+//        return;
+//      }
+//      var item = _.head(supportItemsGroups[key]);
+//      var newSupportItem = {
+//        fields: {
+//          supportItemId: {'en-US': Number(item['Support Item ID'])},
+//          title: {'en-US': _.trim(key)},
+//          category: {'en-US': _.trim(item['Support Categories'])},
+//          registrationGroup: {'en-US': _.trim(item['Registration Group'])},
+//          description: {'en-US': _.trim(item['Support Item Description'])}
+//        }
+//      };
+//      return createSupportItemEntry(newSupportItem);
+//    });
+    return Variant.remove({}).exec();
   }).then(function() {
     console.log('create variants...');
     return Promise.each(parsed.data, function(variantData) {
