@@ -7,31 +7,11 @@ angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, 
   $rootScope.helpBlocks = [];
   $rootScope.menu = [];
   $rootScope.helpBlocks = Content.query({'sys.contentType.sys.id': 'helpBlock', includeRelated: 'links', fields: ['title']});
-  $rootScope.menu = Content.query({'sys.contentType.sys.id': 'page'});
-//  if (!$rootScope.contentfulData || !$rootScope.contentfulData.$promise) {
-//    $rootScope.contentfulData = Content.query();
-//  }
-//  $rootScope.contentfulData.$promise.then(function() {
-////  $rootScope.contentfulData = Content.query(function(data) {
-////    $rootScope.contentfulData = data.items;
-//    console.log('----------------');
-////    console.log(data);
-//    $rootScope.helpBlocks = _.filter($rootScope.contentfulData.items, function(item) {
-//      return item.sys.contentType.sys.id === 'helpBlock';
+  $rootScope.menu = Content.query({'sys.contentType.sys.id': 'page', sortBy: '-fields.displayPriority.en-US'}, function() {
+//    $rootScope.menu = _.sortBy($rootScope.menu, function(item) {
+//      return -item.fields.displayPriority['en-US'];
 //    });
-//    $rootScope.menu = _.sortBy(_.filter($rootScope.contentfulData.items, function(item) {
-//      return item.sys.contentType.sys.id === 'page' && item.fields.displayInMenu;
-//    }), function(item) {
-//      return -item.fields.displayPriority;
-//    });
-//  });
-
-
-
-//  $scope.menu = [{
-//      'title': 'Home',
-//      'link': '/'
-//    }];
+  });
 
   $scope.isCollapsed = true;
 //  $scope.isLoggedIn = Auth.isLoggedIn;

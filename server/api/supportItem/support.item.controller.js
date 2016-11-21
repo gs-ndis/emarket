@@ -38,6 +38,7 @@ exports.search = function(req, res) {
   $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
   query.$or = $or;
 
   var request = Content.find(query)

@@ -13,33 +13,41 @@ exports.index = function(req, res) {
   if (req.query['sys.contentType.sys.id']) {
     query['sys.contentType.sys.id'] = req.query['sys.contentType.sys.id'];
   }
+//  var sort = {};
+//  if (req.query.sortBy) {
+//    sort[req.query.sortBy] = req.query.desc ? 1 : -1;
+//  }
+  console.log('sort:', req.query.sortBy);
 
-  Content.find(query).then(function(results) {
-    if (req.query.includeRelated) {
-      return Promise.map(results, function(content) {
-        content = content.toObject();
-        var ids = _.chain(_.get(content, 'fields.' + req.query.includeRelated + '["en-US"]', [])).map('sys.id').compact().uniq().value();
-        if (!ids.length) {
-          content[req.query.includeRelated] = [];
-          return content;
-        }
-        var displayFields = {};
-        if (req.query.fields) {
-          console.log(req.query.fields, typeof req.query.fields);
-          _.each(_.flatten([req.query.fields]), function(field) {
-            displayFields['fields.' + field + '.en-US'] = 1;
+  Content.find(query)
+    .sort(req.query.sortBy)
+    .limit(Number(req.query.limit) || 0)
+    .then(function(results) {
+      if (req.query.includeRelated) {
+        return Promise.map(results, function(content) {
+          content = content.toObject();
+          var ids = _.chain(_.get(content, 'fields.' + req.query.includeRelated + '["en-US"]', [])).map('sys.id').compact().uniq().value();
+          if (!ids.length) {
+            content[req.query.includeRelated] = [];
+            return content;
+          }
+          var displayFields = {};
+          if (req.query.fields) {
+            console.log(req.query.fields, typeof req.query.fields);
+            _.each(_.flatten([req.query.fields]), function(field) {
+              displayFields['fields.' + field + '.en-US'] = 1;
+            });
+            displayFields['sys.id'] = 1;
+          }
+
+          return Content.find({'sys.id': {$in: ids}}, displayFields).then(function(relatedItems) {
+            content[req.query.includeRelated] = relatedItems;
+            return content;
           });
-          displayFields['sys.id'] = 1;
-        }
-
-        return Content.find({'sys.id': {$in: ids}}, displayFields).then(function(relatedItems) {
-          content[req.query.includeRelated] = relatedItems;
-          return content;
         });
-      });
-    }
-    return results;
-  }).then(function(results) {
+      }
+      return results;
+    }).then(function(results) {
     res.json(results);
   }).bind(res).catch(errorSender.handlePromiseError);
 };
