@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emarket').controller('ContentCtrl', function($scope, Content, $stateParams, $rootScope) {
+angular.module('emarket').controller('ContentCtrl', function($scope, Content, $stateParams) {
   console.log('ContentCtrl controller');
   $scope.data = Content.get({id: $stateParams.id});
 //  if ($stateParams.id) {

@@ -1,15 +1,13 @@
-<div class="left-sidebar">
-<!--  <div class="panel panel-default">
-    <div class="panel-heading">More information</div>
+<div class="left-sidebar" ng-controller="SidebarCtrl">
+  <div class="panel panel-default facets-panel" ng-show="$state.includes('search')">
+    <!--<div class="panel-heading"></div>-->
     <div class="panel-body">
       <ul class="sidenav-links">
-        <li><a href="">About the catalog</a></li>
-        <li><a href="">For Participants</a></li>
-        <li><a href="">For Providers</a></li>
-        <li><a href="">For Administrators</a></li>
+        <li ui-sref-active="active"><a ui-sref="search({category: null})">All<span ng-show="totalFacetsCount > 0">&nbsp;({{totalFacetsCount}})</span></a></li>
+        <li ng-repeat="facet in searchFacets" ui-sref-active="active"><a ui-sref="search({category: facet._id})">{{facet._id}}<span ng-show="facet.count > 0">&nbsp;({{facet.count}})</span></a></li>
       </ul>
     </div>
-  </div>-->
+  </div>
 
   <div class="panel panel-default" ng-repeat="helpBlock in helpBlocks">
     <div class="panel-heading">{{helpBlock.fields.title['en-US']}}</div>

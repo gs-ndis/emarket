@@ -8,6 +8,7 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/search', controller.search);
+router.get('/facets', controller.facets);
 //router.get('/relatedItems/:id', controller.getRelatedItems);
 router.get('/:id', controller.show);
 router.post('/', auth.hasRole('admin'), controller.create);

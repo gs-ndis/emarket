@@ -14,6 +14,12 @@ angular.module('emarket').factory('SupportItem', function($resource) {
         action: 'search'
       }
     },
+    getFacets: {
+      isArray: true,
+      params: {
+        action: 'facets'
+      }
+    },
     relatedItems: {
       isArray: true,
       params: {

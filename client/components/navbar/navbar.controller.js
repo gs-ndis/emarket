@@ -7,11 +7,7 @@ angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, 
   $rootScope.helpBlocks = [];
   $rootScope.menu = [];
   $rootScope.helpBlocks = Content.query({'sys.contentType.sys.id': 'helpBlock', includeRelated: 'links', fields: ['title']});
-  $rootScope.menu = Content.query({'sys.contentType.sys.id': 'page', sortBy: '-fields.displayPriority.en-US'}, function() {
-//    $rootScope.menu = _.sortBy($rootScope.menu, function(item) {
-//      return -item.fields.displayPriority['en-US'];
-//    });
-  });
+  $rootScope.menu = Content.query({'sys.contentType.sys.id': 'page', sortBy: '-fields.displayPriority.en-US'});
 
   $scope.isCollapsed = true;
 //  $scope.isLoggedIn = Auth.isLoggedIn;
@@ -40,7 +36,6 @@ angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, 
   $scope.toogleSideBar = function() {
     $rootScope.sideBarCollapsed = !$rootScope.sideBarCollapsed;
   };
-  console.log('navbar:', $stateParams);
 
   $rootScope.$on('$stateChangeSuccess', function() {
     if (!$stateParams.query) {

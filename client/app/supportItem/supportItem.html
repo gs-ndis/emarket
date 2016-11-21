@@ -52,7 +52,7 @@
         <tr>
           <th>Description</th>
           <th>Item Code</th>
-          <th>Price Cap</th>
+          <th ng-show="supportItem.fields.priceControlled['en-US']">Price Cap</th>
           <th>Locations</th>
           <!--<th>Custom</th>-->
           <!--<th>Type</th>-->
@@ -61,7 +61,7 @@
         <tr ng-repeat="variant in variants">
           <td>{{variant.description}}</td>
           <td>{{variant.variantId}}</td>
-          <td>{{variant.price|| None}}</td>
+          <td ng-show="supportItem.fields.priceControlled['en-US']">{{variant.price|| None}}</td>
           <td>All</td>
           <!--<td>None</td>-->
           <!--<td>Standard</td>-->

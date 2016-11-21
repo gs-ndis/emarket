@@ -34,21 +34,55 @@ exports.search = function(req, res) {
   var searchStr = req.query.query || '';
   var query = {};
   query['sys.contentType.sys.id'] = 'supportItem';
+  if (req.query.category) {
+    query['fields.category.en-US'] = req.query.category;
+  }
   var $or = [];
   $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
   query.$or = $or;
-
+  var skip = Number(req.query.start) || 0;
+  var limit = Number(req.query.number);
+  if (limit < 0) {
+    limit = undefined;
+  }
   var request = Content.find(query)
-//    .skip(queryBuilder.skip)
-//    .limit(queryBuilder.limit)
+    .skip(skip)
+    .limit(limit)
     .exec();
   return Promise.props({data: request, count: Content.count(query)})
     .then(function(data) {
       return res.json(data);
     }).bind(res).catch(errorSender.handlePromiseError);
+};
+
+exports.facets = function(req, res) {
+  var searchStr = req.query.query || '';
+  var $or = [];
+  $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
+
+  var categoies = Content.aggregate([
+    {$match: {'sys.contentType.sys.id': 'supportItem'}},
+    {$group: {_id: '$fields.category.en-US'}},
+    {$project: {count: {$literal: 0}}}
+  ]).exec();
+  var counts = Content.aggregate([
+    {$match: {'sys.contentType.sys.id': 'supportItem', $or: $or}},
+    {$group: {_id: '$fields.category.en-US', count: {$sum: 1}}}
+  ]).exec();
+  Promise.props({categories: categoies, counts: counts}).then(function(data) {
+    var indexedCounts = _.keyBy(data.counts, '_id');
+    var result = _.map(data.categories, function(category) {
+      category.count = _.get(indexedCounts, category._id + '.count', 0);
+      return category;
+    });
+    return res.json(result);
+  }).bind(res).catch(errorSender.handlePromiseError);
 };
 
 exports.show = function(req, res) {

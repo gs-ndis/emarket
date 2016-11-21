@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emarket').controller('SidebarCtrl', function($scope, $rootScope, Auth, socket, $state, $timeout, dialogs, screenSize) {
+angular.module('emarket').controller('SidebarCtrl', function($scope, $rootScope, Auth, socket, $state, $stateParams, $timeout, SupportItem, screenSize) {
   $scope.desktop = screenSize.is('md, lg');
   $scope.mobile = screenSize.is('xs, sm');
 
@@ -8,6 +8,12 @@ angular.module('emarket').controller('SidebarCtrl', function($scope, $rootScope,
     {key: 1, value: 'Yes'},
     {key: 0, value: 'No'}
   ];
+  if ($state.includes('search')) {
+    SupportItem.getFacets({query: $stateParams.query}, function(data) {
+      $rootScope.searchFacets = data;
+      $rootScope.totalFacetsCount = _.sumBy(data, 'count');
+    });
+  }
 
   $rootScope.highlightBlock = function(selector, targetState) {
     if (targetState && ($state.current.name !== targetState.name || !_.isMatch($state.params, targetState.params))) {

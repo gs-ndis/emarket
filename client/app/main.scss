@@ -390,6 +390,10 @@ li.sortable-ghost{
 .pagination {
   a {
     cursor: pointer;
+    color: #337ab7;
+    &:hover, &:active {
+      color: #337ab7;
+    }
   }
 }
 
