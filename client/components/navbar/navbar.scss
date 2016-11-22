@@ -6,6 +6,14 @@
   position: relative;
   line-height: 30px;
   height: 44px;
+  a {
+    color: #6a2875;
+    text-decoration: none;
+    &:hover, &:focus {
+      color: #6a2875;
+      text-decoration: underline;
+    }
+  }
   & ul {
     display: inline-block;
     list-style: none;

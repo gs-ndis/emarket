@@ -10,9 +10,8 @@ var VariantSchema = new Schema({
   validFrom: Date,
   price: Number,
   locations: [],
-  attributes: [{}],
-  supportItemId: Number,
-  _supportItem: {type: Schema.Types.ObjectId, ref: 'SupportItem'}
+  attributes: {},
+  supportItemId: Number
 });
 
 module.exports = mongoose.model('Variant', VariantSchema);

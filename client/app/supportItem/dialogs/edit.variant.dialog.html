@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()">&times;</button>
+  <h4>{{variant._id? 'Edit' : 'Add'}} Variant</h4>
+</div>
+
+<form class="form" name="variantForm">
+  <div class="modal-body clearfix">
+    <div class="form-group">
+      <label>Item ID</label>
+      <input type="text" name="variantId" class="form-control" ng-model="variant.variantId" required>
+      <div ng-messages="variantForm.variantId.$error">
+        <div ng-messages-include="components/partials/validationMessages.html"></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea name="description" class="form-control" ng-model="variant.description"></textarea>
+      <!--<input type="text" name="description" class="form-control" ng-model="variant.description" required>-->
+      <div ng-messages="variantForm.description.$error">
+        <div ng-messages-include="components/partials/validationMessages.html"></div>
+      </div>
+    </div>
+    <div class="form-group" ng-if="supportItem.fields.priceControlled['en-US']">
+      <label>Price</label>
+      <input type="text" name="price" class="form-control" ng-currency fraction="2" ng-model="variant.price">
+      <div ng-messages="variantForm.price.$error">
+        <div ng-messages-include="components/partials/validationMessages.html"></div>
+      </div>
+    </div>
+    <div class="form-group" ng-repeat="variantConfiguration in supportItem.variantConfigurationList">
+      <label>{{variantConfiguration.fields.title['en-US']}}</label>
+      <div ng-if="variantConfiguration.fields.needInput['en-US'] || !variantConfiguration.fields.variants['en-US'].length">
+        <input type="text" name="{{variantConfiguration.fields.title['en-US']}}" class="form-control" ng-model="variant.attributes[variantConfiguration.fields.title['en-US']]">
+      </div>
+      <div ng-if="!variantConfiguration.fields.needInput['en-US'] && variantConfiguration.fields.variants['en-US'].length">
+        <select 
+          ng-model="variant.attributes[variantConfiguration.fields.title['en-US']]"
+          ng-options="value as value for value in variantConfiguration.fields.variants['en-US']"
+          class="form-control"></select>
+      </div>
+      <div ng-messages="variantForm[variantConfiguraion.fields.title['en-US']].$error">
+        <div ng-messages-include="components/partials/validationMessages.html"></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-green" ng-click="save()" ng-disabled="!variantForm.$valid">Save</button>
+    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+  </div>
+</form>

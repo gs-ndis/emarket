@@ -16,6 +16,7 @@ exports.index = function(req, res) {
   var request = Variant.find(queryBuilder.getQuery())
     .skip(queryBuilder.skip)
     .limit(queryBuilder.limit)
+    .sort('variantId')
     .exec();
   return Promise.props({data: request, count: Variant.count(queryBuilder.getQuery())})
     .then(function(data) {
@@ -53,8 +54,8 @@ exports.update = function(req, res) {
     if (!variant) {
       throw errorSender.statusError(404, 'NotFound');
     }
-    var updated = _.merge(variant, req.body);
-    return updated.save();
+    _.extend(variant, req.body);
+    return variant.save();
   }).then(function(supportItem) {
     return res.json(200, supportItem);
   }).bind(res).catch(errorSender.handlePromiseError);

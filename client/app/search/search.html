@@ -5,7 +5,7 @@
     <div class="panel panel-search-result" ng-repeat="content in results">
       <div class="panel-heading"><a href="" ui-sref="supportItem.details({id: content.sys.id})">{{content.fields.title['en-US']}}</a></div>
       <div class="panel-subheading">
-        <span class="support-item-tags">{{content.fields.category['en-US']}}</span>
+        <span class="support-item-tags"><span ng-show="content.fields.tags['en-US'].length">{{content.fields.tags['en-US'].join(', ')}}, </span>{{content.fields.category['en-US']}}</span>
         <span class="support-item-date">{{content.sys.createdAt| date}}</span>
       </div>
       <div class="panel-body">{{content.fields.description['en-US']}}</div>

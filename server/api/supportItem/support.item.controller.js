@@ -42,6 +42,7 @@ exports.search = function(req, res) {
   $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.tags.en-US': helper.wrapRegExp(searchStr)});
   query.$or = $or;
   var skip = Number(req.query.start) || 0;
   var limit = Number(req.query.number);
@@ -65,6 +66,7 @@ exports.facets = function(req, res) {
   $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.tags.en-US': helper.wrapRegExp(searchStr)});
 
   var categoies = Content.aggregate([
     {$match: {'sys.contentType.sys.id': 'supportItem'}},
@@ -101,6 +103,16 @@ exports.show = function(req, res) {
     }
     return Content.find({'sys.id': {$in: ids}}).then(function(relatedItems) {
       supportItem.relatedItems = relatedItems;
+      return supportItem;
+    });
+  }).then(function(supportItem) {
+    var ids = _.chain(_.get(supportItem, 'fields.variantConfigurationList["en-US"]', [])).map('sys.id').compact().uniq().value();
+    if (!ids.length) {
+      supportItem.variantConfigurationList = [];
+      return supportItem;
+    }
+    return Content.find({'sys.id': {$in: ids}}).then(function(variantConfigurationList) {
+      supportItem.variantConfigurationList = variantConfigurationList;
       return supportItem;
     });
   }).then(function(supportItem) {
