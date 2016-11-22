@@ -45,9 +45,17 @@ Examples of home assistance with variants by period and intensity.  Locations ar
    "Variants":[{
       "VariantID":"01_005_0104_1_1",
       "Unit":"hour",
-      "PriceCap":97.68,
+      "PriceCaps":[{
+          "Locations":{"NSW", "VIC", "TAS", "QLD"},
+          "PriceCap":97.68},
+          {
+          "Locations":{"WA", "SA", "ACT", "NT"},
+          "PriceCap":101.28},
+          {
+          "Locations":{"Remote"},
+          "PriceCap":122.38}],
       "ValidFrom":"2016-07-01",
-      "Locations":["2...","3...","4..."],
+      "ValidUntil":"2017-06-30"
       "Attributes":{
          "Period":"Public Holidays",
          "Intensity":"High"}
@@ -55,9 +63,9 @@ Examples of home assistance with variants by period and intensity.  Locations ar
       {
       "VariantID":"01_006_0104_1_1",
       "Unit":"hour",
-      "PriceCap":62.66,
+      "PriceCaps":[{ .. similar to previosu vairant ..}],
       "ValidFrom":"2016-07-01",
-      "Locations":["2...","3...","4..."],
+      "ValidUntil:"2017-06-30"
       "Attributes":{
          "Period":"Saturdays",
          "Intensity":"High"}
@@ -65,40 +73,7 @@ Examples of home assistance with variants by period and intensity.  Locations ar
 }
 
 ```
-Examples of shared accomodation assistance with variants by number of sharers and level of need.  Locations are postcode regex expressions indicating any locations in the Sydney area
 
-```
-{"SupportItem":{
-   "itemID":"115",
-   "Description":"Assistance in a shared living arrangement",
-   "RegistrationGroup":"Daily Tasks/Shared Living",
-   "PriceControlled":True,
-   "QuoteNeeded":False,
-   "Category":"Assistance with daily life (includes Supported Independent Living)",
-   "Outcome":"Daily Living",
-   "Purpose":"Core",
-   "Variants":[{
-      "VariantID":"01_028_0115_1_1",
-      "Unit":"week",
-      "PriceCap":4807.14,
-      "ValidFrom":"2016-07-01",
-      "Locations":["20..","21.."],
-      "Attributes":{
-         "Persons":2,
-         "Needs":"Complex"}
-      },
-      {
-      "VariantID":"01_036_0115_1_1",
-      "Unit":"hour",
-      "PriceCap":2374.71,
-      "ValidFrom":"2016-07-01",
-      "Locations":["20..","21.."],
-      "Attributes":{
-         "Persons":"4",
-         "Needs":"Standard"}
-   }
-}
-```
 Examples of non priced quotable items (wheelchairs) with variants by type, size, and customisation.  Locations regex mathces any postcode - meaning the variant item is not location sensitive.
 
 ```
@@ -115,7 +90,7 @@ Examples of non priced quotable items (wheelchairs) with variants by type, size,
       "VariantID":"05_122203108_0105_1_2",
       "Unit":"each",
       "ValidFrom":"2016-07-01",
-      "Locations":["...."],
+      "ValidUntil":"2017-06-30",
       "Attributes":{
          "Custom":True,
          "Type":"Folding",
@@ -125,7 +100,7 @@ Examples of non priced quotable items (wheelchairs) with variants by type, size,
       "VariantID":"05_122203114_0105_1_2",
       "Unit":"each",
       "ValidFrom":"2016-07-01",
-      "Locations":["...."],
+      "ValidUntil":"2017-06-30",
       "Attributes":{
          "Custom":True,
          "Type":"Rigid",
