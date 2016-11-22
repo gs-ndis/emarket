@@ -4,7 +4,7 @@
       <h2 class="pull-left">{{supportItem.fields.title['en-US']}}</h2>
       <div class="buttons pull-right">
         <button class="btn btn-white"><i class="fa fa-print"></i>&nbsp;Print PDF</button>
-        <a class="btn btn-green" href="https://app.contentful.com/spaces/{{supportItem.sys.space.sys.id}}/entries/{{supportItem.sys.id}}" target="_blank"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
+        <a class="btn btn-green" href="https://app.contentful.com/spaces/{{supportItem.sys.space.sys.id}}/entries/{{supportItem.sys.id}}" target="_blank" ng-if="currentUser.role === 'admin'"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
       </div>
     </div>
     <div class="clearfix">
@@ -43,7 +43,7 @@
   <div class="wrapper">
     <div class="support-item-additional-info-heading clearfix">
       <h3 class="pull-left">Variants</h3>
-      <div class="buttons pull-right">
+      <div class="buttons pull-right" ng-if="currentUser.role === 'admin'">
         <button class="btn btn-green" ng-click="editVariant()"><i class="fa fa-plus-circle"></i>&nbsp;Add variant</button>
       </div>
     </div>
@@ -73,7 +73,7 @@
     <div ng-show="supportItem.relatedItems.length">
       <div class="support-item-additional-info-heading clearfix">
         <h3 class="pull-left">Related Items</h3>
-        <div class="buttons pull-right">
+        <div class="buttons pull-right" ng-if="currentUser.role === 'admin'">
           <a class="btn btn-green" href="https://app.contentful.com/spaces/{{supportItem.sys.space.sys.id}}/entries/{{supportItem.sys.id}}" target="_blank"><i class="fa fa-plus-circle"></i>&nbsp;Add</a>
         </div>
       </div>

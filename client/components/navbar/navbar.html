@@ -21,6 +21,10 @@
       </div>
 
       <div class="ndis-region" id="ndis-search">
+        <div class="login-signup-buttons">
+          <a href="" ui-sref="login" class="pull-right" ng-hide="currentUser._id">Login</a>
+          <span ng-show="currentUser._id" class="pull-right">Hi, {{currentUser.name}} | <a href="" ng-click="logout()">Logout</a></span>
+        </div>
         <div id="block-search-form" class="block block-search">
           <div class="content">
             <form role="search" action="/search" method="GET" id="search-block-form" accept-charset="UTF-8">
@@ -67,7 +71,7 @@
       </ul>
     </div>
   </div>
-  <div ng-include="'components/navbar/navbar.search.dashboard.html'" ng-if="!$state.includes('search') && !$state.includes('supportItem')"></div>
+  <div ng-include="'components/navbar/navbar.search.dashboard.html'" ng-if="!$state.includes('search') && !$state.includes('supportItem') && !$state.includes('login')"></div>
   <div ng-include="'components/navbar/navbar.search.html'" ng-if="$state.includes('search')"></div>
 
   <div class="home-navbar" ng-if="breadcrumbs">
