@@ -6,9 +6,12 @@
         <li><a href="">Skip to navigation</a></li>
         <li><a href="">Skip to footer</a></li>
       </ul>
-      <ul class="offright pull-right">
+      <ul class="offright login-buttons pull-right" ng-hide="currentUser._id">
         <li><a href="https://myplace.ndis.gov.au/ndisstorefront" class="portal-participant"></a></li>
-        <li><a href="https://myplace.ndis.gov.au/supplier" class="portal-provider"></a></li>
+        <li><a href="" ui-sref="login" class="portal-provider"></a></li>
+      </ul>
+      <ul class="offright pull-right" ng-show="currentUser._id">
+        <li>Welcome {{currentUser.name}}<span class="separator"></span><a href="" ng-click="logout()">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -21,10 +24,6 @@
       </div>
 
       <div class="ndis-region" id="ndis-search">
-        <div class="login-signup-buttons">
-          <a href="" ui-sref="login" class="pull-right" ng-hide="currentUser._id">Login</a>
-          <span ng-show="currentUser._id" class="pull-right">Hi, {{currentUser.name}} | <a href="" ng-click="logout()">Logout</a></span>
-        </div>
         <div id="block-search-form" class="block block-search">
           <div class="content">
             <form role="search" action="/search" method="GET" id="search-block-form" accept-charset="UTF-8">
@@ -60,14 +59,6 @@
     <div class="wrapper">
       <ul class="nav-links">
         <li ng-repeat="page in menu"><a ui-sref="content({id: page.sys.id})">{{page.fields.title['en-US']}}</a></li>
-<!--        <li><a href="">Home</a></li>
-        <li><a href="">People with disability</a></li>
-        <li><a href="">Families and carers</a></li>
-        <li><a href="">Participants</a></li>
-        <li><a href="">Providers</a></li>
-        <li><a href="">Community</a></li>
-        <li><a href="">News</a></li>
-        <li><a href="">About us</a></li>-->
       </ul>
     </div>
   </div>
@@ -82,6 +73,9 @@
         <li><a href="#">Providers</a></li>
         <li class="active">Pricing and payment</li>
       </ol>
+      <div class="login-signup-buttons pull-right" ng-show="currentUser._id">
+        <span>Welcome {{currentUser.name}}<span class="separator"></span><a href="" ng-click="logout()">Logout</a></span>
+      </div>
     </div>
   </div>
 </div>

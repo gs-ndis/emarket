@@ -40,36 +40,39 @@
       & li + li {
         padding-left: 8px;
       }
-      & a {
-        background: #e6e6e6 none repeat scroll 0 0;
-        border-radius: 5px;
-        color: #000;
-        display: inline-block;
-        font-size: 14px;
-        font-weight: bold;
-        height: 10px;
-        line-height: 20px;
-        /*margin: 5px 0;*/
-        /*padding: 5px 25px 15px 10px;*/
-        text-align: right;
-        text-decoration: none;
-        width: 150px;
+      margin-top: 5px;
+      &.login-buttons {
+        margin-top: 0;
+        a {
+          background: #e6e6e6 none repeat scroll 0 0;
+          border-radius: 5px;
+          color: #000;
+          display: inline-block;
+          font-size: 14px;
+          font-weight: bold;
+          height: 10px;
+          line-height: 20px;
+          /*margin: 5px 0;*/
+          /*padding: 5px 25px 15px 10px;*/
+          text-align: right;
+          text-decoration: none;
+          width: 150px;
 
-        &.portal-participant {
-          background-image: url("/assets/images/myplace_participant_button_purple.png");
-          background-size: 189px 30px;
-          height: 30px;
-          padding: 0;
-          width: 189px;
+          &.portal-participant {
+            background-image: url("/assets/images/myplace_participant_button_purple.png");
+            background-size: 189px 30px;
+            height: 30px;
+            padding: 0;
+            width: 189px;
+          }
+          &.portal-provider {
+            background-image: url("/assets/images/myplace_provider_button_purple.png");
+            background-size: 189px 30px;
+            height: 30px;
+            padding: 0;
+            width: 189px;
+          }
         }
-        &.portal-provider {
-          background-image: url("/assets/images/myplace_provider_button_purple.png");
-          background-size: 189px 30px;
-          height: 30px;
-          padding: 0;
-          width: 189px;
-        }
-
       }
     }
   }
@@ -98,27 +101,12 @@ header {
       display: block;
       position: absolute;
       right: 30px;
-      top: 20px;
-      .login-signup-buttons {
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 400px;
-        height: 35px;
-        a {
-          color: #6a2875;
-          text-decoration: none;
-          &:hover, &:focus {
-            color: #6a2875;
-            text-decoration: underline;
-          }
-        }
-      }
+      top: 55px;
 
       .contact-us {
         position: absolute;
         right: -10px;
-        top: 35px;
+        top: 0;
         width: 400px;
         a {
           background: rgb(59, 59, 59) none repeat scroll 0 0;
@@ -139,7 +127,7 @@ header {
         float: right;
         margin-top: 20px;
         position: relative;
-        top: 55px;
+        top: 30px;
         width: 350px;
         & * {
           outline: none;
@@ -523,4 +511,11 @@ footer {
   }
 }
 
-
+.separator {
+  &:before {
+    color: #6d6d6d;
+    content: '|';
+    display: inline-block;
+    padding: 0 10px;
+  }
+}

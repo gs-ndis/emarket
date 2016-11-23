@@ -20,6 +20,7 @@ angular.module('emarket').controller('LoginCtrl', function($scope, $rootScope, A
         } else {
           $location.path('/');
         }
+        $rootScope.initContentfulData();
       }).catch(function(err) {
         $scope.errors.other = err.message;
       });

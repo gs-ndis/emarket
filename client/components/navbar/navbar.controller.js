@@ -6,8 +6,13 @@ angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, 
   $scope.formData.searchQuery = '';
   $rootScope.helpBlocks = [];
   $rootScope.menu = [];
-  $rootScope.helpBlocks = Content.query({'sys.contentType.sys.id': 'helpBlock', includeRelated: 'links', fields: ['title']});
-  $rootScope.menu = Content.query({'sys.contentType.sys.id': 'page', sortBy: '-fields.displayPriority.en-US'});
+  $rootScope.initContentfulData = function() {
+    $timeout(function() {
+      $rootScope.helpBlocks = Content.query({'sys.contentType.sys.id': 'helpBlock', includeRelated: 'links', fields: ['title']});
+      $rootScope.menu = Content.query({'sys.contentType.sys.id': 'page', sortBy: '-fields.displayPriority.en-US'});
+    });
+  };
+  $rootScope.initContentfulData();
 
   $scope.isCollapsed = true;
 //  $scope.isLoggedIn = Auth.isLoggedIn;
@@ -65,7 +70,8 @@ angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, 
   $scope.logout = function() {
     Auth.logout();
     $timeout(function() {
-      $location.path('/login');
+      $location.path('/');
+      $rootScope.initContentfulData();
     });
   };
 

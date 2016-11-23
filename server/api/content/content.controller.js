@@ -13,11 +13,12 @@ exports.index = function(req, res) {
   if (req.query['sys.contentType.sys.id']) {
     query['sys.contentType.sys.id'] = req.query['sys.contentType.sys.id'];
   }
-//  var sort = {};
-//  if (req.query.sortBy) {
-//    sort[req.query.sortBy] = req.query.desc ? 1 : -1;
-//  }
-  console.log('sort:', req.query.sortBy);
+  if (!req.user || req.user.role !== 'admin') {
+    query.$or = [
+      {'fields.adminOnly.en-US': {$exists: false}},
+      {'fields.adminOnly.en-US': {$in: [null, false]}}
+    ];
+  }
 
   Content.find(query)
     .sort(req.query.sortBy)

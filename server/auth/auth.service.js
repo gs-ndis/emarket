@@ -30,8 +30,6 @@ function isAuthenticated() {
     // Attach user to request
     .use(function(req, res, next) {
       User.findById(req.user._id, '-salt -hashedPassword')
-        .populate('_contacts')
-        .populate('_role')
         .exec(function(err, user) {
           if (err) {
             return next(err);
@@ -41,14 +39,49 @@ function isAuthenticated() {
           }
 
           req.user = user;
-          if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf('user') && !req.user._role) {
-            req.user.permissions = Role.presets[req.user.role];
-          } else if (req.user._role && req.user._role.permissions) {
-            req.user.permissions = req.user._role.permissions;
+          next();
+        });
+    })
+    .use(function(req, res, next) {
+      if (req.user && !req.user.active) {
+        res.json(423, req.user);
+      } else {
+        next();
+      }
+    });
+}
+
+/**
+ * Attaches the user object to the request if authenticated
+ */
+function attachUser() {
+  return compose()
+    // Validate jwt
+    .use(function(req, res, next) {
+      // allow access_token to be passed through query parameter as well
+      if (req.query && req.query.hasOwnProperty('access_token')) {
+        req.headers.authorization = 'Bearer ' + req.query.access_token;
+      }
+      validateJwt(req, res, function() {
+        next();
+      });
+    })
+    // Attach user to request
+    .use(function(req, res, next) {
+      if (!req.user) {
+        return next();
+      }
+      User.findById(req.user._id, '-salt -hashedPassword')
+        .exec(function(err, user) {
+          if (err) {
+            return next(err);
           }
-          return Role.populate(user, 'leadoverrides._role').then(function() {
-            next();
-          });
+          if (!user) {
+            return next();
+          }
+
+          req.user = user;
+          next();
         });
     })
     .use(function(req, res, next) {
@@ -250,6 +283,7 @@ var basicAuthMiddlevare = function(req, res, next) {
 };
 
 exports.isAuthenticated = isAuthenticated;
+exports.attachUser = attachUser;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
 exports.signContactToken = signContactToken;
