@@ -729,3 +729,16 @@ p {
 .modal-backdrop {
   opacity: 0.5;
 }
+
+
+.table {
+  background-color: #fff;
+  border-radius: 5px;
+  & > thead > tr > th {
+    border-bottom: solid 1px #ececec;
+  }
+}
+
+.text-green {
+  color: #8ac340;
+}

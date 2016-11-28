@@ -1,9 +1,16 @@
 <div class="clearfix">
-  <h2>Admin: {{supportItem._id? 'Edit' : 'Create'}} Variant</h2>
+  <h2>Admin: {{variant._id? 'Edit' : 'Create'}} Variant</h2>
 
   <form class="form" name="variantForm" novalidate ng-submit="save()">
     <div class="clearfix" style="padding: 20px;">
       <div class="col-md-6">
+        <div class="form-group">
+          <label>Support Item ID</label>
+          <input class="form-control" name="supportItemId" type="number" ng-model="variant.supportItemId">
+          <div ng-messages="variantForm.supportItemId.$error">
+            <div ng-messages-include="components/partials/validationMessages.html"></div>
+          </div>
+        </div>
         <div class="form-group">
           <label>Variant ID</label>
           <input class="form-control" name="variantId" type="text" ng-model="variant.variantId">
@@ -20,27 +27,28 @@
         </div>
         <div class="form-group">
           <label>Unit</label>
-          <input class="form-control" name="unit" type="text" ng-model="variant.unit">
+          <select ng-model="variant.unit" name="unit" ng-options="item.key as item.value for item in unitOptions" class="form-control"></select>
+          <!--<input class="form-control" name="unit" type="text" ng-model="variant.unit">-->
           <div ng-messages="variantForm.unit.$error">
             <div ng-messages-include="components/partials/validationMessages.html"></div>
           </div>
         </div>
-        <div class="form-group">
+<!--        <div class="form-group">
           <label>Valid From</label>
           <input class="form-control" name="validFrom" type="text" ng-model="variant.validFrom">
           <div ng-messages="variantForm.validFrom.$error">
             <div ng-messages-include="components/partials/validationMessages.html"></div>
           </div>
-        </div>
-        <div class="form-group">
+        </div>-->
+<!--        <div class="form-group">
           <label>Locations</label>
         </div>
         <div class="form-group">
           <label>Attributes</label>
-        </div>
-        <div class="form-group">
+        </div>-->
+<!--        <div class="form-group">
           <label>Support Item</label>
-        </div>
+        </div>-->
       </div>
     </div>
 

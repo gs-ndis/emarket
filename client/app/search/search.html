@@ -1,7 +1,7 @@
 <div class="wrapper">
   <div ng-include="'components/sidebar/sidebar.html'"></div>
   <div class="main-content">
-    <h3>{{count}} Results found for: "{{searchQuery}}"<span ng-show="category"> in "{{category}}" category</span></h3>
+    <h3>{{count}} Results found<span ng-show="searchQuery"> for: "{{searchQuery}}"</span><span ng-show="category"> in "{{category}}" category</span></h3>
     <div class="panel panel-search-result" ng-repeat="content in results">
       <div class="panel-heading"><a href="" ui-sref="supportItem.details({id: content.sys.id})">{{content.fields.title['en-US']}}</a></div>
       <div class="panel-subheading">

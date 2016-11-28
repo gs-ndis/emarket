@@ -10,7 +10,8 @@ exports.index = function(req, res) {
 
   queryBuilder.andString('variantId')
     .andString('description')
-    .andString('unit')
+//    .andString('unit')
+    .andListString('unit')
     .andNumber('supportItemId');
 
   var request = Variant.find(queryBuilder.getQuery())

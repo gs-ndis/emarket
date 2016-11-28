@@ -7,6 +7,14 @@ angular.module('emarket').controller('AdminVariantListCtrl', function($scope, Va
   $scope.tableState = {};
   $scope.users = [];
 
+  $scope.unitOptions = [
+    {key: 'Hour', value: 'Hour'},
+    {key: 'Day', value: 'Day'},
+    {key: 'Week', value: 'Week'},
+    {key: 'Annual', value: 'Annual'},
+    {key: 'Each', value: 'Each'}
+  ];
+
   $scope.tableUpdate = function(tableState) {
     $scope.tableState = tableState;
     $cookieStore.put('itemsPerPage', $scope.stTable.itemsPerPage);

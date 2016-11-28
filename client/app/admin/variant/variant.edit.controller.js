@@ -2,7 +2,13 @@
 
 angular.module('emarket').controller('AdminVariantEditCtrl', function($scope, Variant, $cookieStore, $state, growl, $timeout, $stateParams) {
   $scope.variant = {};
-
+  $scope.unitOptions = [
+    {key: 'Hour', value: 'Hour'},
+    {key: 'Day', value: 'Day'},
+    {key: 'Week', value: 'Week'},
+    {key: 'Annual', value: 'Annual'},
+    {key: 'Each', value: 'Each'}
+  ];
   if ($stateParams.id) {
     $scope.variant = Variant.get({_id: $stateParams.id});
   } else {

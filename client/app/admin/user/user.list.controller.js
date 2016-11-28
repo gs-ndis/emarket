@@ -13,9 +13,9 @@ angular.module('emarket').controller('AdminUserListCtrl', function($scope, User,
 //    {key: 'contact', value: 'Contact'}
   ];
   $scope.indexedRoleOptions = _.keyBy($scope.roleOptions, 'key');
-  $scope.activeOptions = [
-    {key: 'true', value: 'Yes'},
-    {key: 'false', value: 'No'}
+  $scope.statusOptions = [
+    {key: 'true', value: 'Active'},
+    {key: 'false', value: 'Inactive'}
   ];
   $scope.sendType = 'email';
 

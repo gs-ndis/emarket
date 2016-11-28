@@ -122,3 +122,25 @@ tr.angular-ui-tree-empty {
 
 .tree-node-title {margin-left: 10px; }
 .short-content {margin-right: 50px;}
+
+
+.status {
+  border-radius: 50%;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 2px 5px;
+  &.status-active {
+    background-color: #88c543;
+  }
+  &.status-inactive {
+    background-color: #d3d3d3;
+  }
+}
+
+
+.admin-container {
+  h2 {
+    margin-bottom: 30px;
+  }
+}
