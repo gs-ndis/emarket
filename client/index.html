@@ -33,17 +33,17 @@
     <!-- endinjector -->
     <!-- endbuild -->
   </head>
-  <body ng-app="emarket">
+  <body ng-app="emarket" ng-class="$state.includes('login')? 'login' : ''">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div ng-include="'components/navbar/navbar.html'"></div>
+    <div ng-include="'components/navbar/navbar.html'" ng-if="!$state.includes('login')"></div>
 
 
-    <div class="main-container">
+    <div ng-class="!$state.includes('login')? 'main-container' : 'login-wrapper'">
       <div class="clearfix" ui-view=""></div>
     </div>
-    <div ng-include="'components/footer/footer.html'"></div>
+    <div ng-include="'components/footer/footer.html'" ng-if="!$state.includes('login')"></div>
     <!--    <div id="wrapper">
           <div ng-include="'components/navbar/navbar.html'"></div>
           <div ng-include="'components/sidebar/sidebar.html'" class="noprint sidebar" id="sidebar"></div>
