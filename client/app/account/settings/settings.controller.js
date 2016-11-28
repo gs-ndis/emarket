@@ -8,17 +8,17 @@ angular.module('emarket').controller('SettingsCtrl', function($scope, User, Auth
     $scope.submitted = true;
     if (form.$valid) {
       Auth.changePassword($scope.user.oldPassword, $scope.user.newPassword).then(function() {
-        $scope.message = 'Password successfully changed.';
+        $scope.savePasswordMessage = 'Password successfully changed.';
       }).catch(function() {
         form.password.$setValidity('mongoose', false);
         $scope.errors.other = 'Incorrect password';
-        $scope.message = '';
+        $scope.savePasswordMessage = '';
       });
     }
   };
   $scope.save = function() {
     User.update({id: 'me'}, angular.copy($scope.user)).$promise.then(function() {
-      $scope.message = 'User info successfully saved';
+      $scope.saveUserMessage = 'User info successfully saved';
     }).catch(function(err) {
       console.log(err);
     });

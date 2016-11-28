@@ -1,7 +1,7 @@
 <div class="container lead-details">
 
   <div class="clearfix">
-    <h3 class="page-header">Settings</h3>
+    <h2>Settings</h2>
     <!--<div style="padding: 10px 0; margin-bottom: 10px; border-bottom: 1px solid #eeeeee;">These are the newest leads we have available. Click "Claim" to take ownership of a lead and start the process of converting it into a contract. Claimed leads move into "My New Leads".</div>-->
   </div>
   <div class="col-sm-12" style="padding: 20px">
@@ -14,28 +14,28 @@
           <input type="text" name="name" class="form-control" ng-model="user.name" ng-minlength="3" required/>
         </div>
 
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="text" name="phone" class="form-control" ng-model="user.phone" mongoose-error required ui-mask="999-999-9999" ui-options="{clearOnBlur: false}"/>
-        </div>
+        <!--        <div class="form-group">
+                  <label>Phone</label>
+                  <input type="text" name="phone" class="form-control" ng-model="user.phone" mongoose-error required ui-mask="999-999-9999" ui-options="{clearOnBlur: false}"/>
+                </div>-->
 
         <div class="form-group">
           <label>Email</label>
           <input type="email" name="email" class="form-control" ng-model="user.email" ng-minlength="3" required/>
         </div>
 
-        <div class="form-group">
-          <div>
-            <a href="https://gravatar.com" target="_blank"><img gravatar-src="user.email" gravatar-size="100" gravatar-default="mm" class="gravatar"></a>
-            <span style="padding-left: 20px;">Fetched from <a href="https://gravatar.com" target="_blank">https://gravatar.com</a></span>
-          </div>
-        </div>
+        <!--        <div class="form-group">
+                  <div>
+                    <a href="https://gravatar.com" target="_blank"><img gravatar-src="user.email" gravatar-size="100" gravatar-default="mm" class="gravatar"></a>
+                    <span style="padding-left: 20px;">Fetched from <a href="https://gravatar.com" target="_blank">https://gravatar.com</a></span>
+                  </div>
+                </div>-->
 
-        <div>
-          <label>Address</label>
-          <div><a href="javascript:void(0);" ng-click="openSelectAddressDialog()">{{user.address| address}}</a></div>
-        </div>
-        <p class="help-block clearfix">{{message}}</p>
+        <!--        <div>
+                  <label>Address</label>
+                  <div><a href="javascript:void(0);" ng-click="openSelectAddressDialog()">{{user.address| address}}</a></div>
+                </div>-->
+        <p class="help-block clearfix" ng-show="saveUserMessage">{{saveUserMessage}}</p>
         <button class="btn btn-primary" type="submit">Save</button>
       </form>
     </div>
@@ -53,18 +53,13 @@
 
         <div class="form-group">
           <label>New Password</label>
-
-          <input type="password" name="newPassword" class="form-control" ng-model="user.newPassword"
-                 ng-minlength="3"
-                 required/>
-          <p class="help-block"
-             ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || submitted)">
+          <input type="password" name="newPassword" class="form-control" ng-model="user.newPassword" ng-minlength="3" required/>
+          <p class="help-block" ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || submitted)">
             Password must be at least 3 characters.
           </p>
         </div>
-        <p class="help-block clearfix">{{ message}}</p>
+        <p class="help-block clearfix" ng-show="savePasswordMessage">{{savePasswordMessage}}</p>
         <button class="btn btn-primary" type="submit">Change Password</button>
-        <button class="btn btn-primary" ng-show="currentUser.role === 'admin'" type="button" ng-click="fetchRegions()">Get Craiglist Regions</button>
       </form>
     </div>
 

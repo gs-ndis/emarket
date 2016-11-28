@@ -10,8 +10,10 @@
         <li><a href="https://myplace.ndis.gov.au/ndisstorefront" class="portal-participant"></a></li>
         <li><a href="" ui-sref="login" class="portal-provider"></a></li>
       </ul>
-      <ul class="offright pull-right" ng-show="currentUser._id">
-        <li>Welcome {{currentUser.name}}<span class="separator"></span><a href="" ng-click="logout()">Logout</a></li>
+      <ul class="offright pull-right separated-list" ng-show="currentUser._id">
+        <li>Welcome {{currentUser.name}}</li>
+        <li><a ui-sref="settings">Settings</a></li>
+        <li><a href="" ng-click="logout()">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -26,16 +28,16 @@
       <div class="ndis-region" id="ndis-search">
         <div id="block-search-form" class="block block-search">
           <div class="content">
-            <form role="search" action="/search" method="GET" id="search-block-form" accept-charset="UTF-8">
+            <form id="search-block-form" ng-submit="$state.go('search', {query: formData.searchQuery})">
               <div>
                 <div class="container-inline">
                   <h2 class="element-invisible">Search form</h2>
                   <div class="form-item form-type-textfield form-item-search-block-form">
                     <label for="edit-search-block-form--2">Search </label>
-                    <input title="Enter the terms you wish to search for." placeholder="Search for one or more keywords" id="searchText" name="searchText" value="" size="15" maxlength="128" class="form-text" onkeypress="return handleKeyType(event)" type="text">
+                    <input title="Enter the terms you wish to search for." placeholder="Search for one or more keywords" id="searchText" name="searchText" value="" size="15" maxlength="128" class="form-text" ng-model="formData.searchQuery" type="text">
                   </div>
                   <div class="form-actions form-wrapper" id="edit-actions">
-                    <button id="submitFormButton" name="op" value="Search" class="form-submit" onclick="submitContentSearch(this.form)" type="button"><i class="fa fa-search"></i></button>
+                    <button id="submitFormButton" value="Search" class="form-submit" type="submit"><i class="fa fa-search"></i></button>
                   </div>
                 </div>
               </div>
@@ -62,7 +64,7 @@
       </ul>
     </div>
   </div>
-  <div ng-include="'components/navbar/navbar.search.dashboard.html'" ng-if="!$state.includes('search') && !$state.includes('supportItem') && !$state.includes('login')"></div>
+  <div ng-include="'components/navbar/navbar.search.dashboard.html'" ng-if="$state.includes('content') || $state.includes('dashboard')"></div>
   <div ng-include="'components/navbar/navbar.search.html'" ng-if="$state.includes('search')"></div>
 
   <div class="home-navbar" ng-if="breadcrumbs">
