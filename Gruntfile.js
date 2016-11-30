@@ -415,7 +415,8 @@ module.exports = function(grunt) {
               'documents',
               'acceptedPDFs',
               'docs/*.csv',
-              'tmp'
+              'tmp',
+              'resources'
             ]
           }]
       },

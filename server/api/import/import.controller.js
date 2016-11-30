@@ -2,12 +2,14 @@
 
 var config = require('../../config/environment');
 var errorSender = require('../../util/errorSender');
-var fs = require('fs');
+var fs = Promise.promisifyAll(require('fs'));
 var Baby = require('babyparse');
 var path = require('path');
 var SupportItem = require('../supportItem/support.item.model');
 var Variant = require('../variant/variant.model');
 var mongoose = require('mongoose');
+var Content = require('../content/content.model');
+var iconv = require('iconv-lite');
 
 var client = require('../../util/contentful.management.client');
 
@@ -33,9 +35,123 @@ var createSupportItemEntry = Promise.method(function(supportItemData) {
   });
 });
 
+var createOrUpdateSupportItemEntry = Promise.method(function(space, supportItemData) {
+  var data = _.cloneDeep(supportItemData);
+
+  console.log('create supportItem...');
+//  return client.getSpace(config.contentful.space).then(function(space) {
+  var supportItemId = Number(_.get(supportItemData, 'fields.supportItemId.en-US', 0));
+  if (!supportItemId) {
+    return Promise.resolve();
+//      return space.createEntry('supportItem', supportItemData);
+  }
+  return Content.findOne({'sys.contentType.sys.id': 'supportItem', 'fields.supportItemId.en-US': supportItemId}).then(function(supportItem) {
+    if (supportItem) {
+      return space.getEntry(supportItem.sys.id).then(function(content) {
+        delete data.fields.description;
+        delete data.fields.title;
+        _.extend(content.fields, data.fields);
+        return content.update();
+      });
+    }
+    return space.createEntry('supportItem', supportItemData);
+  });
+//  });
+});
 
 
 exports.index = function(req, res) {
+  var locations = [
+    'ACT',
+    'NSW',
+    'QLD',
+    'VIC',
+    'TAS',
+    'Remote',
+    'Very Remote'
+  ];
+
+  var resourcesDir = config.root + '/resources/csv/';
+
+  var files = [{
+      path: resourcesDir + '201617-ACT-PG.csv',
+      location: ['ACT']
+    }, {
+      path: resourcesDir + '201617-Remote-PG.csv',
+      location: ['Remote']
+    }, {
+      path: resourcesDir + '201617-Very-Remote-PG.csv',
+      location: ['Very Remote']
+    }, {
+      path: resourcesDir + '201617-VIC-NSW-QLD-TAS-Price-Guide.csv',
+      location: ['VIC', 'NSW', 'QLD', 'TAS']
+    }
+  ];
+
+  var sampleCsvPath = config.root + '/docs/201617-VIC-NSW-QLD-TAS-Price-Guide-New structure.csv';
+
+  var babyParseOptions = {
+    header: true,
+    dynamicTyping: true,
+    skipEmptyLines: true
+  };
+
+//  fs.readdirAsync(resourcesDir).then(function(files) {
+  Promise.resolve().then(function() {
+    return Variant.remove({}).exec();
+  }).then(function() {
+    return Promise.map(files, function(csv) {
+      return fs.readFileAsync(csv.path).then(function(buffer) {
+        var str = iconv.decode(buffer, 'cp1250');
+        csv.parsed = Baby.parse(str, babyParseOptions);
+        return csv;
+      });
+    });
+  }).then(function(parsedFiles) {
+    var parsed = Baby.parseFiles(sampleCsvPath, babyParseOptions);
+//    console.log('-------------+++', parsed.data.length);
+    var indexed = _.keyBy(parsed.data, 'Variant ID');
+    return Promise.reduce(parsedFiles, function(result, parsedFile) {
+      var data = _.keyBy(parsedFile.parsed.data, 'Support Item Number');
+      _.each(data, function(item, key) {
+        if (result[key]) {
+          if (!result[key].priceCap) {
+            result[key].priceCap = [];
+          }
+          var price = Number(String(item.Price).replace(/[^\d\.]*/ig, ''));
+          if (price > 0) {
+            result[key].priceCap.push({location: parsedFile.location, price: price});
+          }
+        }
+      });
+      return result;
+    }, indexed);
+  }).then(function(result) {
+
+    console.log('-------------------------', _.size(result));
+//    console.log(JSON.stringify(_.chain(result).filter('Price').take(5).value(), null, 2));
+//    console.log('-------------------------');
+    return Promise.each(_.map(result), function(variantData) {
+      var data = {
+        variantId: _.trim(variantData['Variant ID']),
+        description: _.trim(variantData['Variant Description']),
+        unit: _.trim(variantData['Unit of Measure']),
+//        price: Number(String(variantData.Price).replace(/[^\d\.]*/ig, '')),
+        priceCap: variantData.priceCap,
+        supportItemId: Number(variantData['Support Item ID']) || undefined
+      };
+//      return Variant.findOne({variantId})
+      var newVariant = new Variant(data);
+      return newVariant.save();
+    });
+  }).then(function() {
+    res.send(200);
+  });
+};
+
+
+
+function test(req, res) {
   var csvPath = path.normalize(config.root + '/docs/201617-VIC-NSW-QLD-TAS-Price-Guide-New structure.csv');
   var options = {
     header: true,
@@ -51,41 +167,65 @@ exports.index = function(req, res) {
   console.log(registrationGroups);
   console.log('---------------------');
   console.log(supportCategories);
-  Promise.resolve().then(function() {
+  client.getSpace(config.contentful.space).then(function(space) {
 //    return updateSupportItemType(supportCategories, registrationGroups);
 //  }).then(function() {
 //    console.log('next...');
+
+
 //    return Promise.each(_.keys(supportItemsGroups), function(key) {
 //      if (!key.length) {
 //        return;
 //      }
 //      var item = _.head(supportItemsGroups[key]);
-//      var newSupportItem = {
+//
+//      var priceControlled = false;
+//      _.each(supportItemsGroups[key], function(variant) {
+//        if (_.trim(variant['Price Control']) && (_.trim(variant['Price Control']).toUpperCase() === 'Y' || Number(variant.Price) > 0)) {
+//          priceControlled = true;
+//          return false;
+//        }
+//      });
+//      var quoteNeeded = false;
+//      _.each(supportItemsGroups[key], function(variant) {
+//        if (_.trim(variant.Quote) && _.trim(variant.Quote).toUpperCase() === 'Y') {
+//          quoteNeeded = true;
+//          return false;
+//        }
+//      });
+//      var supportItemData = {
 //        fields: {
 //          supportItemId: {'en-US': Number(item['Support Item ID'])},
 //          title: {'en-US': _.trim(key)},
 //          category: {'en-US': _.trim(item['Support Categories'])},
 //          registrationGroup: {'en-US': _.trim(item['Registration Group'])},
-//          description: {'en-US': _.trim(item['Support Item Description'])}
+//          description: {'en-US': _.trim(item['Support Item Description'])},
+//          priceControlled: {'en-US': priceControlled},
+//          quoteNeeded: {'en-US': quoteNeeded}
 //        }
 //      };
-//      return createSupportItemEntry(newSupportItem);
+//      console.log('---------------------', priceControlled, quoteNeeded);
+////      console.log(supportItemData);
+//      return createOrUpdateSupportItemEntry(space, supportItemData);
 //    });
-    return Variant.remove({}).exec();
+//    return Variant.remove({}).exec();
   }).then(function() {
     console.log('create variants...');
     return Promise.each(parsed.data, function(variantData) {
       if (_.isEmpty(_.trim(variantData['Support Item']))) {
         return;
       }
-      var newVariant = new Variant({
+      var data = {
         variantId: variantData['Variant ID'],
         description: variantData['Variant Description'],
         unit: variantData['Unit of Measure'],
         price: Number(String(variantData.Price).replace(/[^\d\.]*/ig, '')),
         supportItemId: Number(variantData['Support Item ID'])
-      });
-      return newVariant.save();
+      };
+//      return Variant.findOne({variantId})
+
+//      var newVariant = new Variant();
+//      return newVariant.save();
     });
   }).then(function() {
     console.log('done...');
@@ -156,4 +296,4 @@ exports.index = function(req, res) {
 //    console.error(err);
 //    res.json(500, err);
 //  });
-};
+}

@@ -2,12 +2,57 @@
 
 angular.module('emarket').controller('SupportItemDetailsCtrl', function($stateParams, SupportItem, Variant, dialogs, $scope) {
   console.log('SupportItemDetailsCtrl controller', $stateParams);
+  $scope.locationOptions = [
+    'ACT',
+    'NSW',
+    'QLD',
+    'VIC',
+    'TAS',
+    'Remote',
+    'Very Remote'
+  ];
+  $scope.selectedLocation = 'ACT';
+  $scope.priceData = {};
+
+  function updatePriceData() {
+    $scope.priceData = {};
+    if (!$scope.selectedLocation || !$scope.variants || !$scope.variants.length) {
+      return;
+    }
+    _.each($scope.variants, function(variant) {
+      _.each(variant.priceCap, function(priceCap) {
+        if (priceCap.location.indexOf($scope.selectedLocation) !== -1) {
+          $scope.priceData[variant.variantId] = priceCap.price;
+          return false;
+        }
+      });
+    });
+  }
+
+  $scope.$watch('selectedLocation', function() {
+    updatePriceData();
+  });
+
+  $scope.$watch('variants', function() {
+    updatePriceData();
+  });
+
   function updateVariantList() {
     Variant.query({supportItemId: _.get($scope.supportItem, 'fields.supportItemId.en-US')}, function(result) {
       $scope.variants = result.data;
+      var priceControlled = false;
+      _.each($scope.variants, function(variant) {
+        if (variant.priceCap.length > 0) {
+          console.log(variant);
+          priceControlled = true;
+          return false;
+        }
+      });
+      updatePriceData();
+      $scope.supportItem.priceControlled = priceControlled;
     });
-
   }
+
   $scope.supportItem = SupportItem.get({_id: $stateParams.id}, function() {
     updateVariantList();
   });

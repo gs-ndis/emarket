@@ -33,6 +33,7 @@
     "express-session": "~1.11.3",
     "gm": "^1.22.0",
     "html-pdf": "^1.2.1",
+    "iconv-lite": "^0.4.15",
     "jsdom": "^6.1.0",
     "jsonwebtoken": "^5.0.2",
     "lodash": "^4.14.2",

@@ -27,11 +27,17 @@
             </tr>
             <tr>
               <td>Price Controlled</td>
-              <td>{{supportItem.fields.priceControlled['en-US']| yesNo}}</td>
+              <td>{{supportItem.priceControlled| yesNo}}</td>
             </tr>
             <tr>
               <td>Quote Needed</td>
               <td>{{supportItem.fields.quoteNeeded['en-US']| yesNo}}</td>
+            </tr>
+            <tr ng-show="supportItem.priceControlled">
+              <td>Location</td>
+              <td>
+                <select ng-model="selectedLocation" ng-options="location as location for location in locationOptions" class="form-control"></select>
+              </td>
             </tr>
           </table>
         </div>
@@ -52,16 +58,16 @@
         <tr>
           <th>Description</th>
           <th>Item Code</th>
-          <th ng-show="supportItem.fields.priceControlled['en-US']">Price Cap</th>
-          <th>Locations</th>
+          <th ng-if="supportItem.priceControlled">Price Cap</th>
+          <!--<th>Locations</th>-->
           <th ng-repeat="variantConfiguration in supportItem.variantConfigurationList">{{variantConfiguration.fields.title['en-US']}}</th>
           <th ng-if="currentUser.role === 'admin'"></th>
         </tr>
         <tr ng-repeat="variant in variants">
           <td>{{variant.description}}</td>
           <td>{{variant.variantId}}</td>
-          <td ng-show="supportItem.fields.priceControlled['en-US']">{{variant.price|| None}}</td>
-          <td>All</td>
+          <td ng-if="supportItem.priceControlled">{{priceData[variant.variantId]|| None}}</td>
+          <!--<td>All</td>-->
           <td ng-repeat="variantConfiguration in supportItem.variantConfigurationList">{{variant.attributes[variantConfiguration.fields.title['en-US']]|| '-'}}</td>
           <td ng-if="currentUser.role === 'admin'" class="actions">
             <a href="" ng-click="editVariant(variant)"><i class="fa fa-pencil"></i></a>
