@@ -34,8 +34,8 @@ exports.search = function(req, res) {
   var searchStr = req.query.query || '';
   var query = {};
   query['sys.contentType.sys.id'] = 'supportItem';
-  if (req.query.category) {
-    query['fields.category.en-US'] = req.query.category;
+  if (req.query.registrationGroup) {
+    query['fields.registrationGroup.en-US'] = req.query.registrationGroup;
   }
   var $or = [];
   $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
@@ -68,16 +68,16 @@ exports.facets = function(req, res) {
   $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.tags.en-US': helper.wrapRegExp(searchStr)});
 
-  var categoies = Content.aggregate([
+  var categories = Content.aggregate([
     {$match: {'sys.contentType.sys.id': 'supportItem'}},
-    {$group: {_id: '$fields.category.en-US'}},
+    {$group: {_id: '$fields.registrationGroup.en-US'}},
     {$project: {count: {$literal: 0}}}
   ]).exec();
   var counts = Content.aggregate([
     {$match: {'sys.contentType.sys.id': 'supportItem', $or: $or}},
-    {$group: {_id: '$fields.category.en-US', count: {$sum: 1}}}
+    {$group: {_id: '$fields.registrationGroup.en-US', count: {$sum: 1}}}
   ]).exec();
-  Promise.props({categories: categoies, counts: counts}).then(function(data) {
+  Promise.props({categories: categories, counts: counts}).then(function(data) {
     var indexedCounts = _.keyBy(data.counts, '_id');
     var result = _.map(data.categories, function(category) {
       category.count = _.get(indexedCounts, category._id + '.count', 0);

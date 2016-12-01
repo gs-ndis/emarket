@@ -7,7 +7,7 @@ angular.module('emarket').controller('SearchCtrl', function($scope, SupportItem,
   function search() {
     var queryData = {};
     queryData.query = $scope.searchQuery;
-    queryData.category = $scope.category;
+    queryData.registrationGroup = $scope.category;
     _.extend(queryData, $scope.tableState.pagination);
     SupportItem.search(queryData, function(result) {
       $scope.results = result.data;

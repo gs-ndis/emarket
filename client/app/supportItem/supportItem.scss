@@ -45,9 +45,9 @@
             padding: 15px 20px;
           }
           td:first-child {
-            /*color: red;*/
             position: relative;
             padding-right: 30px;
+            min-width: 190px;
             &:after {
               position: absolute;
               right: 10px;
