@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('emarket').controller('SupportItemDetailsCtrl', function($stateParams, SupportItem, Variant, dialogs, $scope) {
-  console.log('SupportItemDetailsCtrl controller', $stateParams);
   $scope.locationOptions = [
     'ACT',
     'NSW',

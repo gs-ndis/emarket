@@ -6,6 +6,7 @@ angular.module('emarket').config(function($stateProvider) {
     templateUrl: 'app/admin/admin.html',
     controller: 'AdminCtrl',
     authenticate : true,
-    access : 'admin'
+    access : 'admin',
+    abstract: true
   });
 });
