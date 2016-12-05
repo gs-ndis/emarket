@@ -10,7 +10,10 @@ angular.module('emarket').controller('SidebarCtrl', function($scope, $rootScope,
   ];
   if ($state.includes('search')) {
     SupportItem.getFacets({query: $stateParams.query}, function(data) {
-      $rootScope.searchFacets = data;
+      $rootScope.searchFacets = _.map(data, function(facet) {
+        facet.urlId = encodeURIComponent(facet._id);
+        return facet;
+      });
       $rootScope.totalFacetsCount = _.sumBy(data, 'count');
     });
   }

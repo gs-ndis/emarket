@@ -4,7 +4,7 @@
     <div class="panel-body">
       <ul class="sidenav-links">
         <li ui-sref-active="active"><a ui-sref="search({category: null})">All<span ng-show="totalFacetsCount > 0">&nbsp;({{totalFacetsCount}})</span></a></li>
-        <li ng-repeat="facet in searchFacets" ui-sref-active="active"><a ui-sref="search({category: facet._id})">{{facet._id}}<span ng-show="facet.count > 0">&nbsp;({{facet.count}})</span></a></li>
+        <li ng-repeat="facet in searchFacets" ui-sref-active="active"><a ui-sref="search({category: facet.urlId})">{{facet._id}}<span ng-show="facet.count > 0">&nbsp;({{facet.count}})</span></a></li>
       </ul>
     </div>
   </div>

@@ -1,14 +1,15 @@
 <div class="wrapper">
   <div ng-include="'components/sidebar/sidebar.html'"></div>
   <div class="main-content">
-    <h3>{{count}} Results found<span ng-show="searchQuery"> for: "{{searchQuery}}"</span><span ng-show="category"> in "{{category}}" category</span></h3>
+    <div style="position: relative; padding: 30px;" us-spinner ng-show="loading"></div>
+    <h3 ng-hide="loading">{{count}} Results found<span ng-show="$stateParams.searchQuery"> for: "{{searchQuery}}"</span><span ng-show="$stateParams.category"> in "{{category}}" category</span></h3>
     <div class="panel panel-search-result" ng-repeat="content in results">
       <div class="panel-heading"><a href="" ui-sref="supportItem.details({id: content.sys.id})">{{content.fields.title['en-US']}}</a></div>
       <div class="panel-subheading">
         <span class="support-item-tags"><span ng-show="content.fields.tags['en-US'].length">{{content.fields.tags['en-US'].join(', ')}}, </span>{{content.fields.category['en-US']}}</span>
         <span class="support-item-date">{{content.sys.createdAt| date}}</span>
       </div>
-      <div class="panel-body">{{content.fields.description['en-US']}}</div>
+      <div class="panel-body" style="word-wrap: break-word;">{{content.fields.description['en-US']}}</div>
     </div>
     <div st-table st-pipe="tableUpdate">
       <div class="text-center" colspan="5" st-template="components/partials/pagination.html" st-pagination="" st-items-by-page="stTable.itemsPerPage" st-displayed-pages="9"></div>
