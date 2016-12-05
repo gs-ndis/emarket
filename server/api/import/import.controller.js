@@ -14,18 +14,17 @@ var iconv = require('iconv-lite');
 var client = require('../../util/contentful.management.client');
 
 
-var updateSupportItemType = Promise.method(function(supportCategories, registrationGroups) {
+var updateSupportItemType = Promise.method(function(space, supportCategories, registrationGroups) {
   console.log('update supportItem');
-  return client.getSpace(config.contentful.space).then(function(space) {
-    return space.getContentType('supportItem').then(function(supportItem) {
-      var categoryField = _.find(supportItem.fields, {id: 'category'});
-      categoryField.validations = [{in: supportCategories}];
+  return space.getContentType('supportItem').then(function(supportItem) {
+    var categoryField = _.find(supportItem.fields, {id: 'category'});
+    categoryField.validations = [{in: supportCategories}];
 
-      var registrationGroupField = _.find(supportItem.fields, {id: 'registrationGroup'});
-      registrationGroupField.validations = [{in: registrationGroups}];
-      return supportItem.update();
-    });
+    var registrationGroupField = _.find(supportItem.fields, {id: 'registrationGroup'});
+    registrationGroupField.validations = [{in: registrationGroups}];
+    return supportItem.update();
   });
+
 });
 
 var createSupportItemEntry = Promise.method(function(supportItemData) {
@@ -60,7 +59,7 @@ var createOrUpdateSupportItemEntry = Promise.method(function(space, supportItemD
 });
 
 
-exports.index = function(req, res) {
+exports.updateLocal = function(req, res) {
   var locations = [
     'ACT',
     'NSW',
@@ -88,7 +87,7 @@ exports.index = function(req, res) {
     }
   ];
 
-  var sampleCsvPath = config.root + '/docs/201617-VIC-NSW-QLD-TAS-Price-Guide-New structure.csv';
+  var sampleCsvPath = config.root + '/docs/2.3-PriceGuide-201617-VIC-NSW-QLD-TAS_Proposed.csv';
 
   var babyParseOptions = {
     header: true,
@@ -151,8 +150,8 @@ exports.index = function(req, res) {
 
 
 
-function test(req, res) {
-  var csvPath = path.normalize(config.root + '/docs/201617-VIC-NSW-QLD-TAS-Price-Guide-New structure.csv');
+exports.updateContentful = function(req, res) {
+  var csvPath = path.normalize(config.root + '/docs/2.3-PriceGuide-201617-VIC-NSW-QLD-TAS_Proposed.csv');
   var options = {
     header: true,
     dynamicTyping: true,
@@ -167,66 +166,67 @@ function test(req, res) {
   console.log(registrationGroups);
   console.log('---------------------');
   console.log(supportCategories);
-  client.getSpace(config.contentful.space).then(function(space) {
-//    return updateSupportItemType(supportCategories, registrationGroups);
-//  }).then(function() {
-//    console.log('next...');
-
-
-//    return Promise.each(_.keys(supportItemsGroups), function(key) {
-//      if (!key.length) {
-//        return;
-//      }
-//      var item = _.head(supportItemsGroups[key]);
-//
-//      var priceControlled = false;
-//      _.each(supportItemsGroups[key], function(variant) {
-//        if (_.trim(variant['Price Control']) && (_.trim(variant['Price Control']).toUpperCase() === 'Y' || Number(variant.Price) > 0)) {
-//          priceControlled = true;
-//          return false;
-//        }
-//      });
-//      var quoteNeeded = false;
-//      _.each(supportItemsGroups[key], function(variant) {
-//        if (_.trim(variant.Quote) && _.trim(variant.Quote).toUpperCase() === 'Y') {
-//          quoteNeeded = true;
-//          return false;
-//        }
-//      });
-//      var supportItemData = {
-//        fields: {
-//          supportItemId: {'en-US': Number(item['Support Item ID'])},
-//          title: {'en-US': _.trim(key)},
-//          category: {'en-US': _.trim(item['Support Categories'])},
-//          registrationGroup: {'en-US': _.trim(item['Registration Group'])},
-//          description: {'en-US': _.trim(item['Support Item Description'])},
-//          priceControlled: {'en-US': priceControlled},
-//          quoteNeeded: {'en-US': quoteNeeded}
-//        }
-//      };
-//      console.log('---------------------', priceControlled, quoteNeeded);
-////      console.log(supportItemData);
-//      return createOrUpdateSupportItemEntry(space, supportItemData);
-//    });
-//    return Variant.remove({}).exec();
+  var space;
+  client.getSpace(config.contentful.space).then(function(result) {
+    space = result;
+    return updateSupportItemType(space, supportCategories, registrationGroups);
   }).then(function() {
-    console.log('create variants...');
-    return Promise.each(parsed.data, function(variantData) {
-      if (_.isEmpty(_.trim(variantData['Support Item']))) {
+    console.log('next...');
+
+
+    return Promise.each(_.keys(supportItemsGroups), function(key) {
+      if (!key.length) {
         return;
       }
-      var data = {
-        variantId: variantData['Variant ID'],
-        description: variantData['Variant Description'],
-        unit: variantData['Unit of Measure'],
-        price: Number(String(variantData.Price).replace(/[^\d\.]*/ig, '')),
-        supportItemId: Number(variantData['Support Item ID'])
-      };
-//      return Variant.findOne({variantId})
+      var item = _.head(supportItemsGroups[key]);
 
-//      var newVariant = new Variant();
-//      return newVariant.save();
+      var priceControlled = false;
+      _.each(supportItemsGroups[key], function(variant) {
+        if (_.trim(variant['Price Control']) && (_.trim(variant['Price Control']).toUpperCase() === 'Y' || Number(variant.Price) > 0)) {
+          priceControlled = true;
+          return false;
+        }
+      });
+      var quoteNeeded = false;
+      _.each(supportItemsGroups[key], function(variant) {
+        if (_.trim(variant.Quote) && _.trim(variant.Quote).toUpperCase() === 'Y') {
+          quoteNeeded = true;
+          return false;
+        }
+      });
+      var description = _.chain(supportItemsGroups[key]).map('Support Item Description').map(_.trim).uniq().compact().join(' | ').value();
+      if (!description || !description.length) {
+        _.each(supportItemsGroups[key], function(variant) {
+          if (_.trim(variant['Variant Description'])) {
+            description = _.trim(variant['Variant Description']);
+            return false;
+          }
+        });
+        console.log('++++++++++++++++++++++variant description', description);
+      }
+
+      if (!description || !description.length) {
+        console.log('description is empty', key, supportItemsGroups[key]);
+      } else if (description.indexOf('|') !== -1) {
+//        console.log('combined description', description);
+      }
+
+      var supportItemData = {
+        fields: {
+          supportItemId: {'en-US': Number(item['Support Item ID'])},
+          title: {'en-US': _.trim(key)},
+          category: {'en-US': _.trim(item['Support Categories'])},
+          registrationGroup: {'en-US': _.trim(item['Registration Group'])},
+          description: {'en-US': description},
+          priceControlled: {'en-US': priceControlled},
+          quoteNeeded: {'en-US': quoteNeeded}
+        }
+      };
+      console.log('---------------------', priceControlled, quoteNeeded);
+//      console.log(supportItemData);
+      return createOrUpdateSupportItemEntry(space, supportItemData);
     });
+//    return Variant.remove({}).exec();
   }).then(function() {
     console.log('done...');
     res.send(200);
