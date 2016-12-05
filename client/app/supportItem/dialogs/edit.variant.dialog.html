@@ -20,13 +20,30 @@
         <div ng-messages-include="components/partials/validationMessages.html"></div>
       </div>
     </div>
-<!--    <div class="form-group" ng-if="supportItem.fields.priceControlled['en-US']">
-      <label>Price</label>
-      <input type="text" name="price" class="form-control" ng-currency fraction="2" ng-model="variant.price">
-      <div ng-messages="variantForm.price.$error">
-        <div ng-messages-include="components/partials/validationMessages.html"></div>
+    <div>
+      <label>Price Cap</label>
+      <div class="clearfix form-group row" ng-repeat="priceCap in variant.priceCap">
+        <div class="col-md-8">
+          <ui-select multiple ng-model="priceCap.location" theme="bootstrap" ng-disabled="ctrl.disabled" sortable="true" close-on-select="false">
+            <ui-select-match placeholder="Select location...">{{$item}}</ui-select-match>
+            <ui-select-choices repeat="location in getLocationOptionsFor($index) | filter: $select.search">
+              <span ng-bind-html="location| highlight: $select.search"></span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+        <div class="col-md-3">
+          <input type="text" name="price" class="form-control" ng-currency fraction="2" ng-model="priceCap.price">
+          <div ng-messages="variantForm.price.$error">
+            <div ng-messages-include="components/partials/validationMessages.html"></div>
+          </div>
+        </div>
+        <div class="col-md-1"><a href="javascript:void(0);" ng-click="variant.priceCap.splice($index, 1)"><i class="fa fa-times"></i></a></div>
       </div>
-    </div>-->
+      <div>
+        <button ng-click="variant.priceCap.push({})" class="btn btn-green">Add price cap</button>
+      </div>
+    </div>
+
     <div class="form-group" ng-repeat="variantConfiguration in supportItem.variantConfigurationList">
       <label>{{variantConfiguration.fields.title['en-US']}}</label>
       <div ng-if="variantConfiguration.fields.needInput['en-US'] || !variantConfiguration.fields.variants['en-US'].length">

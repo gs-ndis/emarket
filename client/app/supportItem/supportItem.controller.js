@@ -56,7 +56,7 @@ angular.module('emarket').controller('SupportItemDetailsCtrl', function($statePa
     updateVariantList();
   });
   $scope.editVariant = function(variant) {
-    var dialog = dialogs.create('app/supportItem/dialogs/edit.variant.dialog.html', 'EditVariantDialogCtrl', {variant: variant, supportItem: $scope.supportItem}, {size: 'sm', keyboard: true, backdrop: true});
+    var dialog = dialogs.create('app/supportItem/dialogs/edit.variant.dialog.html', 'EditVariantDialogCtrl', {variant: variant, supportItem: $scope.supportItem}, {size: 'md', keyboard: true, backdrop: true});
     dialog.result.then(function() {
       updateVariantList();
     });
@@ -84,6 +84,16 @@ angular.module('emarket').controller('SupportItemDetailsCtrl', function($statePa
 
 
 angular.module('emarket').controller('EditVariantDialogCtrl', function($stateParams, SupportItem, Variant, $scope, $modalInstance, data) {
+  $scope.data = {};
+  $scope.data.locationOptions = [
+    'ACT',
+    'NSW',
+    'QLD',
+    'VIC',
+    'TAS',
+    'Remote',
+    'Very Remote'
+  ];
   $scope.variant = new Variant(data.variant);
   $scope.supportItem = data.supportItem;
   if (!$scope.variant.supportItemId) {
@@ -101,9 +111,20 @@ angular.module('emarket').controller('EditVariantDialogCtrl', function($statePar
       $modalInstance.close($scope.variant);
     }).catch(function(err) {
       console.error(err);
-      swal('', 'Something went wrong. Please try again later', 'warning');
+      swal('', _.get(err, 'data.message', 'Something went wrong. Please try again later'), 'warning');
     }).finally(function() {
       swal.enableButtons();
     });
+  };
+
+  $scope.getLocationOptionsFor = function(target) {
+    var locations = _.clone($scope.data.locationOptions);
+    _.each($scope.variant.priceCap, function(priceCap, index) {
+      if (index !== target) {
+        locations = _.difference(locations, priceCap.location);
+      }
+    });
+
+    return locations;
   };
 });

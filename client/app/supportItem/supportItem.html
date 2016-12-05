@@ -61,12 +61,12 @@
           <th ng-if="supportItem.priceControlled">Price Cap</th>
           <!--<th>Locations</th>-->
           <th ng-repeat="variantConfiguration in supportItem.variantConfigurationList">{{variantConfiguration.fields.title['en-US']}}</th>
-          <th ng-if="currentUser.role === 'admin'"></th>
+          <th ng-if="currentUser.role === 'admin'" style="width: 1%;"></th>
         </tr>
         <tr ng-repeat="variant in variants">
           <td>{{variant.description}}</td>
           <td>{{variant.variantId}}</td>
-          <td ng-if="supportItem.priceControlled">{{priceData[variant.variantId]|| None}}</td>
+          <td ng-if="supportItem.priceControlled"><span ng-show="priceData[variant.variantId] > 0">{{priceData[variant.variantId]| currency:'$':2}}</span><span ng-hide="priceData[variant.variantId] > 0">-</span></td>
           <!--<td>All</td>-->
           <td ng-repeat="variantConfiguration in supportItem.variantConfigurationList">{{variant.attributes[variantConfiguration.fields.title['en-US']]|| '-'}}</td>
           <td ng-if="currentUser.role === 'admin'" class="actions">

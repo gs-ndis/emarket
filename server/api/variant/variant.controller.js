@@ -38,11 +38,16 @@ exports.show = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  var supportItem = new Variant(req.body);
-  supportItem._user = req.user._id;
-  supportItem.source = 'manual';
-  supportItem.save().then(function(variant) {
+  var variant = new Variant(req.body);
+  variant._user = req.user._id;
+  variant.source = 'manual';
+  variant.save().then(function(variant) {
     return res.json(201, variant);
+  }).catch(function(err) {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      return res.json(422, {success: false, message: 'Variant with ID "' + req.body.variantId + '" already exists!'});
+    }
+    throw err;
   }).bind(res).catch(errorSender.handlePromiseError);
 };
 
@@ -58,6 +63,11 @@ exports.update = function(req, res) {
     return variant.save();
   }).then(function(supportItem) {
     return res.json(200, supportItem);
+  }).catch(function(err) {
+    if (err.name === 'MongoError' && err.code === 11000) {
+      return res.json(422, {success: false, message: 'Variant with ID "' + req.body.variantId + '" already exists!'});
+    }
+    throw err;
   }).bind(res).catch(errorSender.handlePromiseError);
 };
 
