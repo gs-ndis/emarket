@@ -1,8 +1,16 @@
 <div class="wrapper">
   <div ng-include="'components/sidebar/sidebar.html'"></div>
   <div class="main-content">
+    <div class="clearfix">
+      <div class="filter" ng-show="$stateParams.query">{{searchQuery | substr:true:30}}<button type="button" class="close" ng-click="$state.go('search', {query: null})">&times;</button></div>
+      <div class="filter" ng-show="$stateParams.category && !$stateParams.registrationGroup">Category: {{category | substr:true:30}}<button type="button" class="close" ng-click="$state.go('search', {category: null})">&times;</button></div>
+      <div class="filter" ng-show="$stateParams.category && $stateParams.registrationGroup">Category: {{category | substr:true:30}} -> {{registrationGroup}}<button type="button" class="close" ng-click="$state.go('search', {registrationGroup: null})">&times;</button></div>
+      <div class="filter" >Price Cap: <input type="checkbox" ng-model="filter.priceCap" ng-true-value="true" ng-false-value="null" ng-change="$state.go('search', {priceCap: filter.priceCap})"></div>
+      <div class="filter" >Quote: <input type="checkbox" ng-model="filter.quote" ng-true-value="true" ng-false-value="null" ng-change="$state.go('search', {quote: filter.quote})"></div>
+    </div>
     <div style="position: relative; padding: 30px;" us-spinner ng-show="loading"></div>
-    <h3 ng-hide="loading">{{count}} Results found<span ng-show="$stateParams.searchQuery">&nbsp;for:&nbsp;"{{searchQuery}}"</span><span ng-show="$stateParams.category">&nbsp;in&nbsp;"{{category}}" category</span></h3>
+    <h3 ng-hide="loading || !count">{{count}} Results found</h3>
+    <h3 ng-show="!loading && !count">No Results found</h3>
     <div class="panel panel-search-result" ng-repeat="content in results">
       <div class="panel-heading"><a href="" ui-sref="supportItem.details({id: content.sys.id})">{{content.fields.title['en-US']}}</a></div>
       <div class="panel-subheading">

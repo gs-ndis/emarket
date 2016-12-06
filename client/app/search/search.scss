@@ -49,3 +49,19 @@
   }
 }
 
+.filter {
+  color: #1f70ae;
+  display: block;
+  float: left;
+  border: solid 1px #ececec;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 5px;
+  margin-left: 0;
+  position: relative;
+  > .close {
+    margin-left: 5px;
+  }
+}
+

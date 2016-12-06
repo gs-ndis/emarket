@@ -8,11 +8,25 @@ angular.module('emarket').controller('SidebarCtrl', function($scope, $rootScope,
     {key: 1, value: 'Yes'},
     {key: 0, value: 'No'}
   ];
+
   if ($state.includes('search')) {
-    SupportItem.getFacets({query: $stateParams.query}, function(data) {
+    var queryData = {};
+    queryData.quote = $stateParams.quote || undefined;
+    queryData.priceCap = $stateParams.priceCap || undefined;
+    queryData.query = $stateParams.query;
+
+    SupportItem.getFacets(queryData, function(data) {
+      var oldFacets = _.cloneDeep($rootScope.searchFacets);
+      console.log(_.head(oldFacets));
+
       var sum = 0;
       $rootScope.searchFacets = _.map(data, function(facet) {
         facet.urlId = encodeURIComponent(facet._id);
+        var oldFacet = _.find(oldFacets, {_id: facet._id});
+        if (oldFacet) {
+          console.log(oldFacet.isOpen);
+          facet.isOpen = oldFacet.isOpen;
+        }
         sum += facet.count || 0;
         facet.registrationGroups = _.map(facet.registrationGroups, function(registrationGroup) {
           registrationGroup.urlId = encodeURIComponent(registrationGroup._id);

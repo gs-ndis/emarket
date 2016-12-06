@@ -9,7 +9,6 @@ var Content = require('../content/content.model');
 var Variant = require('../variant/variant.model');
 
 exports.index = function(req, res) {
-  console.log('test');
   var queryBuilder = new QueryBuilder(req.query);
 
   queryBuilder.andString('description')
@@ -20,11 +19,11 @@ exports.index = function(req, res) {
     .andString('outcome')
     .andString('purpose');
 
-  var request = SupportItem.find(queryBuilder.getQuery())
+  var data = SupportItem.find(queryBuilder.getQuery())
     .skip(queryBuilder.skip)
     .limit(queryBuilder.limit)
     .exec();
-  return Promise.props({data: request, count: SupportItem.count(queryBuilder.getQuery())})
+  return Promise.props({data: data, count: SupportItem.count(queryBuilder.getQuery())})
     .then(function(data) {
       return res.json(data);
     }).bind(res).catch(errorSender.handlePromiseError);
@@ -40,6 +39,13 @@ exports.search = function(req, res) {
   if (req.query.category) {
     query['fields.category.en-US'] = req.query.category;
   }
+  if (req.query.priceCap) {
+    query['fields.priceControlled.en-US'] = true;
+  }
+  if (req.query.quote) {
+    query['fields.quoteNeeded.en-US'] = true;
+  }
+
   var $or = [];
   $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
@@ -65,15 +71,27 @@ exports.search = function(req, res) {
 
 exports.facets = function(req, res) {
   var searchStr = req.query.query || '';
+
+  var filter = {'sys.contentType.sys.id': 'supportItem'};
+
+  if (req.query.priceCap) {
+    filter['fields.priceControlled.en-US'] = true;
+  }
+  if (req.query.quote) {
+    filter['fields.quoteNeeded.en-US'] = true;
+  }
+
   var $or = [];
   $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.tags.en-US': helper.wrapRegExp(searchStr)});
+  filter.$or = $or;
+
 
   Content.aggregate([
-    {'$match': {'sys.contentType.sys.id': 'supportItem', $or: $or}},
+    {'$match': filter},
     {$group: {
         _id: {category: '$fields.category.en-US', registrationGroup: '$fields.registrationGroup.en-US'},
         count: {$sum: 1}
@@ -88,50 +106,6 @@ exports.facets = function(req, res) {
   ]).then(function(result) {
     res.json(result);
   }).bind(res).catch(errorSender.handlePromiseError);
-
-
-//  var categories = Content.aggregate([
-//    {'$match': {'sys.contentType.sys.id': 'supportItem'}},
-//    {'$group': {
-//        _id: '$fields.category.en-US',
-//        registrationGroups: {$addToSet: {_id: '$fields.registrationGroup.en-US'}}
-//      }
-//    }
-//  ]);
-//
-//  var categoryCounts = Content.aggregate([
-//    {'$match': {'sys.contentType.sys.id': 'supportItem', $or: $or}},
-//    {$group: {
-//        _id: {category: '$fields.category.en-US', registrationGroup: '$fields.registrationGroup.en-US'},
-//        count: {$sum: 1}
-//      }
-//    },
-//    {'$group': {
-//        _id: '$_id.category',
-//        registrationGroups: {$addToSet: {_id: '$_id.registrationGroup', count: {$sum: '$count'}}},
-//        count: {$sum: '$count'}
-//      }
-//    }
-//  ]);
-//
-//  Promise.props({categories: categories, counts: categoryCounts})
-//    .then(function(data) {
-//      var result = _.map(data.counts, function(facetCount) {
-//        var facet = _.find(data.categories, {_id: facetCount._id});
-//        if (facet) {
-//          facet.count = facetCount.count;
-//          if (facetCount.registrationGroups) {
-//            _.each(facetCount.registrationGroups, function(registrationGroupCount) {
-//              var registrationGroup = _.find(facet.registrationGroups, {_id: registrationGroupCount._id});
-//              registrationGroup.count = registrationGroupCount.count;
-//            });
-//          }
-//        }
-//      });
-////    console.log('--------------------------------------');
-////    console.log(JSON.stringify(result, null, 2));
-//      res.json(data.categories);
-//    }).bind(res).catch(errorSender.handlePromiseError);
 };
 
 exports.facets2 = function(req, res) {

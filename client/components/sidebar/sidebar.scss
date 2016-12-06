@@ -2,6 +2,14 @@
   ul.sidenav-links li.active > a {
     color: #1f6fae;
   }
+/*  ul.sidenav-links {
+    & > li.collapsible {
+      &:before {
+        content: '\f103';
+        font-family: 'FontAwesome';
+      }
+    }
+  }*/
   ul.sidenav-links .secondLevel {
     list-style: none;
     padding-left: 20px;
