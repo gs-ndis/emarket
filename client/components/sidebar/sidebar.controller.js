@@ -10,11 +10,17 @@ angular.module('emarket').controller('SidebarCtrl', function($scope, $rootScope,
   ];
   if ($state.includes('search')) {
     SupportItem.getFacets({query: $stateParams.query}, function(data) {
+      var sum = 0;
       $rootScope.searchFacets = _.map(data, function(facet) {
         facet.urlId = encodeURIComponent(facet._id);
+        sum += facet.count || 0;
+        facet.registrationGroups = _.map(facet.registrationGroups, function(registrationGroup) {
+          registrationGroup.urlId = encodeURIComponent(registrationGroup._id);
+          return registrationGroup;
+        });
         return facet;
       });
-      $rootScope.totalFacetsCount = _.sumBy(data, 'count');
+      $rootScope.totalFacetsCount = _.sumBy($rootScope.searchFacets, 'count');
     });
   }
 

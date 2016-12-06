@@ -37,6 +37,9 @@ exports.search = function(req, res) {
   if (req.query.registrationGroup) {
     query['fields.registrationGroup.en-US'] = req.query.registrationGroup;
   }
+  if (req.query.category) {
+    query['fields.category.en-US'] = req.query.category;
+  }
   var $or = [];
   $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
@@ -59,6 +62,7 @@ exports.search = function(req, res) {
     }).bind(res).catch(errorSender.handlePromiseError);
 };
 
+
 exports.facets = function(req, res) {
   var searchStr = req.query.query || '';
   var $or = [];
@@ -68,21 +72,116 @@ exports.facets = function(req, res) {
   $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
   $or.push({'fields.tags.en-US': helper.wrapRegExp(searchStr)});
 
-  var categories = Content.aggregate([
+  Content.aggregate([
+    {'$match': {'sys.contentType.sys.id': 'supportItem', $or: $or}},
+    {$group: {
+        _id: {category: '$fields.category.en-US', registrationGroup: '$fields.registrationGroup.en-US'},
+        count: {$sum: 1}
+      }
+    },
+    {'$group': {
+        _id: '$_id.category',
+        registrationGroups: {$addToSet: {_id: '$_id.registrationGroup', count: {$sum: '$count'}}},
+        count: {$sum: '$count'}
+      }
+    }
+  ]).then(function(result) {
+    res.json(result);
+  }).bind(res).catch(errorSender.handlePromiseError);
+
+
+//  var categories = Content.aggregate([
+//    {'$match': {'sys.contentType.sys.id': 'supportItem'}},
+//    {'$group': {
+//        _id: '$fields.category.en-US',
+//        registrationGroups: {$addToSet: {_id: '$fields.registrationGroup.en-US'}}
+//      }
+//    }
+//  ]);
+//
+//  var categoryCounts = Content.aggregate([
+//    {'$match': {'sys.contentType.sys.id': 'supportItem', $or: $or}},
+//    {$group: {
+//        _id: {category: '$fields.category.en-US', registrationGroup: '$fields.registrationGroup.en-US'},
+//        count: {$sum: 1}
+//      }
+//    },
+//    {'$group': {
+//        _id: '$_id.category',
+//        registrationGroups: {$addToSet: {_id: '$_id.registrationGroup', count: {$sum: '$count'}}},
+//        count: {$sum: '$count'}
+//      }
+//    }
+//  ]);
+//
+//  Promise.props({categories: categories, counts: categoryCounts})
+//    .then(function(data) {
+//      var result = _.map(data.counts, function(facetCount) {
+//        var facet = _.find(data.categories, {_id: facetCount._id});
+//        if (facet) {
+//          facet.count = facetCount.count;
+//          if (facetCount.registrationGroups) {
+//            _.each(facetCount.registrationGroups, function(registrationGroupCount) {
+//              var registrationGroup = _.find(facet.registrationGroups, {_id: registrationGroupCount._id});
+//              registrationGroup.count = registrationGroupCount.count;
+//            });
+//          }
+//        }
+//      });
+////    console.log('--------------------------------------');
+////    console.log(JSON.stringify(result, null, 2));
+//      res.json(data.categories);
+//    }).bind(res).catch(errorSender.handlePromiseError);
+};
+
+exports.facets2 = function(req, res) {
+  var searchStr = req.query.query || '';
+  var $or = [];
+  $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
+  $or.push({'fields.tags.en-US': helper.wrapRegExp(searchStr)});
+
+  var registrationGroups = Content.aggregate([
     {$match: {'sys.contentType.sys.id': 'supportItem'}},
     {$group: {_id: '$fields.registrationGroup.en-US'}},
     {$project: {count: {$literal: 0}}}
   ]).exec();
-  var counts = Content.aggregate([
+  var categories = Content.aggregate([
+    {$match: {'sys.contentType.sys.id': 'supportItem'}},
+    {$group: {_id: '$fields.category.en-US'}},
+    {$project: {count: {$literal: 0}}}
+  ]).exec();
+  var registrationGroupCounts = Content.aggregate([
     {$match: {'sys.contentType.sys.id': 'supportItem', $or: $or}},
     {$group: {_id: '$fields.registrationGroup.en-US', count: {$sum: 1}}}
   ]).exec();
-  Promise.props({categories: categories, counts: counts}).then(function(data) {
-    var indexedCounts = _.keyBy(data.counts, '_id');
-    var result = _.map(data.categories, function(category) {
-      category.count = _.get(indexedCounts, category._id + '.count', 0);
-      return category;
+  var categoryCounts = Content.aggregate([
+    {$match: {'sys.contentType.sys.id': 'supportItem', $or: $or}},
+    {$group: {_id: '$fields.category.en-US', count: {$sum: 1}}}
+  ]).exec();
+  Promise.props({
+    categories: categories,
+    registrationGroups: registrationGroups,
+    categoryCounts: categoryCounts,
+    registrationGroupCounts: registrationGroupCounts
+  }).then(function(data) {
+    var indexedCategoryCounts = _.keyBy(data.categoryCounts, '_id');
+    var categories = _.map(data.categories, function(item) {
+      item.count = _.get(indexedCategoryCounts, item._id + '.count', 0);
+      return item;
     });
+    var indexedRegistrationGroupCounts = _.keyBy(data.registrationGroupCounts, '_id');
+    var registrationGroups = _.map(data.registrationGroups, function(item) {
+      item.count = _.get(indexedRegistrationGroupCounts, item._id + '.count', 0);
+      return item;
+    });
+    var result = {
+      categories: categories,
+      registrationGroups: registrationGroups
+    };
+
     return res.json(result);
   }).bind(res).catch(errorSender.handlePromiseError);
 };

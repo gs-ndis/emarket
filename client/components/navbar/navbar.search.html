@@ -1,7 +1,7 @@
 <div class="home-container">
   <div class="search-results-search-container">
     <div class="wrapper form-inline">
-      <form ng-submit="$state.go('search', {query: formData.searchQuery})">
+      <form ng-submit="$state.go('search', {query: formData.searchQuery, category: null, registrationGroup: null})">
         <div class="input-group">
           <span class="input-group-btn">
             <button type="submit"><i class="fa fa-search"></i></button>

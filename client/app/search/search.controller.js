@@ -3,13 +3,15 @@
 angular.module('emarket').controller('SearchCtrl', function($scope, SupportItem, $stateParams) {
   $scope.searchQuery = decodeURIComponent($stateParams.query);
   $scope.category = decodeURIComponent($stateParams.category);
+  $scope.registrationGroup = decodeURIComponent($stateParams.registrationGroup);
   $scope.tableState = {};
   $scope.loading = true;
   function search() {
     $scope.loading = true;
     var queryData = {};
     queryData.query = $stateParams.query? $scope.searchQuery : undefined;
-    queryData.registrationGroup = $stateParams.category? $scope.category : undefined;
+    queryData.category = $stateParams.category? $scope.category : undefined;
+    queryData.registrationGroup = $stateParams.registrationGroup? $scope.registrationGroup : undefined;
     _.extend(queryData, $scope.tableState.pagination);
     SupportItem.search(queryData, function(result) {
       $scope.results = result.data;

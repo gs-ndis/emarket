@@ -6,7 +6,7 @@
       <h3>Support Item Catalog</h3>
       <h4>Search (Leave blank to see all items)</h4>
       <div class="form-group">
-        <form ng-submit="$state.go('search', {query: formData.searchQuery})">
+        <form ng-submit="$state.go('search', {query: formData.searchQuery, category: null, registrationGroup: null})">
           <div class="input-group">
             <span class="input-group-btn">
               <button type="submit"><i class="fa fa-search"></i></button>

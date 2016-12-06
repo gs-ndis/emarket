@@ -2,7 +2,7 @@
   <div ng-include="'components/sidebar/sidebar.html'"></div>
   <div class="main-content">
     <div style="position: relative; padding: 30px;" us-spinner ng-show="loading"></div>
-    <h3 ng-hide="loading">{{count}} Results found<span ng-show="$stateParams.searchQuery"> for: "{{searchQuery}}"</span><span ng-show="$stateParams.category"> in "{{category}}" category</span></h3>
+    <h3 ng-hide="loading">{{count}} Results found<span ng-show="$stateParams.searchQuery">&nbsp;for:&nbsp;"{{searchQuery}}"</span><span ng-show="$stateParams.category">&nbsp;in&nbsp;"{{category}}" category</span></h3>
     <div class="panel panel-search-result" ng-repeat="content in results">
       <div class="panel-heading"><a href="" ui-sref="supportItem.details({id: content.sys.id})">{{content.fields.title['en-US']}}</a></div>
       <div class="panel-subheading">
