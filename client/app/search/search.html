@@ -2,11 +2,11 @@
   <div ng-include="'components/sidebar/sidebar.html'"></div>
   <div class="main-content">
     <div class="clearfix">
-      <div class="filter" ng-show="$stateParams.query">{{searchQuery | substr:true:30}}<button type="button" class="close" ng-click="$state.go('search', {query: null})">&times;</button></div>
-      <div class="filter" ng-show="$stateParams.category && !$stateParams.registrationGroup">Category: {{category | substr:true:30}}<button type="button" class="close" ng-click="$state.go('search', {category: null})">&times;</button></div>
-      <div class="filter" ng-show="$stateParams.category && $stateParams.registrationGroup">Category: {{category | substr:true:30}} -> {{registrationGroup}}<button type="button" class="close" ng-click="$state.go('search', {registrationGroup: null})">&times;</button></div>
-      <div class="filter" >Price Cap: <input type="checkbox" ng-model="filter.priceCap" ng-true-value="true" ng-false-value="null" ng-change="$state.go('search', {priceCap: filter.priceCap})"></div>
-      <div class="filter" >Quote: <input type="checkbox" ng-model="filter.quote" ng-true-value="true" ng-false-value="null" ng-change="$state.go('search', {quote: filter.quote})"></div>
+      <div class="filter" ng-show="$stateParams.query">{{searchQuery| substr:true:30}}<button type="button" class="close" ng-click="$state.go('search', {query: null})">&times;</button></div>
+      <div class="filter" ng-show="$stateParams.category && !$stateParams.registrationGroup">Category: {{category| substr:true:30}}<button type="button" class="close" ng-click="$state.go('search', {category: null})">&times;</button></div>
+      <div class="filter" ng-show="$stateParams.category && $stateParams.registrationGroup">Category: {{category| substr:true:30}} -> {{registrationGroup}}<button type="button" class="close" ng-click="$state.go('search', {registrationGroup: null})">&times;</button></div>
+      <div class="filter" ng-show="$stateParams.priceCap">Price Controlled: Yes<button type="button" class="close" ng-click="$state.go('search', {priceCap: null})">&times;</button></div>
+      <div class="filter" ng-show="$stateParams.quote">Quote Needed: Yes<button type="button" class="close" ng-click="$state.go('search', {quote: null})">&times;</button></div>
     </div>
     <div style="position: relative; padding: 30px;" us-spinner ng-show="loading"></div>
     <h3 ng-hide="loading || !count">{{count}} Results found</h3>

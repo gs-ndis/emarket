@@ -1,4 +1,13 @@
 <div class="left-sidebar" ng-controller="SidebarCtrl">
+  <div class="panel panel-default facets-panel" ng-show="$state.includes('search')">
+    <div class="panel-body">
+      <ul class="sidenav-links">
+        <li><label class="checkbox-inline" ><input type="checkbox" ng-model="filter.priceCap" ng-true-value="true" ng-false-value="null" ng-change="$state.go('search', {priceCap: filter.priceCap})"> Price Controlled</label></li>
+        <li><label class="checkbox-inline" ><input type="checkbox" ng-model="filter.quote" ng-true-value="true" ng-false-value="null" ng-change="$state.go('search', {quote: filter.quote})"> Quote Needed</label></li>
+      </ul>
+    </div>
+  </div>
+
   <div class="panel panel-default facets-panel" ng-show="$state.includes('search') && totalFacetsCount > 0">
     <div class="panel-body">
       <ul class="sidenav-links">
