@@ -62,10 +62,10 @@ var actions = {
 var saveOrUpdate = Promise.method(function(data) {
   return Content.findOne({'sys.id': data.sys.id}).then(function(oldContent) {
     if (oldContent) {
-      _.extend(oldContent, data);
+      _.extend(oldContent, helper.removeContentfulLocale(data));
       return oldContent.save();
     }
-    var content = new Content(data);
+    var content = new Content(helper.removeContentfulLocale(data));
     return content.save();
   });
 });
