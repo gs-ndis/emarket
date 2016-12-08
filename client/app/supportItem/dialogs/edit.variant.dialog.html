@@ -45,17 +45,17 @@
     </div>
 
     <div class="form-group" ng-repeat="variantConfiguration in supportItem.variantConfigurationList">
-      <label>{{variantConfiguration.fields.title['en-US']}}</label>
-      <div ng-if="variantConfiguration.fields.needInput['en-US'] || !variantConfiguration.fields.variants['en-US'].length">
-        <input type="text" name="{{variantConfiguration.fields.title['en-US']}}" class="form-control" ng-model="variant.attributes[variantConfiguration.fields.title['en-US']]">
+      <label>{{variantConfiguration.fields.title}}</label>
+      <div ng-if="variantConfiguration.fields.needInput || !variantConfiguration.fields.variants.length">
+        <input type="text" name="{{variantConfiguration.fields.title}}" class="form-control" ng-model="variant.attributes[variantConfiguration.fields.title]">
       </div>
-      <div ng-if="!variantConfiguration.fields.needInput['en-US'] && variantConfiguration.fields.variants['en-US'].length">
+      <div ng-if="!variantConfiguration.fields.needInput && variantConfiguration.fields.variants.length">
         <select 
-          ng-model="variant.attributes[variantConfiguration.fields.title['en-US']]"
-          ng-options="value as value for value in variantConfiguration.fields.variants['en-US']"
+          ng-model="variant.attributes[variantConfiguration.fields.title]]"
+          ng-options="value as value for value in variantConfiguration.fields.variants"
           class="form-control"></select>
       </div>
-      <div ng-messages="variantForm[variantConfiguraion.fields.title['en-US']].$error">
+      <div ng-messages="variantForm[variantConfiguraion.fields.title].$error">
         <div ng-messages-include="components/partials/validationMessages.html"></div>
       </div>
     </div>

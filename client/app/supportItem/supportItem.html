@@ -1,7 +1,7 @@
 <div class="wrapper">
   <div class="support-item-details">
     <div class="support-item-details-title clearfix">
-      <h2 class="pull-left">{{supportItem.fields.title['en-US']}}</h2>
+      <h2 class="pull-left">{{supportItem.fields.title}}</h2>
       <div class="buttons pull-right">
         <button class="btn btn-white"><i class="fa fa-print"></i>&nbsp;Print PDF</button>
         <a class="btn btn-green" href="https://app.contentful.com/spaces/{{supportItem.sys.space.sys.id}}/entries/{{supportItem.sys.id}}" target="_blank" ng-if="currentUser.role === 'admin'"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
@@ -14,16 +14,16 @@
         </div>
       </div>
       <div class="support-item-right-block">
-        <div class="support-item-description" btf-markdown="supportItem.fields.description['en-US']"></div>
+        <div class="support-item-description" btf-markdown="supportItem.fields.description"></div>
         <div class="support-item-attributes">
           <table>
             <tr>
               <td>Registration Group</td>
-              <td>{{supportItem.fields.registrationGroup['en-US']}}</td>
+              <td>{{supportItem.fields.registrationGroup}}</td>
             </tr>
             <tr>
               <td>Support Category</td>
-              <td>{{supportItem.fields.category['en-US']}}</td>
+              <td>{{supportItem.fields.category}}</td>
             </tr>
             <tr>
               <td>Price Controlled</td>
@@ -31,7 +31,7 @@
             </tr>
             <tr>
               <td>Quote Needed</td>
-              <td>{{supportItem.fields.quoteNeeded['en-US']| yesNo}}</td>
+              <td>{{supportItem.fields.quoteNeeded| yesNo}}</td>
             </tr>
             <tr ng-show="supportItem.priceControlled">
               <td>Location</td>
@@ -60,7 +60,7 @@
           <th>Item Code</th>
           <th ng-if="supportItem.priceControlled">Price Cap</th>
           <!--<th>Locations</th>-->
-          <th ng-repeat="variantConfiguration in supportItem.variantConfigurationList">{{variantConfiguration.fields.title['en-US']}}</th>
+          <th ng-repeat="variantConfiguration in supportItem.variantConfigurationList">{{variantConfiguration.fields.title}}</th>
           <th ng-if="currentUser.role === 'admin'" style="width: 1%;"></th>
         </tr>
         <tr ng-repeat="variant in variants">
@@ -68,7 +68,7 @@
           <td>{{variant.variantId}}</td>
           <td ng-if="supportItem.priceControlled"><span ng-show="priceData[variant.variantId] > 0">{{priceData[variant.variantId]| currency:'$':2}}</span><span ng-hide="priceData[variant.variantId] > 0">-</span></td>
           <!--<td>All</td>-->
-          <td ng-repeat="variantConfiguration in supportItem.variantConfigurationList">{{variant.attributes[variantConfiguration.fields.title['en-US']]|| '-'}}</td>
+          <td ng-repeat="variantConfiguration in supportItem.variantConfigurationList">{{variant.attributes[variantConfiguration.fields.title]|| '-'}}</td>
           <td ng-if="currentUser.role === 'admin'" class="actions">
             <a href="" ng-click="editVariant(variant)"><i class="fa fa-pencil"></i></a>
             <a href="" ng-click="deleteVariant(variant)"><i class="fa fa-trash"></i></a>
@@ -94,12 +94,12 @@
             <th>Quoted</th>
           </tr>
           <tr ng-repeat="item in supportItem.relatedItems">
-            <td><a ui-sref="supportItem.details({id: item.sys.id})">{{item.fields.title['en-US']}}</a></td>
-            <td>{{item.fields.description['en-US']| substr:true:50}}</td>
-            <td>{{item.fields.category['en-US']}}</td>
-            <td>{{item.fields.registrationGroup['en-US']}}</td>
-            <td>{{item.fields.priceControlled['en-US']| yesNo}}</td>
-            <td>{{item.fields.quoteNeeded['en-US']| yesNo}}</td>
+            <td><a ui-sref="supportItem.details({id: item.sys.id})">{{item.fields.title}}</a></td>
+            <td>{{item.fields.description| substr:true:50}}</td>
+            <td>{{item.fields.category}}</td>
+            <td>{{item.fields.registrationGroup}}</td>
+            <td>{{item.fields.priceControlled| yesNo}}</td>
+            <td>{{item.fields.quoteNeeded| yesNo}}</td>
           </tr>
         </table>
       </div>

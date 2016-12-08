@@ -107,7 +107,7 @@ function toJson(xml) {
 /**
  * Helper function that takes params hash and converts it into query string
  *
- * @param {object} params
+ * @param {source} params
  * @param {Number} id
  */
 function toQueryString(params, id) {
@@ -123,7 +123,7 @@ function toQueryString(params, id) {
 /**
  * Helper function that checks for the required params
  *
- * @param {object} params
+ * @param {source} params
  * @param {array} reqParams -- required parameters
  */
 function checkParams(params, reqParams) {
@@ -239,6 +239,32 @@ function copyFile(src, dst) {
   });
 }
 
+/**
+ * Check each field for locale field(en-US) and remove it from contentful document
+ * @param {Object|Array} source
+ * @returns {Object|Array} result without locales
+ */
+function removeContentfulLocale(source) {
+  var localeKey = 'en-US';
+  if (_.isArray(source)) {
+    return _.map(source, removeContentfulLocale);
+  }
+  if (!_.isObject(source)) {
+    return source;
+  }
+  return _.reduce(source, function(result, item, key) {
+    result[key] = item;
+    if (_.isObject(item)) {
+      if (item.hasOwnProperty(localeKey)) {
+        result[key] = item[localeKey];
+      } else {
+        result[key] = removeContentfulLocale(item);
+      }
+    }
+    return result;
+  }, {});
+}
+
 exports.escapeForRegExp = escapeForRegExp;
 exports.wrapRegExp = wrapRegExp;
 exports.feetToMeters = feetToMeters;
@@ -260,3 +286,4 @@ exports.toFullStateName = toFullStateName;
 exports.toShortStateName = toShortStateName;
 
 exports.copyFile = copyFile;
+exports.removeContentfulLocale = removeContentfulLocale;

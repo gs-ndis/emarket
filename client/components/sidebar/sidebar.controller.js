@@ -14,28 +14,6 @@ angular.module('emarket').controller('SidebarCtrl', function($scope, $rootScope,
     queryData.quote = $stateParams.quote || undefined;
     queryData.priceCap = $stateParams.priceCap || undefined;
     queryData.query = $stateParams.query;
-
-    SupportItem.getFacets(queryData, function(data) {
-      var oldFacets = _.cloneDeep($rootScope.searchFacets);
-      console.log(_.head(oldFacets));
-
-      var sum = 0;
-      $rootScope.searchFacets = _.map(data, function(facet) {
-        facet.urlId = encodeURIComponent(facet._id);
-        var oldFacet = _.find(oldFacets, {_id: facet._id});
-        if (oldFacet) {
-          console.log(oldFacet.isOpen);
-          facet.isOpen = oldFacet.isOpen;
-        }
-        sum += facet.count || 0;
-        facet.registrationGroups = _.map(facet.registrationGroups, function(registrationGroup) {
-          registrationGroup.urlId = encodeURIComponent(registrationGroup._id);
-          return registrationGroup;
-        });
-        return facet;
-      });
-      $rootScope.totalFacetsCount = _.sumBy($rootScope.searchFacets, 'count');
-    });
   }
 
   $rootScope.highlightBlock = function(selector, targetState) {

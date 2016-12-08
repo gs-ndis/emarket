@@ -37,7 +37,7 @@ angular.module('emarket').controller('SupportItemDetailsCtrl', function($statePa
   });
 
   function updateVariantList() {
-    Variant.query({supportItemId: _.get($scope.supportItem, 'fields.supportItemId.en-US')}, function(result) {
+    Variant.query({supportItemId: _.get($scope.supportItem, 'fields.supportItemId')}, function(result) {
       $scope.variants = result.data;
       var priceControlled = false;
       _.each($scope.variants, function(variant) {
@@ -97,7 +97,7 @@ angular.module('emarket').controller('EditVariantDialogCtrl', function($statePar
   $scope.variant = new Variant(data.variant);
   $scope.supportItem = data.supportItem;
   if (!$scope.variant.supportItemId) {
-    $scope.variant.supportItemId = $scope.supportItem.fields.supportItemId['en-US'];
+    $scope.variant.supportItemId = $scope.supportItem.fields.supportItemId;
   }
 
   $scope.cancel = function() {

@@ -12,12 +12,13 @@
     <h3 ng-hide="loading || !count">{{count}} Results found</h3>
     <h3 ng-show="!loading && !count">No Results found</h3>
     <div class="panel panel-search-result" ng-repeat="content in results">
-      <div class="panel-heading"><a href="" ui-sref="supportItem.details({id: content.sys.id})">{{content.fields.title['en-US']}}</a></div>
+      <div class="panel-heading"><a href="" ui-sref="supportItem.details({id: content._id})" ng-bind-html="content.highlight['fields.title'] || content._source.fields.title">{{content._score}}</a></div>
       <div class="panel-subheading">
-        <span class="support-item-tags"><span ng-show="content.fields.tags['en-US'].length">{{content.fields.tags['en-US'].join(', ')}}, </span>{{content.fields.category['en-US']}}</span>
-        <span class="support-item-date">{{content.sys.createdAt| date}}</span>
+        <span class="support-item-tags"><span ng-show="content._source.fields.tags.length">{{content._source.fields.tags.join(', ')}}, </span>{{content._source.fields.category}}</span>
+        <span class="support-item-date">{{content._source.sys.createdAt| date}}</span>
       </div>
-      <div class="panel-body" style="word-wrap: break-word;">{{content.fields.description['en-US']}}</div>
+      <div class="panel-body" style="word-wrap: break-word;" ng-bind-html="content.highlight['fields.description'] || content._source.fields.description"></div>
+      <!--<div class="panel-body" style="word-wrap: break-word;" ng-bind-html="content._source.fields.description"></div>-->
     </div>
     <div st-table st-pipe="tableUpdate">
       <div class="text-center" colspan="5" st-template="components/partials/pagination.html" st-pagination="" st-items-by-page="stTable.itemsPerPage" st-displayed-pages="9"></div>

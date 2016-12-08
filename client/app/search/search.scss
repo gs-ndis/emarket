@@ -42,9 +42,17 @@
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
     font-size: 16px;
+    em {
+      background-color: #fefebd;
+      padding: 0 3px;
+    }
   }
 
   .panel-heading {
+    font-weight: normal;
+    em {
+      font-weight: bold;
+    }
     color: #1f70ae;
   }
 }

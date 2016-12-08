@@ -4,6 +4,8 @@ var config = require('../../config/environment');
 var errorSender = require('../../util/errorSender');
 var contentfulClient = require('../../util/contentful.client');
 var contentfulManagementClient = require('../../util/contentful.management.client');
+var helper = require('../../util/helper');
+var elasticClient = require('../../util/elastic.client');
 
 var Content = require('./content.model');
 var fs = require('fs');
@@ -15,8 +17,8 @@ exports.index = function(req, res) {
   }
   if (!req.user || req.user.role !== 'admin') {
     query.$or = [
-      {'fields.adminOnly.en-US': {$exists: false}},
-      {'fields.adminOnly.en-US': {$in: [null, false]}}
+      {'fields.adminOnly': {$exists: false}},
+      {'fields.adminOnly': {$in: [null, false]}}
     ];
   }
 
@@ -27,16 +29,15 @@ exports.index = function(req, res) {
       if (req.query.includeRelated) {
         return Promise.map(results, function(content) {
           content = content.toObject();
-          var ids = _.chain(_.get(content, 'fields.' + req.query.includeRelated + '["en-US"]', [])).map('sys.id').compact().uniq().value();
+          var ids = _.chain(_.get(content, 'fields.' + req.query.includeRelated, [])).map('sys.id').compact().uniq().value();
           if (!ids.length) {
             content[req.query.includeRelated] = [];
             return content;
           }
           var displayFields = {};
           if (req.query.fields) {
-            console.log(req.query.fields, typeof req.query.fields);
             _.each(_.flatten([req.query.fields]), function(field) {
-              displayFields['fields.' + field + '.en-US'] = 1;
+              displayFields['fields.' + field] = 1;
             });
             displayFields['sys.id'] = 1;
           }
@@ -107,7 +108,7 @@ exports.show = function(req, res) {
 
     if (req.query.includeRelated) {
       content = content.toObject();
-      var ids = _.chain(_.get(content, 'fields.' + req.query.includeRelated + '["en-US"]', [])).map('sys.id').compact().uniq().value();
+      var ids = _.chain(_.get(content, 'fields.' + req.query.includeRelated, [])).map('sys.id').compact().uniq().value();
       if (!ids.length) {
         content[req.query.includeRelated] = [];
         return content;
@@ -115,7 +116,7 @@ exports.show = function(req, res) {
       var displayFields = {};
       if (req.query.fields) {
         _.each(req.query.fields, function(field) {
-          displayFields['fields.' + field + '.en-US'] = 1;
+          displayFields['fields.' + field] = 1;
         });
       }
 
@@ -129,15 +130,41 @@ exports.show = function(req, res) {
   }).bind(res).catch(errorSender.handlePromiseError);
 };
 
+var getData = Promise.method(function(space, index) {
+  console.log('Request items...', {skip: index * 100, limit: 100});
+  return space.getEntries({skip: index * 100, limit: 100});
+});
+
+var getItemsAsync = Promise.coroutine(function *(space, index, results) {
+  if (!index) {
+    index = 0;
+  }
+  if (!results) {
+    results = [];
+  }
+  var result = yield getData(space, index).tap((i) => {
+    console.log('Recieved', i.items.length, 'items...');
+  });
+  if (result && result.items && result.items.length) {
+    results.push(result.items);
+    return getItemsAsync(space, index + 1, results);
+  } else {
+    return _.flatten(results);
+  }
+});
+
 exports.initData = function(req, res) {
-  Content.remove({}).then(function() {
+  elasticClient.deleteByQuery({index: 'emarket', body: {}}).finally(function() {
+    return Content.remove({});
+  }).then(function() {
     return contentfulManagementClient.getSpace(config.contentful.space).then(function(space) {
-      return space.getEntries();
+//      return space.getEntries();
+      return getItemsAsync(space);
     });
 //    return contentfulClient.getEntries({resolveLinks: false});
   }).then(function(data) {
-    return Promise.each(data.items, function(entry) {
-      return new Content(entry).save();
+    return Promise.each(data, function(entry) {
+      return new Content(helper.removeContentfulLocale(entry)).save();
     });
   }).then(function() {
     if (res) {

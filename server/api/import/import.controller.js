@@ -39,12 +39,12 @@ var createOrUpdateSupportItemEntry = Promise.method(function(space, supportItemD
 
   console.log('create supportItem...');
 //  return client.getSpace(config.contentful.space).then(function(space) {
-  var supportItemId = Number(_.get(supportItemData, 'fields.supportItemId.en-US', 0));
+  var supportItemId = Number(_.get(supportItemData, 'fields.supportItemId', 0));
   if (!supportItemId) {
     return Promise.resolve();
 //      return space.createEntry('supportItem', supportItemData);
   }
-  return Content.findOne({'sys.contentType.sys.id': 'supportItem', 'fields.supportItemId.en-US': supportItemId}).then(function(supportItem) {
+  return Content.findOne({'sys.contentType.sys.id': 'supportItem', 'fields.supportItemId': supportItemId}).then(function(supportItem) {
     if (supportItem) {
       return space.getEntry(supportItem.sys.id).then(function(content) {
         delete data.fields.description;

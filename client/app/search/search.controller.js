@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emarket').controller('SearchCtrl', function($scope, SupportItem, $stateParams, $timeout) {
+angular.module('emarket').controller('SearchCtrl', function($scope, $rootScope, SupportItem, $stateParams) {
   console.log('searchResults');
   $scope.searchQuery = decodeURIComponent($stateParams.query);
   $scope.category = decodeURIComponent($stateParams.category);
@@ -22,9 +22,28 @@ angular.module('emarket').controller('SearchCtrl', function($scope, SupportItem,
     queryData.registrationGroup = $stateParams.registrationGroup ? $scope.registrationGroup : undefined;
     _.extend(queryData, $scope.tableState.pagination);
     SupportItem.search(queryData, function(result) {
-      $scope.results = result.data;
-      $scope.count = result.count;
+      $scope.results = result.hits.hits;
+      $scope.count = result.hits.total;
+
       $scope.tableState.pagination.numberOfPages = Math.ceil(result.count / $scope.tableState.pagination.number);
+
+      $rootScope.totalFacetsCount = _.sumBy(result.aggregations.categories.buckets, 'doc_count') + result.aggregations.categories.sum_other_doc_count;//jshint ignore:line
+      var oldFacets = _.cloneDeep($rootScope.searchFacets);
+      $rootScope.searchFacets = _.map(result.aggregations.categories.buckets, function(category) {
+        category.urlId = encodeURIComponent(category.key);
+        var oldFacet = _.find(oldFacets, {key: category.key});
+        if (oldFacet) {
+          category.isOpen = oldFacet.isOpen;
+        }
+        if (category.key === decodeURIComponent($stateParams.category)) {
+          category.isOpen = true;
+        }
+        category.registrationGroups = _.map(category.registrationGroups.buckets, function(registrationGroup) {
+          registrationGroup.urlId = encodeURIComponent(registrationGroup.key);
+          return registrationGroup;
+        });
+        return category;
+      });
       $scope.loading = false;
     });
   }

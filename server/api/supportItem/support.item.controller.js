@@ -7,6 +7,7 @@ var QueryBuilder = require('../../util/query.builder');
 var helper = require('../../util/helper');
 var Content = require('../content/content.model');
 var Variant = require('../variant/variant.model');
+var elasticClient = require('../../util/elastic.client');
 
 exports.index = function(req, res) {
   var queryBuilder = new QueryBuilder(req.query);
@@ -30,133 +31,115 @@ exports.index = function(req, res) {
 };
 
 exports.search = function(req, res) {
-  var searchStr = req.query.query || '';
-  var query = {};
-  query['sys.contentType.sys.id'] = 'supportItem';
+  var query = req.query.query;
+  var searchQuery = {bool: {}};
+  if (query) {
+    searchQuery.bool.minimum_number_should_match = 1;
+    searchQuery.bool.boost = 1;
+    searchQuery.bool.should = [];
+    searchQuery.bool.should.push({
+      term: {
+        'fields.title': {
+          value: query,
+          boost: 15
+        }
+      }
+    });
+
+    searchQuery.bool.should.push({
+      match: {
+        'fields.title': {
+          query: query,
+          fuzziness: 1,
+          boost: 5,
+          operator: 'and'
+        }
+      }
+    });
+    searchQuery.bool.should.push({
+      match: {
+        'fields.title': {
+          query: query,
+          fuzziness: 2,
+          boost: 1.5,
+          operator: 'or'
+        }
+      }
+    });
+    searchQuery.bool.should.push({
+      match: {
+        'fields.tags': {
+          fuzziness: 1,
+          boost: 15,
+          query: query,
+          operator: 'or'
+        }
+      }
+    });
+    searchQuery.bool.should.push({
+      match: {
+        'fields.description': {
+          fuzziness: 1,
+          boost: 1,
+          query: query,
+          operator: 'and'
+        }
+      }
+    });
+  }
+
+  var filters = [];
+  var postFilters = [];
+
+  if (req.query.priceCap) {
+    filters.push({term: {'fields.priceControlled': true}});
+  }
+  if (req.query.quote) {
+    filters.push({term: {'fields.quoteNeeded': true}});
+  }
+
   if (req.query.registrationGroup) {
-    query['fields.registrationGroup.en-US'] = req.query.registrationGroup;
+    postFilters.push({term: {'fields.registrationGroup.keyword': req.query.registrationGroup}});
   }
   if (req.query.category) {
-    query['fields.category.en-US'] = req.query.category;
-  }
-  if (req.query.priceCap) {
-    query['fields.priceControlled.en-US'] = true;
-  }
-  if (req.query.quote) {
-    query['fields.quoteNeeded.en-US'] = true;
+    postFilters.push({term: {'fields.category.keyword': req.query.category}});
   }
 
-  var $or = [];
-  $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.tags.en-US': helper.wrapRegExp(searchStr)});
-  query.$or = $or;
-  var skip = Number(req.query.start) || 0;
-  var limit = Number(req.query.number);
-  if (limit < 0) {
-    limit = undefined;
-  }
-  var request = Content.find(query)
-    .skip(skip)
-    .limit(limit)
-    .exec();
-  return Promise.props({data: request, count: Content.count(query)})
-    .then(function(data) {
-      return res.json(data);
-    }).bind(res).catch(errorSender.handlePromiseError);
-};
+  searchQuery.bool.must = filters;
 
-
-exports.facets = function(req, res) {
-  var searchStr = req.query.query || '';
-
-  var filter = {'sys.contentType.sys.id': 'supportItem'};
-
-  if (req.query.priceCap) {
-    filter['fields.priceControlled.en-US'] = true;
-  }
-  if (req.query.quote) {
-    filter['fields.quoteNeeded.en-US'] = true;
-  }
-
-  var $or = [];
-  $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.tags.en-US': helper.wrapRegExp(searchStr)});
-  filter.$or = $or;
-
-
-  Content.aggregate([
-    {'$match': filter},
-    {$group: {
-        _id: {category: '$fields.category.en-US', registrationGroup: '$fields.registrationGroup.en-US'},
-        count: {$sum: 1}
-      }
-    },
-    {'$group': {
-        _id: '$_id.category',
-        registrationGroups: {$addToSet: {_id: '$_id.registrationGroup', count: {$sum: '$count'}}},
-        count: {$sum: '$count'}
+  elasticClient.search({
+    type: 'supportItem',
+    explain: true,
+    body: {
+      query: searchQuery,
+      highlight: {
+        fields: {
+          'fields.title': {number_of_fragments: 0},
+          'fields.description': {number_of_fragments: 0}
+        }
+      },
+      aggs: {
+        categories: {
+          terms: {
+            field: 'fields.category.keyword'
+          },
+          aggs: {
+            registrationGroups: {
+              terms: {
+                field: 'fields.registrationGroup.keyword'
+              }
+            }
+          }
+        }
+      },
+      post_filter: {
+        bool: {
+          filter: postFilters
+        }
       }
     }
-  ]).then(function(result) {
+  }).then(function(result) {
     res.json(result);
-  }).bind(res).catch(errorSender.handlePromiseError);
-};
-
-exports.facets2 = function(req, res) {
-  var searchStr = req.query.query || '';
-  var $or = [];
-  $or.push({'fields.title.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.category.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.registrationGroup.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.description.en-US': helper.wrapRegExp(searchStr)});
-  $or.push({'fields.tags.en-US': helper.wrapRegExp(searchStr)});
-
-  var registrationGroups = Content.aggregate([
-    {$match: {'sys.contentType.sys.id': 'supportItem'}},
-    {$group: {_id: '$fields.registrationGroup.en-US'}},
-    {$project: {count: {$literal: 0}}}
-  ]).exec();
-  var categories = Content.aggregate([
-    {$match: {'sys.contentType.sys.id': 'supportItem'}},
-    {$group: {_id: '$fields.category.en-US'}},
-    {$project: {count: {$literal: 0}}}
-  ]).exec();
-  var registrationGroupCounts = Content.aggregate([
-    {$match: {'sys.contentType.sys.id': 'supportItem', $or: $or}},
-    {$group: {_id: '$fields.registrationGroup.en-US', count: {$sum: 1}}}
-  ]).exec();
-  var categoryCounts = Content.aggregate([
-    {$match: {'sys.contentType.sys.id': 'supportItem', $or: $or}},
-    {$group: {_id: '$fields.category.en-US', count: {$sum: 1}}}
-  ]).exec();
-  Promise.props({
-    categories: categories,
-    registrationGroups: registrationGroups,
-    categoryCounts: categoryCounts,
-    registrationGroupCounts: registrationGroupCounts
-  }).then(function(data) {
-    var indexedCategoryCounts = _.keyBy(data.categoryCounts, '_id');
-    var categories = _.map(data.categories, function(item) {
-      item.count = _.get(indexedCategoryCounts, item._id + '.count', 0);
-      return item;
-    });
-    var indexedRegistrationGroupCounts = _.keyBy(data.registrationGroupCounts, '_id');
-    var registrationGroups = _.map(data.registrationGroups, function(item) {
-      item.count = _.get(indexedRegistrationGroupCounts, item._id + '.count', 0);
-      return item;
-    });
-    var result = {
-      categories: categories,
-      registrationGroups: registrationGroups
-    };
-
-    return res.json(result);
   }).bind(res).catch(errorSender.handlePromiseError);
 };
 
@@ -169,7 +152,7 @@ exports.show = function(req, res) {
       throw errorSender.statusError(404);
     }
     supportItem = supportItem.toObject();
-    var ids = _.chain(_.get(supportItem, 'fields.relatedItems["en-US"]', [])).map('sys.id').compact().uniq().value();
+    var ids = _.chain(_.get(supportItem, 'fields.relatedItems', [])).map('sys.id').compact().uniq().value();
     if (!ids.length) {
       supportItem.relatedItems = [];
       return supportItem;
@@ -179,7 +162,7 @@ exports.show = function(req, res) {
       return supportItem;
     });
   }).then(function(supportItem) {
-    var ids = _.chain(_.get(supportItem, 'fields.variantConfigurationList["en-US"]', [])).map('sys.id').compact().uniq().value();
+    var ids = _.chain(_.get(supportItem, 'fields.variantConfigurationList', [])).map('sys.id').compact().uniq().value();
     if (!ids.length) {
       supportItem.variantConfigurationList = [];
       return supportItem;

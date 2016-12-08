@@ -8,7 +8,20 @@
     </div>
   </div>
 
-  <div class="panel panel-default facets-panel" ng-show="$state.includes('search') && totalFacetsCount > 0">
+  <div class="panel panel-default facets-panel" ng-show="$state.includes('search') && searchFacets.length">
+    <div class="panel-body">
+      <ul class="sidenav-links">
+        <li ui-sref-active="active"><a ui-sref="search({category: null, registrationGroup: null})">All<span ng-show="totalFacetsCount > 0">&nbsp;({{totalFacetsCount}})</span></a></li>
+        <li ng-repeat="category in searchFacets" ui-sref-active="active">
+          <a ui-sref="search({category: category.urlId, registrationGroup: null})" ng-click="category.isOpen = true;">{{category.key}}<span ng-show="category.doc_count > 0">&nbsp;({{category.doc_count}})</span></a>
+          <ul class="secondLevel" ng-show="category.isOpen">
+            <li ng-repeat="registrationGroup in category.registrationGroups" ui-sref-active="active"><a ui-sref="search({category: category.urlId, registrationGroup: registrationGroup.urlId})">{{registrationGroup.key}}<span ng-show="registrationGroup.doc_count > 0">&nbsp;({{registrationGroup.doc_count}})</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+<!--  <div class="panel panel-default facets-panel" ng-show="$state.includes('search') && totalFacetsCount > 0">
     <div class="panel-body">
       <ul class="sidenav-links">
         <li ui-sref-active="active"><a ui-sref="search({category: null, registrationGroup: null})">All<span ng-show="totalFacetsCount > 0">&nbsp;({{totalFacetsCount}})</span></a></li>
@@ -20,13 +33,13 @@
         </li>
       </ul>
     </div>
-  </div>
+  </div>-->
 
   <div class="panel panel-default" ng-repeat="helpBlock in helpBlocks">
-    <div class="panel-heading">{{helpBlock.fields.title['en-US']}}</div>
+    <div class="panel-heading">{{helpBlock.fields.title}}</div>
     <div class="panel-body">
       <ul class="sidenav-links">
-        <li ng-repeat="link in helpBlock.links"><a ui-sref="content({id: link.sys.id})">{{link.fields.title['en-US']}}</a></li>
+        <li ng-repeat="link in helpBlock.links"><a ui-sref="content({id: link.sys.id})">{{link.fields.title}}</a></li>
       </ul>
     </div>
   </div>
