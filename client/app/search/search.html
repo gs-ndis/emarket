@@ -1,3 +1,12 @@
+
+<!--<script type="text/ng-template" id="explain.node.html">
+  <div style="border: solid 1px #eee;">
+    <div><b>{{node.value}}</b> {{node.description}}</div>
+    <div ng-repeat="details in node.details" ng-if="node.details" ng-include="'explain.node.html'" ng-init="node = details" style="padding-left: 10px;"></div>
+  </div>
+</script>-->
+
+
 <div class="wrapper">
   <div ng-include="'components/sidebar/sidebar.html'"></div>
   <div class="main-content">
@@ -12,7 +21,8 @@
     <h3 ng-hide="loading || !count">{{count}} Results found</h3>
     <h3 ng-show="!loading && !count">No Results found</h3>
     <div class="panel panel-search-result" ng-repeat="content in results">
-      <div class="panel-heading"><a href="" ui-sref="supportItem.details({id: content._id})" ng-bind-html="content.highlight['fields.title'] || content._source.fields.title">{{content._score}}</a></div>
+      <!--<div ng-include="'explain.node.html'" ng-init="node = content._explanation"></div>-->
+      <div class="panel-heading"><a href="" ui-sref="supportItem.details({id: content._id})" ng-bind-html="(content.highlight['fields.title'] || content._source.fields.title)"></a></div>
       <div class="panel-subheading">
         <span class="support-item-tags"><span ng-show="content._source.fields.tags.length">{{content._source.fields.tags.join(', ')}}, </span>{{content._source.fields.category}}</span>
         <span class="support-item-date">{{content._source.sys.createdAt| date}}</span>

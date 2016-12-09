@@ -37,11 +37,37 @@ exports.search = function(req, res) {
     searchQuery.bool.minimum_number_should_match = 1;
     searchQuery.bool.boost = 1;
     searchQuery.bool.should = [];
+
+
     searchQuery.bool.should.push({
-      term: {
+      match: {
         'fields.title': {
-          value: query,
-          boost: 15
+          query: query,
+          fuzziness: 0,
+          boost: 20,
+          operator: 'and'
+        }
+      }
+    });
+
+    searchQuery.bool.should.push({
+      match: {
+        'fields.tags': {
+          fuzziness: 0,
+          boost: 10,
+          query: query,
+          operator: 'or'
+        }
+      }
+    });
+
+    searchQuery.bool.should.push({
+      match: {
+        'fields.description': {
+          fuzziness: 0,
+          boost: 10,
+          query: query,
+          operator: 'and'
         }
       }
     });
@@ -49,40 +75,21 @@ exports.search = function(req, res) {
     searchQuery.bool.should.push({
       match: {
         'fields.title': {
-          query: query,
           fuzziness: 1,
-          boost: 5,
-          operator: 'and'
-        }
-      }
-    });
-    searchQuery.bool.should.push({
-      match: {
-        'fields.title': {
-          query: query,
-          fuzziness: 2,
-          boost: 1.5,
-          operator: 'or'
-        }
-      }
-    });
-    searchQuery.bool.should.push({
-      match: {
-        'fields.tags': {
-          fuzziness: 1,
-          boost: 15,
+          boost: 0.5,
           query: query,
           operator: 'or'
         }
       }
     });
+
     searchQuery.bool.should.push({
       match: {
         'fields.description': {
           fuzziness: 1,
-          boost: 1,
+          boost: 0.5,
           query: query,
-          operator: 'and'
+          operator: 'or'
         }
       }
     });
