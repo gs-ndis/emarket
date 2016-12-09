@@ -30,7 +30,7 @@ function refreshContentfulCache() {
 
 
 function init() {
-  refreshContentfulCache();
+//  refreshContentfulCache();
   initScheduler();
 }
 
