@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emarket').controller('SearchCtrl', function($scope, $rootScope, SupportItem, $stateParams) {
+angular.module('emarket').controller('SearchCtrl', function($scope, $rootScope, SupportItem, $anchorScroll, $stateParams) {
   console.log('searchResults');
   $scope.searchQuery = decodeURIComponent($stateParams.query);
   $scope.category = decodeURIComponent($stateParams.category);
@@ -25,7 +25,8 @@ angular.module('emarket').controller('SearchCtrl', function($scope, $rootScope, 
       $scope.results = result.hits.hits;
       $scope.count = result.hits.total;
 
-      $scope.tableState.pagination.numberOfPages = Math.ceil(result.count / $scope.tableState.pagination.number);
+      $scope.tableState.pagination.numberOfPages = Math.ceil(result.hits.total / $scope.tableState.pagination.number);
+      $anchorScroll('main');
 
       $rootScope.totalFacetsCount = _.sumBy(result.aggregations.categories.buckets, 'doc_count') + result.aggregations.categories.sum_other_doc_count;//jshint ignore:line
       var oldFacets = _.cloneDeep($rootScope.searchFacets);

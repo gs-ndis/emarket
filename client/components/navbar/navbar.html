@@ -2,9 +2,9 @@
   <div class="clearfix nav-top-menu">
     <div class="wrapper">
       <ul class="nav-links pull-left">
-        <li><a href="">Skip to main content</a></li>
-        <li><a href="">Skip to navigation</a></li>
-        <li><a href="">Skip to footer</a></li>
+        <li><a href="javascript:void(0);" ng-click="$anchorScroll('main');">Skip to main content</a></li>
+        <li><a href="javascript:void(0);" ng-click="$anchorScroll('navigation');">Skip to navigation</a></li>
+        <li><a href="javascript:void(0);" ng-click="$anchorScroll('footer');">Skip to footer</a></li>
       </ul>
       <ul class="offright login-buttons pull-right" ng-hide="currentUser._id">
         <li><a href="https://myplace.ndis.gov.au/ndisstorefront" class="portal-participant"></a></li>
@@ -57,7 +57,7 @@
       </div>
     </div>
   </header>
-  <div class="nav-menu clearfix">
+  <div class="nav-menu clearfix" id="navigation">
     <div class="wrapper">
       <ul class="nav-links">
         <li ng-repeat="page in menu"><a ui-sref="content({id: page.sys.id})">{{page.fields.title}}</a></li>

@@ -143,7 +143,9 @@ exports.search = function(req, res) {
         bool: {
           filter: postFilters
         }
-      }
+      },
+      from: req.query.start || 0,
+      size: req.query.number || 10
     }
   }).then(function(result) {
     res.json(result);

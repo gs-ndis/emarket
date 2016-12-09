@@ -41,9 +41,9 @@
 
 
     <div ng-class="!$state.includes('login')? 'main-container' : 'login-wrapper'">
-      <div class="clearfix" ui-view=""></div>
+      <div class="clearfix" ui-view="" id="main"></div>
     </div>
-    <div ng-include="'components/footer/footer.html'" ng-if="!$state.includes('login')"></div>
+    <div ng-include="'components/footer/footer.html'" ng-if="!$state.includes('login')" id="footer"></div>
     <!--    <div id="wrapper">
           <div ng-include="'components/navbar/navbar.html'"></div>
           <div ng-include="'components/sidebar/sidebar.html'" class="noprint sidebar" id="sidebar"></div>

@@ -99,7 +99,7 @@ angular.module('emarket', [
       }
     }
   };
-}).run(function($rootScope, $location, Auth, $state, $stateParams, $window) {
+}).run(function($rootScope, $location, Auth, $state, $stateParams, $anchorScroll, $window) {
   // Redirect to login if route requires auth and you're not logged in
   $rootScope.$on('$stateChangeError', console.log.bind(console));
   $rootScope.$on('$stateChangeStart', function(event, next) {
@@ -147,6 +147,7 @@ angular.module('emarket', [
   });
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
+  $rootScope.$anchorScroll = $anchorScroll;
   $rootScope.dateFormat = 'MM/dd/yyyy';
   $rootScope.dateTimeFormat = 'MM/dd/yyyy HH:mm';
   //$rootScope.hasAccess = Permissions.hasAccess;
