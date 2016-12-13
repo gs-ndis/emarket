@@ -2,8 +2,8 @@
   <div class="panel panel-default facets-panel" ng-show="$state.includes('search')">
     <div class="panel-body">
       <ul class="sidenav-links">
-        <li><label class="checkbox-inline" ><input type="checkbox" ng-model="filter.priceCap" ng-true-value="true" ng-false-value="null" ng-change="$state.go('search', {priceCap: filter.priceCap})"> Price Controlled</label></li>
-        <li><label class="checkbox-inline" ><input type="checkbox" ng-model="filter.quote" ng-true-value="true" ng-false-value="null" ng-change="$state.go('search', {quote: filter.quote})"> Quote Needed</label></li>
+        <li><label class="checkbox-inline" ><input type="checkbox" ng-model="filter.priceCap" ng-true-value="true" ng-false-value="null" ng-change="$state.go('search', {priceCap: filter.priceCap, start: 0})"> Price Controlled</label></li>
+        <li><label class="checkbox-inline" ><input type="checkbox" ng-model="filter.quote" ng-true-value="true" ng-false-value="null" ng-change="$state.go('search', {quote: filter.quote, start: 0})"> Quote Needed</label></li>
       </ul>
     </div>
   </div>
@@ -12,28 +12,15 @@
     <div class="panel-body">
       <ul class="sidenav-links">
         <li ui-sref-active="active"><a ui-sref="search({category: null, registrationGroup: null})">All<span ng-show="totalFacetsCount > 0">&nbsp;({{totalFacetsCount}})</span></a></li>
-        <li ng-repeat="category in searchFacets" ui-sref-active="active">
-          <a ui-sref="search({category: category.urlId, registrationGroup: null})" ng-click="category.isOpen = true;">{{category.key}}<span ng-show="category.doc_count > 0">&nbsp;({{category.doc_count}})</span></a>
+        <li ng-repeat="category in searchFacets" ng-class="{active: $state.includes('search', {category: category.urlId, registrationGroup: null})}">
+          <a ui-sref="search({category: category.urlId, registrationGroup: null, start: 0})" ng-click="category.isOpen = true;">{{category.key}}<span ng-show="category.doc_count > 0">&nbsp;({{category.doc_count}})</span></a>
           <ul class="secondLevel" ng-show="category.isOpen">
-            <li ng-repeat="registrationGroup in category.registrationGroups" ui-sref-active="active"><a ui-sref="search({category: category.urlId, registrationGroup: registrationGroup.urlId})">{{registrationGroup.key}}<span ng-show="registrationGroup.doc_count > 0">&nbsp;({{registrationGroup.doc_count}})</span></a></li>
+            <li ng-repeat="registrationGroup in category.registrationGroups" ng-class="{active: $state.includes('search', {category: category.urlId, registrationGroup: registrationGroup.urlId})}"><a ui-sref="search({category: category.urlId, registrationGroup: registrationGroup.urlId, start: 0})">{{registrationGroup.key}}<span ng-show="registrationGroup.doc_count > 0">&nbsp;({{registrationGroup.doc_count}})</span></a></li>
           </ul>
         </li>
       </ul>
     </div>
   </div>
-<!--  <div class="panel panel-default facets-panel" ng-show="$state.includes('search') && totalFacetsCount > 0">
-    <div class="panel-body">
-      <ul class="sidenav-links">
-        <li ui-sref-active="active"><a ui-sref="search({category: null, registrationGroup: null})">All<span ng-show="totalFacetsCount > 0">&nbsp;({{totalFacetsCount}})</span></a></li>
-        <li ng-repeat="facet in searchFacets" ui-sref-active="active">
-          <a ui-sref="search({category: facet.urlId, registrationGroup: null})" ng-click="facet.isOpen = true;">{{facet._id}}<span ng-show="facet.count > 0">&nbsp;({{facet.count}})</span></a>
-          <ul class="secondLevel" ng-show="facet.isOpen">
-            <li ng-repeat="registrationGroup in facet.registrationGroups" ui-sref-active="active"><a ui-sref="search({category: facet.urlId, registrationGroup: registrationGroup.urlId})">{{registrationGroup._id}}<span ng-show="registrationGroup.count > 0">&nbsp;({{registrationGroup.count}})</span></a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>-->
 
   <div class="panel panel-default" ng-repeat="helpBlock in helpBlocks">
     <div class="panel-heading">{{helpBlock.fields.title}}</div>

@@ -3,6 +3,7 @@
     <div class="support-item-details-title clearfix">
       <h2 class="pull-left">{{supportItem.fields.title}}</h2>
       <div class="buttons pull-right">
+        <a class="btn btn-green" ui-sref="search(searchParams)"><i class="fa fa-arrow-left"></i>&nbsp;Back to search</a>
         <button class="btn btn-white"><i class="fa fa-print"></i>&nbsp;Print PDF</button>
         <a class="btn btn-green" href="https://app.contentful.com/spaces/{{supportItem.sys.space.sys.id}}/entries/{{supportItem.sys.id}}" target="_blank" ng-if="currentUser.role === 'admin'"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
       </div>

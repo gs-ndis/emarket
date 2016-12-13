@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emarket').controller('SupportItemDetailsCtrl', function($stateParams, SupportItem, Variant, dialogs, $scope) {
+angular.module('emarket').controller('SupportItemDetailsCtrl', function($stateParams, $rootScope, ipCookie, SupportItem, Variant, dialogs, $scope) {
   $scope.locationOptions = [
     'ACT',
     'NSW',
@@ -12,6 +12,7 @@ angular.module('emarket').controller('SupportItemDetailsCtrl', function($statePa
   ];
   $scope.selectedLocation = 'ACT';
   $scope.priceData = {};
+  $scope.searchParams = $rootScope.searchParams || ipCookie('search') || {};
 
   function updatePriceData() {
     $scope.priceData = {};
