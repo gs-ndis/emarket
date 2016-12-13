@@ -34,7 +34,7 @@ angular.module('emarket').controller('SearchCtrl', function($scope, $rootScope, 
       $scope.tableState.pagination.numberOfPages = Math.ceil(result.hits.total / $scope.tableState.pagination.number);
       $scope.currentPage = $scope.tableState.pagination.start / $scope.tableState.pagination.number;
 
-      $anchorScroll('main');
+      $anchorScroll('navigation');
 
       $rootScope.totalFacetsCount = _.sumBy(result.aggregations.categories.buckets, 'doc_count') + result.aggregations.categories.sum_other_doc_count;//jshint ignore:line
       var oldFacets = _.cloneDeep($rootScope.searchFacets);
