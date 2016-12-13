@@ -7,7 +7,7 @@ angular.module('emarket').config(function($stateProvider) {
     template: '<div ui-view/>'
   });
   $stateProvider.state('supportItem.details', {
-    url: '/:id',
+    url: '/:slug',
     templateUrl: 'app/supportItem/supportItem.html',
     controller: 'SupportItemDetailsCtrl',
     authenticate: false

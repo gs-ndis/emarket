@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('emarket').factory('SupportItem', function($resource) {
-  return $resource('/api/supportItems/:action/:_id', {_id: '@_id'}, {
+  return $resource('/api/supportItems/:action/:_id/:slug', {_id: '@_id'}, {
     query: {
       isArray: false
     },

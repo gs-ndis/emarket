@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('emarket').controller('SupportItemDetailsCtrl', function($stateParams, $rootScope, ipCookie, SupportItem, Variant, dialogs, $scope) {
+angular.module('emarket').controller('SupportItemDetailsCtrl', function($stateParams, $rootScope, $anchorScroll, ipCookie, SupportItem, Variant, dialogs, $scope) {
   $scope.locationOptions = [
     'ACT',
     'NSW',
@@ -53,7 +53,8 @@ angular.module('emarket').controller('SupportItemDetailsCtrl', function($statePa
     });
   }
 
-  $scope.supportItem = SupportItem.get({_id: $stateParams.id}, function() {
+  $scope.supportItem = SupportItem.get({slug: $stateParams.slug}, function() {
+    $anchorScroll('navigation');
     updateVariantList();
   });
   $scope.editVariant = function(variant) {

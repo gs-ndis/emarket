@@ -22,7 +22,7 @@
     <h3 ng-show="!loading && !count">No Results found.</h3>
     <div class="panel panel-search-result" ng-repeat="content in results">
       <!--<div ng-include="'explain.node.html'" ng-init="node = content._explanation"></div>-->
-      <div class="panel-heading"><a href="" ui-sref="supportItem.details({id: content._id})" ng-bind-html="(content.highlight['fields.title'] || content._source.fields.title)"></a></div>
+      <div class="panel-heading"><a href="" ui-sref="supportItem.details({slug: content._source.fields.slug})" ng-bind-html="(content.highlight['fields.title'] || content._source.fields.title)"></a></div>
       <div class="panel-subheading">
         <span class="support-item-tags"><span ng-show="content._source.fields.tags.length">{{content._source.fields.tags.join(', ')}}, </span>{{content._source.fields.category}}</span>
         <span class="support-item-date">{{content._source.sys.createdAt| date}}</span>

@@ -153,10 +153,10 @@ exports.search = function(req, res) {
 };
 
 exports.show = function(req, res) {
-  if (!req.params.id) {
+  if (!req.params.slug) {
     throw errorSender.statusError(422);
   }
-  Content.findOne({'sys.id': req.params.id}).then(function(supportItem) {
+  Content.findOne({'fields.slug': req.params.slug}).then(function(supportItem) {
     if (!supportItem) {
       throw errorSender.statusError(404);
     }
