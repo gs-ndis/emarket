@@ -26,7 +26,7 @@
     <div class="panel-heading">{{helpBlock.fields.title}}</div>
     <div class="panel-body">
       <ul class="sidenav-links">
-        <li ng-repeat="link in helpBlock.links"><a ui-sref="content({id: link.sys.id})">{{link.fields.title}}</a></li>
+        <li ng-repeat="link in helpBlock.links"><a ui-sref="help({slug: link.fields.slug})">{{link.fields.title}}</a></li>
       </ul>
     </div>
   </div>

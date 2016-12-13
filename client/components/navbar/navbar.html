@@ -60,7 +60,7 @@
   <div class="nav-menu clearfix" id="navigation">
     <div class="wrapper">
       <ul class="nav-links">
-        <li ng-repeat="page in menu"><a ui-sref="content({id: page.sys.id})">{{page.fields.title}}</a></li>
+        <li ng-repeat="page in menu"><a ui-sref="content({slug: page.fields.slug})">{{page.fields.title}}</a></li>
       </ul>
     </div>
   </div>

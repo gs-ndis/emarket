@@ -9,6 +9,6 @@ var router = express.Router();
 router.get('/', auth.attachUser(), controller.index);
 router.all('/refreshCache', controller.refreshCache);
 router.all('/initData', controller.initData);
-router.get('/:id', controller.show);
+router.get('/:contentType/:slug', controller.show);
 
 module.exports = router;

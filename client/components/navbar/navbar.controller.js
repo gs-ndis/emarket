@@ -8,7 +8,7 @@ angular.module('emarket').controller('NavbarCtrl', function($scope, $rootScope, 
   $rootScope.menu = [];
   $rootScope.initContentfulData = function() {
     $timeout(function() {
-      $rootScope.helpBlocks = Content.query({'sys.contentType.sys.id': 'helpBlock', includeRelated: 'links', fields: ['title']});
+      $rootScope.helpBlocks = Content.query({'sys.contentType.sys.id': 'helpBlock', includeRelated: 'links', fields: ['title', 'slug']});
       $rootScope.menu = Content.query({'sys.contentType.sys.id': 'page', sortBy: '-fields.displayPriority'});
     });
   };

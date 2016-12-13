@@ -97,11 +97,15 @@ exports.refreshCache = function(req, res) {
 };
 
 exports.show = function(req, res) {
-  if (!req.params.id) {
+  if (!req.params.slug) {
     throw errorSender.statusError(422);
   }
 
-  Content.findOne({'sys.id': req.params.id}).then(function(content) {
+  if (!req.params.contentType) {
+    throw errorSender.statusError(422);
+  }
+
+  Content.findOne({'sys.contentType.sys.id': req.params.contentType, 'fields.slug': req.params.slug}).then(function(content) {
     if (!content) {
       throw errorSender.statusError(404);
     }

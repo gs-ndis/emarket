@@ -95,7 +95,7 @@
             <th>Quoted</th>
           </tr>
           <tr ng-repeat="item in supportItem.relatedItems">
-            <td><a ui-sref="supportItem.details({id: item.sys.id})">{{item.fields.title}}</a></td>
+            <td><a ui-sref="supportItem.details({slug: item.fields.slug})">{{item.fields.title}}</a></td>
             <td>{{item.fields.description| substr:true:50}}</td>
             <td>{{item.fields.category}}</td>
             <td>{{item.fields.registrationGroup}}</td>
